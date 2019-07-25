@@ -1,0 +1,75 @@
+server:
+  port: 9001
+spring:
+  application:
+    name: mplus-security #应用名称
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 123.207.61.221:8848
+  # spring boot升级至2.1.x时默认禁用bean覆盖，需要配置启用
+  main:
+    allow-bean-definition-overriding: true
+  # redis 配置
+  redis:
+    host: 123.207.61.221
+    port: 6379
+    password: cool04433@
+    database: 0
+    timeout: 60s  # 数据库连接超时时间，2.0 中该参数的类型为Duration，这里在配置的时候需要指明单位
+    # 连接池配置，2.0中直接使用jedis或者lettuce配置连接池
+    lettuce:
+      pool:
+        # 最大空闲连接数
+        max-idle: 10
+        # 最小空闲连接数
+        min-idle: 5
+        # 等待可用连接的最大时间，负数为不限制
+        max-wait:  -1s
+        # 最大活跃连接数，负数为不限制
+        max-active: 100
+    
+# JWT 配置
+jwt:
+  # 存放Token的Header Key
+  header: Authorization
+  # 密匙key
+  secret: mySecret
+  # 过期时间   单位秒 7天后过期  604800
+  expiration: 3600
+  # 自定义token 前缀字符
+  tokenHead: Bearer-
+  # 超时时间   单位秒
+  access_token: 3600
+  # 刷新token时间   单位秒
+  refresh_token: 3600
+  route:
+    auth:
+      # path: login/entry
+      login: /auth/v1/api/login
+      refresh: oauth/refresh
+      register: /auth/v1/api/register
+      logout: /auth/v1/api/logout
+      
+# 日志
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+        
+# 配置不需要认证的接口
+com:
+  mplus:
+    security:
+      antMatchers:
+        /auth/v1/api/login/**,
+        /auth/v1/api/module/tree/**,
+        /auth/v1/api/grid/**
+        
+zuul:
+  routes:
+    api-1:
+      path: /api/**
+      serviceId: mplus-core
+        

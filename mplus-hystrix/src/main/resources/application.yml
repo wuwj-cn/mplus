@@ -1,0 +1,12 @@
+spring:
+  # spring boot升级至2.1.x时默认禁用bean覆盖，需要配置启用
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: mplus-hystrix
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+feign.hystrix.enabled: true

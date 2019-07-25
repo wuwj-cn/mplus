@@ -1,0 +1,22 @@
+server:
+  port: 9002
+#  contextPath: /res
+spring:
+  application:
+    name: mplus-res #应用名称
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 123.207.61.221:8848
+  # spring boot升级至2.1.x时默认禁用bean覆盖，需要配置启用
+  main:
+    allow-bean-definition-overriding: true
+  
+security:
+  oauth2:
+    resource:
+      id: mplus-res
+      user-info-uri: http://localhost:9000/auth/api/me
+      prefer-token-info: false
+      # jwt:
+        # key-uri: http://localhost:9000/auth/oauth/token_key

@@ -1,0 +1,83 @@
+server:
+  port: 9000
+ 
+spring:
+  application:
+    name: mplus-zuul
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  # spring boot升级至2.1.x时默认禁用bean覆盖，需要配置启用
+  main:
+    allow-bean-definition-overriding: true
+    
+#--------------------actuator监控点 -----------------------
+endpoints:
+  health:
+    sensitive: false
+    enabled: true
+#默认情况下很多端点是不允许访问的，会返回401:Unauthorized
+management:
+  security:
+    enabled: false
+    
+#--------------------Zuul-----------------------
+zuul:
+  # sensitiveHeaders: Cookie,Set-Cookie # 头部敏感信息
+  ignored-services: "*"   # 忽略所有服务, 只路由指定服务
+  retryable: true   # 全局开启路由重试
+  routes:
+    auth:
+      path: /auth/**
+      serviceId: mplus-auth
+      sensitiveHeaders: 
+      strip-prefix: false   #路由转发带上前缀
+      # custom-sensitive-headers: true
+    oauth:
+      path: /oauth/**
+      serviceId: mplus-auth
+      sensitiveHeaders: 
+      strip-prefix: false   #路由转发带上前缀
+  host:
+    connect-timeout-millis: 3000   # 指定 url路由时超时配置
+    socket-timeout-millis: 3000    # 指定 url路由时超时配置
+  add-proxy-headers: true
+  add-host-header: true
+
+ribbon:
+  OkToRetryOnAllOperations: false #对所有操作请求都进行重试,默认false
+  ReadTimeout: 5000   #负载均衡超时时间，默认值5000
+  ConnectTimeout: 2000 #ribbon请求连接的超时时间，默认值2000
+  MaxAutoRetries: 1     #对当前实例的重试次数，默认0
+  MaxAutoRetriesNextServer: 1 #对切换实例的重试次数，默认1
+  
+hystrix:
+  command:
+    default:  #default全局有效，service id指定应用有效
+      execution:
+        timeout:
+          #如果enabled设置为false，则请求超时交给ribbon控制,为true,则超时作为熔断根据
+          enabled: true
+        isolation:
+          thread:
+            # hystrix 超时时间最好大于Ribbon的超时时间
+            # ribbonTimeout = (ribbonReadTimeout + ribbonConnectTimeout) * (maxAutoRetries + 1) * (maxAutoRetriesNextServer + 1);
+            timeoutInMilliseconds: 30000 #断路器超时时间，默认1000ms
+
+# feign.hystrix.enabled: true
+  
+#---------------------OAuth2---------------------  
+security:
+  # security5.x后已弃用
+  # basic.enabled: false
+  client:
+    access-token-uri: http://localhost:9000/oauth/token #令牌端点
+    user-authorization-uri: http://localhost:9000/oauth/authorize #授权端点
+  resource:
+    user-info-uri: http://localhost:9000/auth/api/me
+    prefer-token-info: false
+    token-info-uri: http://localhost:9000/oauth/check_token
+  jwt:
+    key-uri: http://localhost:9000/oauth/token_key
+  
