@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CustomeUserDetailsService implements UserDetailsService {
 
-	@Value("${mplus.cas.portal-enable}")
+	@Value("${mplus.cas.portal-enable: false}")
 	boolean casPortalEnable;
 	
 	@Override

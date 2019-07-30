@@ -10,7 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 public class CustomePasswordEncoder extends BCryptPasswordEncoder {
 
-	@Value("${mplus.cas.portal-enable}")
+	@Value("${mplus.cas.portal-enable: false}")
 	boolean casPortalEnable;
 
 	@Override

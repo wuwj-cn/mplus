@@ -63,14 +63,7 @@ spring:
 # feign.hystrix.enabled: true
 
 mplus:
+  cas.portal-enable: false  
   auth:
     loginPage: /auth/api/v1/login
     loginProcessingUrl: /auth/api/v1/authorize
-  cas:
-    portal-enable: false
-    url:
-      login: 
-      loginProcessingUrl: 
-      prefix: 
-      validate: 
-  

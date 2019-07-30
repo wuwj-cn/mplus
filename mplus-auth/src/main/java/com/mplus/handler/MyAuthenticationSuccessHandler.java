@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler  {
     
-	@Value("${mplus.cas.portal-enable}")
+	@Value("${mplus.cas.portal-enable: false}")
 	Boolean casPortalEnable;
 	
     @Override

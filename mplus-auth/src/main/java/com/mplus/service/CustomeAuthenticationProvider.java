@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CustomeAuthenticationProvider extends DaoAuthenticationProvider {
 	
-	@Value("${mplus.cas.portal-enable}")
+	@Value("${mplus.cas.portal-enable: false}")
 	boolean casPortalEnable;
 	
 	@Override
