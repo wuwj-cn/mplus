@@ -24,7 +24,7 @@ public class CustomeUserDetailsService implements UserDetailsService {
 		
 		// TODO 调用用户服务获取获取角色权限信息，当前暂时硬编码模拟
 		CustomePasswordEncoder passwordEncode = new CustomePasswordEncoder();
-		String pwd = passwordEncode.encode("NOT_USE_PWD");
+		String pwd = passwordEncode.encode("123456");
 		String[] authorities = {"USER", "query", "hello"};
 		return User.withUsername(username).password(pwd).authorities(authorities).build();
 	}

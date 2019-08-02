@@ -14,6 +14,7 @@
 		<module>mplus-resource</module>
 		<module>mplus-monitor</module>
 		<module>mplus-hystrix</module>
+		<module>mplus-system</module>
 	</modules>
 
 	<name>mplus-parent</name>
