@@ -1,4 +1,4 @@
-package com.mplus.redis;
+package com.mplus.utils.redis;
 
 public class RedisKeys {
 
