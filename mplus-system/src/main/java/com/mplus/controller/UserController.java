@@ -27,7 +27,7 @@ import com.mplus.service.OrgService;
 import com.mplus.service.UserService;
 
 @RestController
-@RequestMapping(value = "/api/user")
+@RequestMapping(value = "/user")
 public class UserController {
 
 	@Autowired
@@ -36,40 +36,46 @@ public class UserController {
 	@Autowired
 	private OrgService orgService;
 	
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public Result add(@RequestBody User user) {
+	@RequestMapping(method = RequestMethod.POST)
+	public Result<User> add(@RequestBody User user) {
 		userService.saveUser(user);
 		return Result.sucess(user);	
 	}
 	
-	@RequestMapping(value = "/update", method = RequestMethod.PUT)
-	public Result update(@RequestBody User user) {
+	@RequestMapping(method = RequestMethod.PUT)
+	public Result<User> update(@RequestBody User user) {
 		userService.update(user);
 		return Result.sucess(user);
 	}
 	
-	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-	public Result remove(@PathVariable String userCode) {
+	@RequestMapping(method = RequestMethod.DELETE)
+	public Result<User> remove(@PathVariable String userCode) {
 		User user = userService.findOneByCode(userCode);
 		userService.delete(user);
 		return Result.sucess(user);
 	}
 	
-	@RequestMapping(value = "/list/{userCode}", method = RequestMethod.GET)
-	public Result list(@PathVariable String userCode) {
-		User user = userService.findOneByCode(userCode);
+//	@RequestMapping(value = "/{userCode}", method = RequestMethod.GET)
+//	public Result<User> list(@PathVariable String userCode) {
+//		User user = userService.findOneByCode(userCode);
+//		return Result.sucess(user);
+//	}
+	
+	@RequestMapping(value = "/{username}", method = RequestMethod.GET)
+	public Result<User> getUserByUsername(@PathVariable String username) {
+		User user = userService.findByUsername(username);
 		return Result.sucess(user);
 	}
 	
-	@RequestMapping(value = "/listByOrg/{orgCode}", method = RequestMethod.GET)
-	public Result listByOrg(@PathVariable String orgCode) {
+	@RequestMapping(value = "/org/{orgCode}", method = RequestMethod.GET)
+	public Result<List<User>> listByOrg(@PathVariable String orgCode) {
 		Org org = orgService.findOneByCode(orgCode);
 		List<User> users = userService.findByOrg(org);
 		return Result.sucess(users);
 	}
 	
 	@RequestMapping(value = "/list/{pageIndex}/{pageSize}", method = RequestMethod.GET)
-	public Result list(
+	public Result<Page<User>> list(
 			@PathVariable int pageIndex, 
 			@PathVariable int pageSize, 
 			@RequestParam(required=false) String username, 
@@ -98,14 +104,9 @@ public class UserController {
 			direction = Direction.ASC;
 		}
 		
-		Pageable pageable = new PageRequest(pageIndex, pageSize, new Sort(direction, properties));
+		Pageable pageable = PageRequest.of(pageIndex, pageSize, new Sort(direction, properties));
 		Page<User> users = userService.list(searchParams, pageable);
 		return Result.sucess(users);
 	}
 	
-	@RequestMapping(value = "/{username}", method = RequestMethod.GET)
-	public Result<User> getUserByUsername(@PathVariable String username) {
-		User user = userService.findByUsername(username);
-		return Result.sucess(user);
-	}
 }
