@@ -18,27 +18,29 @@ public class RoleController {
 	@Autowired
 	private RoleService roleService;
 	
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public Result add(@RequestBody Role role) {
+	@RequestMapping(method = RequestMethod.POST)
+	public Result<Role> add(@RequestBody Role role) {
 		roleService.saveRole(role);
 		return Result.sucess(role);	
 	}
 	
-	@RequestMapping(value = "/update", method = RequestMethod.PUT)
-	public Result update(@RequestBody Role role) {
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public Result<Role> update(@PathVariable String id, @RequestBody Role role) {
+		if(!id.contentEquals(role.getId()))
+			throw new RuntimeException("update object is not equals");
 		roleService.updateRole(role);
 		return Result.sucess(role);
 	}
 	
-	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-	public Result remove(@PathVariable String roleCode) {
+	@RequestMapping(value = "/{roleCode}", method = RequestMethod.DELETE)
+	public Result<Role> remove(@PathVariable String roleCode) {
 		Role role = roleService.findOneByCode(roleCode);
 		roleService.removeRole(role);
 		return Result.sucess(role);
 	}
 	
-	@RequestMapping(value = "/getOne/{roleCode}", method = RequestMethod.GET)
-	public Result getOne(@PathVariable String roleCode) {
+	@RequestMapping(value = "/{roleCode}", method = RequestMethod.GET)
+	public Result<Role> getOne(@PathVariable String roleCode) {
 		Role role = roleService.findOneByCode(roleCode);
 		return Result.sucess(role);
 	}

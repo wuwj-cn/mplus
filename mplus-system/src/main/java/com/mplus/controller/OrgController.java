@@ -20,27 +20,27 @@ public class OrgController {
 	@Autowired
 	private OrgService orgService;
 	
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public Result add(@RequestBody Org org) {
+	@RequestMapping(method = RequestMethod.POST)
+	public Result<Org> add(@RequestBody Org org) {
 		orgService.saveOrg(org);
 		return Result.sucess(org);
 	}
 	
-	@RequestMapping(value = "/getAll", method = RequestMethod.GET)
-	public Result getAll() {
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	public Result<List<Org>> getAll() {
 		Org parent = orgService.findOneByCode("0");
 		List<Org> orgs = orgService.findOrgsByParent(parent.getId());
 		return Result.sucess(orgs);
 	}
 	
-	@RequestMapping(value = "/getOne/{orgCode}", method = RequestMethod.GET)
-	public Result getOneByCode(@PathVariable String orgCode) {
+	@RequestMapping(value = "/org/{orgCode}", method = RequestMethod.GET)
+	public Result<Org> getOneByCode(@PathVariable String orgCode) {
 		Org org = orgService.findOneByCode(orgCode);
 		return Result.sucess(org);
 	}
 	
-	@RequestMapping(value = "/getChildren/{orgCode}", method = RequestMethod.GET)
-	public Result getChildren(@PathVariable String orgCode) {
+	@RequestMapping(value = "/org/{orgCode}/children", method = RequestMethod.GET)
+	public Result<List<Org>> getChildren(@PathVariable String orgCode) {
 		Org parent = orgService.findOneByCode(orgCode);
 		List<Org> children = orgService.findOrgsByParent(parent.getId());
 		return Result.sucess(children);

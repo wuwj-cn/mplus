@@ -18,27 +18,29 @@ public class PermissionController {
 	@Autowired
 	private PermissionService permissionService;
 	
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public Result add(@RequestBody Permission permission) {
+	@RequestMapping(method = RequestMethod.POST)
+	public Result<Permission> add(@RequestBody Permission permission) {
 		permissionService.savePermission(permission);
 		return Result.sucess(permission);	
 	}
 	
-	@RequestMapping(value = "/update", method = RequestMethod.PUT)
-	public Result update(@RequestBody Permission permission) {
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public Result<Permission> update(@PathVariable String id, @RequestBody Permission permission) {
+		if(!id.contentEquals(permission.getId()))
+			throw new RuntimeException("update object is not equals");
 		permissionService.updatePermission(permission);
 		return Result.sucess(permission);
 	}
 	
-	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-	public Result remove(@PathVariable String permissionCode) {
+	@RequestMapping(value = "/{permissionCode}", method = RequestMethod.DELETE)
+	public Result<Permission> remove(@PathVariable String permissionCode) {
 		Permission permission = permissionService.findOneByCode(permissionCode);
 		permissionService.removePermission(permission);
 		return Result.sucess(permission);
 	}
 	
-	@RequestMapping(value = "/getOne/{permissionCode}", method = RequestMethod.GET)
-	public Result getOne(@PathVariable String permissionCode) {
+	@RequestMapping(value = "/{permissionCode}", method = RequestMethod.GET)
+	public Result<Permission> getOne(@PathVariable String permissionCode) {
 		Permission permission = permissionService.findOneByCode(permissionCode);
 		return Result.sucess(permission);
 	}

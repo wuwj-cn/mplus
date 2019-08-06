@@ -25,20 +25,20 @@ import com.mplus.enums.Status;
 import com.mplus.service.ModuleService;
 
 @RestController
-@RequestMapping(value = "/api/module")
+@RequestMapping(value = "/module")
 public class ModuleController {
 
 	@Autowired
 	private ModuleService moduleService;
 	
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public Result add(@RequestBody Module module) {
+	@RequestMapping(method = RequestMethod.POST)
+	public Result<Module> add(@RequestBody Module module) {
 		moduleService.save(module);
 		return Result.sucess(module);
 	}
 	
 	@RequestMapping(value = "/list/{pageIndex}/{pageSize}", method = RequestMethod.GET)
-	public Result list(
+	public Result<Page<Module>> list(
 			@PathVariable int pageIndex, 
 			@PathVariable int pageSize, 
 			@RequestParam(required=false) String moduleName, 
@@ -67,24 +67,26 @@ public class ModuleController {
 			direction = Direction.ASC;
 		}
 		
-		Pageable pageable = new PageRequest(pageIndex, pageSize, new Sort(direction, properties));
+		Pageable pageable = PageRequest.of(pageIndex, pageSize, new Sort(direction, properties));
 		Page<Module> modules = moduleService.list(searchParams, pageable);
 		return Result.sucess(modules);
 	}
 	
-	@RequestMapping(value = "/get/{moduleCode}", method = RequestMethod.GET)
-	public Result getOneByCode(@PathVariable String moduleCode) {
+	@RequestMapping(value = "/{moduleCode}", method = RequestMethod.GET)
+	public Result<?> getOneByCode(@PathVariable String moduleCode) {
 		return Result.sucess(null);
 	}
 	
-	@RequestMapping(value = "/update", method = RequestMethod.PUT)
-	public Result update(@RequestBody Module module) {
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public Result<Module> update(@PathVariable String id, @RequestBody Module module) {
+		if(!id.contentEquals(module.getId()))
+			throw new RuntimeException("update object is not equals");
 		moduleService.update(module);
 		return Result.sucess(module);
 	}
 	
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-	public Result delete(@PathVariable String id) {
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public Result<String> delete(@PathVariable String id) {
 		moduleService.delete(id);
 		return Result.sucess(id);
 	}

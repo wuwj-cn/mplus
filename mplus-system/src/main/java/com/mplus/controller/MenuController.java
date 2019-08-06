@@ -20,26 +20,26 @@ public class MenuController {
 	@Autowired
 	private MenuService menuService;
 	
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public Result<Menu> add(@RequestBody Menu menu) {
 		menuService.saveMenu(menu);
 		return Result.sucess(menu);
 	}
 	
-	@RequestMapping(value = "/getAll", method = RequestMethod.GET)
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public Result<List<Menu>> getAll() {
 		Menu parent = menuService.findOneByCode("0");
 		List<Menu> menus = menuService.findMenusByParent(parent.getId());
 		return Result.sucess(menus);
 	}
 	
-	@RequestMapping(value = "/getOne/{menuCode}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{menuCode}", method = RequestMethod.GET)
 	public Result<Menu> getOneByCode(@PathVariable String menuCode) {
 		Menu menu = menuService.findOneByCode(menuCode);
 		return Result.sucess(menu);
 	}
 	
-	@RequestMapping(value = "/getChildren/{menuCode}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{menuCode}/children", method = RequestMethod.GET)
 	public Result<List<Menu>> getChildren(@PathVariable String menuCode) {
 		Menu parent = menuService.findOneByCode(menuCode);
 		List<Menu> children = menuService.findMenusByParent(parent.getId());
