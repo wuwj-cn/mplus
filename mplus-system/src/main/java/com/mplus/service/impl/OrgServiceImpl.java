@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 
 import com.mplus.entity.Org;
 import com.mplus.enums.Status;
+import com.mplus.repo.BaseRepository;
 import com.mplus.repo.OrgRepository;
 import com.mplus.service.OrgService;
 import com.mplus.utils.tree.entity.CheckboxTreeNode;
@@ -17,10 +18,15 @@ import com.mplus.utils.tree.entity.TreeNode;
 
 @Service
 @Transactional
-public class OrgServiceImpl implements OrgService {
+public class OrgServiceImpl extends BaseServiceImpl<Org, String> implements OrgService {
 
 	@Autowired
 	private OrgRepository orgRepository;
+	
+	@Override
+	public BaseRepository<Org, String> getRepository() {
+		return orgRepository;
+	}
 
 	@Override
 	public Org saveOrg(Org org) {
@@ -52,19 +58,25 @@ public class OrgServiceImpl implements OrgService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Org> findOrgsByParent(String parentOrgId) {
-		return orgRepository.findOrgsByParent(parentOrgId, Status.NORMAL.getCode());
+	public List<Org> findOrgsByParent(String parentOrgCode) {
+		return orgRepository.findOrgsByParent(parentOrgCode, Status.NORMAL.getCode());
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<TreeNode> getNodes(String id) {
-		List<Org> orgs = this.findOrgsByParent(id);
+	public List<TreeNode> getNodes(String orgCode) {
+		List<Org> orgs = this.findOrgsByParent(orgCode);
 		List<TreeNode> nodes = new ArrayList<TreeNode>();
 		orgs.stream().forEach(
 				org -> nodes.add(new TreeNode(org.getId(), org.getOrgCode(), org.getOrgName(), false, false)));
 		return nodes;
 	}
+
+//	@Override
+//	@Transactional(readOnly = true)
+//	public List<Org> findAll() {
+//		return orgRepository.
+//	}
 
 	@Override
 	@Transactional(readOnly = true)

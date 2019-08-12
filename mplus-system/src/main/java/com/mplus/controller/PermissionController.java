@@ -12,7 +12,7 @@ import com.mplus.entity.Permission;
 import com.mplus.service.PermissionService;
 
 @RestController
-@RequestMapping(value = "/permission")
+@RequestMapping(value = "/v1/permission")
 public class PermissionController {
 
 	@Autowired

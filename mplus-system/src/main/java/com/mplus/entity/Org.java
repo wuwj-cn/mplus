@@ -21,11 +21,14 @@ public class Org extends BaseEntity implements Serializable {
 	@Column(length=20, nullable = false, unique = true)
 	private String orgCode;
 	
-	@Column(length=100, nullable = false)
+	@Column(length=50, nullable = false)
 	private String orgName;
 	
+	@Column(length=100)
+	private String fullName;
+	
 	@Column(length=64)
-	private String parentId;
+	private String parentOrgCode;
 	
 	@Column(length=255)
 	private String remark;
@@ -48,12 +51,20 @@ public class Org extends BaseEntity implements Serializable {
 		this.orgName = orgName;
 	}
 
-	public String getParentId() {
-		return parentId;
+	public String getFullName() {
+		return fullName;
 	}
 
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getParentOrgCode() {
+		return parentOrgCode;
+	}
+
+	public void setParentOrgCode(String parentOrgCode) {
+		this.parentOrgCode = parentOrgCode;
 	}
 
 	public String getRemark() {

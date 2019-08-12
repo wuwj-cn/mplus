@@ -5,7 +5,7 @@ import java.util.List;
 import com.mplus.entity.Org;
 import com.mplus.utils.tree.service.TreeService;
 
-public interface OrgService extends TreeService {
+public interface OrgService extends TreeService, BaseService<Org, String> {
 
 	Org saveOrg(Org org);
 	
@@ -15,5 +15,5 @@ public interface OrgService extends TreeService {
 	
 	Org findOneByCode(String orgCode);
 	
-	List<Org> findOrgsByParent(String parentOrgId);
+	List<Org> findOrgsByParent(String parentOrgCode);
 }

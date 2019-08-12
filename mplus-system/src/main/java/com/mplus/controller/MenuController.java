@@ -14,7 +14,7 @@ import com.mplus.entity.Menu;
 import com.mplus.service.MenuService;
 
 @RestController
-@RequestMapping(value = "/menu")
+@RequestMapping(value = "/v1/menu")
 public class MenuController {
 
 	@Autowired

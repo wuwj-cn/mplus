@@ -25,7 +25,7 @@ import com.mplus.enums.Status;
 import com.mplus.service.ModuleService;
 
 @RestController
-@RequestMapping(value = "/module")
+@RequestMapping(value = "/v1/module")
 public class ModuleController {
 
 	@Autowired

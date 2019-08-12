@@ -12,7 +12,7 @@ import com.mplus.entity.Role;
 import com.mplus.service.RoleService;
 
 @RestController
-@RequestMapping(value = "/role")
+@RequestMapping(value = "/v1/role")
 public class RoleController {
 
 	@Autowired

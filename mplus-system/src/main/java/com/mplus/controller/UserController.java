@@ -27,7 +27,7 @@ import com.mplus.service.OrgService;
 import com.mplus.service.UserService;
 
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/v1/user")
 public class UserController {
 
 	@Autowired
