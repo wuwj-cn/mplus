@@ -1,8 +1,8 @@
 package com.mplus.controller;
 
+import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mplus.advice.Result;
 import com.mplus.entity.Org;
 import com.mplus.service.OrgService;
-import com.mplus.utils.tree.entity.TreeNode;
 
 @RestController
 @RequestMapping(value = "/v1/org")
@@ -30,16 +29,10 @@ public class OrgController {
 	
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public Result<List<Org>> getAll() {
-		Org parent = orgService.findOneByCode("0");
-		List<Org> orgs = orgService.findOrgsByParent(parent.getOrgCode());
+//		Org parent = orgService.findOneByCode("0");
+//		List<Org> orgs = orgService.findOrgsByParent(parent.getOrgCode());
+		List<Org> orgs = orgService.find(Collections.emptyMap());
 		return Result.sucess(orgs);
-	}
-	
-	@RequestMapping(value = {"/tree", "/tree/{orgCode}"}, method = RequestMethod.GET)
-	public Result<List<TreeNode>> getOrgTree(@PathVariable(required = false) String orgCode) {
-		if(StringUtils.isEmpty(orgCode)) orgCode = "0";
-		List<TreeNode> nodes = orgService.getNodes(orgCode);
-		return Result.sucess(nodes);
 	}
 	
 	@RequestMapping(value = "/{orgCode}", method = RequestMethod.GET)

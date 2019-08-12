@@ -7,6 +7,8 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.lang.Nullable;
 
 public interface BaseService<T, ID extends Serializable> {
 	
@@ -63,7 +65,7 @@ public interface BaseService<T, ID extends Serializable> {
 	 * @param params {"username:like":"test"} 键的格式为字段名:过滤方式,过滤方式见{@code QueryTypeEnum}
 	 * @return
 	 */
-	List<T> list(Map<String, Object> params);
+	List<T> find(@Nullable Map<String, Object> params);
 	
 	/**
 	 * 分页多条件查询
@@ -72,5 +74,14 @@ public interface BaseService<T, ID extends Serializable> {
 	 * @param pageable 分页信息 new PageRequest(page, size,new Sort(Direction.DESC, "updateTime"))
 	 * @return
 	 */
-	Page<T> list(Map<String, Object> params,Pageable pageable);
+	Page<T> findPage(Map<String, Object> params,Pageable pageable);
+	
+	/**
+	 * Returns all entities matching the given {@link Map} and {@link Sort}.
+	 *
+	 * @param params can be {@literal null}.
+	 * @param sort must not be {@literal null}.
+	 * @return never {@literal null}.
+	 */
+	List<T> find(@Nullable Map<String, Object> params, Sort sort);
 }

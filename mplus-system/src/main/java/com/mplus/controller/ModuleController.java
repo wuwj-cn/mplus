@@ -68,7 +68,7 @@ public class ModuleController {
 		}
 		
 		Pageable pageable = PageRequest.of(pageIndex, pageSize, new Sort(direction, properties));
-		Page<Module> modules = moduleService.list(searchParams, pageable);
+		Page<Module> modules = moduleService.findPage(searchParams, pageable);
 		return Result.sucess(modules);
 	}
 	

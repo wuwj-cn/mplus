@@ -17,7 +17,9 @@ import javax.persistence.criteria.Root;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.lang.Nullable;
 
 import com.mplus.entity.BaseEntity;
 import com.mplus.enums.Status;
@@ -121,35 +123,33 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
 	}
 	
 	@Override
-	public List<T> list(final Map<String, Object> params) {
-		Specification<T> spec = new Specification<T>() {  
-			@Override
-			public Predicate toPredicate(Root<T> root,CriteriaQuery<?> query,CriteriaBuilder cb) {
-				List<Predicate> list = new ArrayList<Predicate>();
-				for(Entry<String, Object> entry : params.entrySet()){
-					Object value = entry.getValue();
-					if(value == null || StringUtils.isBlank(value.toString())){
-						continue;
-					}
-					String key = entry.getKey();
-					String[] arr = key.split(":");
-					Predicate predicate = getPredicate(arr,value,root,cb);
-					list.add(predicate);
-				}
-			    Predicate[] p = new Predicate[list.size()];  
-			    return cb.and(list.toArray(p));  
-			}
-		};  
+	public List<T> find(@Nullable final Map<String, Object> params) {
+		Specification<T> spec = getSpecification(params);
 		List<T> list = getRepository().findAll(spec);
 		return list;
 	}
 	
 	@Override
-	public Page<T> list(final Map<String, Object> params,Pageable pageable){
+	public Page<T> findPage(@Nullable final Map<String, Object> params,Pageable pageable){
+		Specification<T> spec = getSpecification(params);
+		Page<T> page = getRepository().findAll(spec, pageable);
+		return page;
+	}
+	
+	public List<T> find(@Nullable Map<String, Object> params, Sort sort) {
+		Specification<T> spec = getSpecification(params);
+		List<T> list = getRepository().findAll(spec, sort);
+		return list;
+	}
+	
+	private Specification<T> getSpecification(@Nullable Map<String, Object> params) {
+		@SuppressWarnings("serial")
 		Specification<T> spec = new Specification<T>() {  
 			@Override
 			public Predicate toPredicate(Root<T> root,CriteriaQuery<?> query,CriteriaBuilder cb) {
 				List<Predicate> list = new ArrayList<Predicate>();
+				Predicate predicate = null;
+				boolean containStatusKey = false;
 				for(Entry<String, Object> entry : params.entrySet()){
 					Object value = entry.getValue();
 					if(value == null || StringUtils.isBlank(value.toString())){
@@ -157,15 +157,20 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
 					}
 					String key = entry.getKey();
 					String[] arr = key.split(":");
-					Predicate predicate = getPredicate(arr,value,root,cb);
+					predicate = getPredicate(arr,value,root,cb);
 					list.add(predicate);
+					if(key.startsWith("status")) containStatusKey = true;
 				}
+				//查询条件默认增加status的条件，默认status="0"
+				if(!containStatusKey) {
+					predicate = getPredicate("status:eq".split(":"), Status.NORMAL.getCode(), root, cb);
+				}
+				list.add(predicate);
 			    Predicate[] p = new Predicate[list.size()];  
 			    return cb.and(list.toArray(p));  
 			}
 		};  
-		Page<T> page = getRepository().findAll(spec, pageable);
-		return page;
+		return spec;
 	}
 	
 	

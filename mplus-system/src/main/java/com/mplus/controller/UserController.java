@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mplus.advice.Result;
 import com.mplus.entity.Org;
 import com.mplus.entity.User;
-import com.mplus.enums.Status;
 import com.mplus.service.OrgService;
 import com.mplus.service.UserService;
 
@@ -86,11 +85,6 @@ public class UserController {
 		Map<String, Object> searchParams = new HashMap<String, Object>();
 		if(StringUtils.isNotBlank(username)) searchParams.put("username:like", username);
 		if(StringUtils.isNotBlank(nickName)) searchParams.put("nickName:like", nickName);
-		if(StringUtils.isBlank(status)) {
-			searchParams.put("status:ne", Status.DELETED.getCode());
-		} else {
-			searchParams.put("status:eq", status);
-		}
 		
 		List<String> properties = new ArrayList<String>();
 		if(StringUtils.isNotBlank(sortProperties)) {
@@ -105,7 +99,7 @@ public class UserController {
 		}
 		
 		Pageable pageable = PageRequest.of(pageIndex, pageSize, new Sort(direction, properties));
-		Page<User> users = userService.list(searchParams, pageable);
+		Page<User> users = userService.findPage(searchParams, pageable);
 		return Result.sucess(users);
 	}
 	

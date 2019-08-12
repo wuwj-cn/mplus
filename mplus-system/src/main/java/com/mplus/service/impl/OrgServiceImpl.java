@@ -72,12 +72,6 @@ public class OrgServiceImpl extends BaseServiceImpl<Org, String> implements OrgS
 		return nodes;
 	}
 
-//	@Override
-//	@Transactional(readOnly = true)
-//	public List<Org> findAll() {
-//		return orgRepository.
-//	}
-
 	@Override
 	@Transactional(readOnly = true)
 	public List<TreeNode> getCheckboxNodes(String id) {
