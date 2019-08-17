@@ -47,4 +47,17 @@ public class OrgController {
 		List<Org> children = orgService.findOrgsByParent(parent.getOrgCode());
 		return Result.sucess(children);
 	}
+	
+	@RequestMapping(value = "/{orgCode}", method = RequestMethod.PUT)
+	public Result<Org> update(@PathVariable String orgCode, @RequestBody Org org) {
+		orgService.update(org);
+		return Result.sucess(org);
+	}
+	
+	@RequestMapping(value = "/{orgCode}", method = RequestMethod.DELETE)
+	public Result<Org> delete(@PathVariable String orgCode) {
+		Org org = orgService.findOneByCode(orgCode);
+		orgService.delete(org);
+		return Result.sucess(org);
+	}
 }
