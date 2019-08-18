@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.mplus.entity.Org;
-import com.mplus.enums.Status;
+import com.mplus.enums.DataStatus;
 import com.mplus.repo.BaseRepository;
 import com.mplus.repo.OrgRepository;
 import com.mplus.service.OrgService;
@@ -46,20 +46,20 @@ public class OrgServiceImpl extends BaseServiceImpl<Org, String> implements OrgS
 
 	@Override
 	public void removeOrg(Org org) {
-		org.setStatus(Status.DELETED.getCode());
+		org.setDataStatus(DataStatus.DELETED.getCode());
 		orgRepository.save(org);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Org findOneByCode(String orgCode) {
-		return orgRepository.findOneByCode(orgCode, Status.NORMAL.getCode());
+		return orgRepository.findOneByCode(orgCode, DataStatus.NORMAL.getCode());
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public List<Org> findOrgsByParent(String parentOrgCode) {
-		return orgRepository.findOrgsByParent(parentOrgCode, Status.NORMAL.getCode());
+		return orgRepository.findOrgsByParent(parentOrgCode, DataStatus.NORMAL.getCode());
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.mplus.entity.Menu;
-import com.mplus.enums.Status;
+import com.mplus.enums.DataStatus;
 import com.mplus.repo.MenuRepository;
 import com.mplus.service.MenuService;
 
@@ -37,20 +37,20 @@ public class MenuServiceImpl implements MenuService {
 
 	@Override
 	public void removeOrg(Menu menu) {
-		menu.setStatus(Status.DELETED.getCode());
+		menu.setDataStatus(DataStatus.DELETED.getCode());
 		menuRepository.save(menu);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Menu findOneByCode(String menuCode) {
-		return menuRepository.findOneByCode(menuCode, Status.NORMAL.getCode());
+		return menuRepository.findOneByCode(menuCode, DataStatus.NORMAL.getCode());
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public List<Menu> findMenusByParent(String parentMenuId) {
-		return menuRepository.findMenusByParent(parentMenuId, Status.NORMAL.getCode());
+		return menuRepository.findMenusByParent(parentMenuId, DataStatus.NORMAL.getCode());
 	}
 
 }

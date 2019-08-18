@@ -14,10 +14,10 @@ import com.mplus.entity.Menu;
 @Repository
 public interface MenuRepository extends BaseRepository<Menu, String> {
 
-	@Query(value = "from Menu where status = ?2 and menuCode = ?1")
-	Menu findOneByCode(String menuCode, String status);
+	@Query(value = "from Menu where dataStatus = ?2 and menuCode = ?1")
+	Menu findOneByCode(String menuCode, String dataStatus);
 	
-	@Query(value = "from Menu where status = ?2 and parentId = ?1")
-	List<Menu> findMenusByParent(String parentId, String status);
+	@Query(value = "from Menu where dataStatus = ?2 and parentId = ?1")
+	List<Menu> findMenusByParent(String parentId, String dataStatus);
 	
 }

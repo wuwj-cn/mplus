@@ -2,17 +2,17 @@ package com.mplus.service.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import com.mplus.entity.Org;
 import com.mplus.entity.Role;
 import com.mplus.entity.User;
 import com.mplus.enums.RuleCode;
-import com.mplus.enums.Status;
+import com.mplus.enums.DataStatus;
 import com.mplus.repo.BaseRepository;
 import com.mplus.repo.UserRepository;
 import com.mplus.service.CodeRuleService;
@@ -40,7 +40,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
 	@Override
 	@Transactional(readOnly = true)
 	public User findByUsername(String userName) {
-		return userRepository.findByUserName(userName, Status.NORMAL.getCode());
+		return userRepository.findByUserName(userName, DataStatus.NORMAL.getCode());
 	}
 
 	@Override
@@ -48,11 +48,11 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
 		if (!StringUtils.isEmpty(user.getId())) {
 			throw new RuntimeException("object id is not null or empty");
 		}
-//		if (null == user.getOrg().getOrgCode()) {
-//			throw new RuntimeException("org code is null");
-//		}
-//		Org org = orgService.findOneByCode(user.getOrg().getOrgCode());
-//		user.setOrg(org);
+		if (StringUtils.isEmpty(user.getOrg().getOrgCode())) {
+			throw new RuntimeException("org code is null");
+		}
+		Org org = orgService.findOneByCode(user.getOrg().getOrgCode());
+		user.setOrg(org);
 		
 		String userCode = codeRuleService.getSerial(RuleCode.USER);
 		user.setUserCode(userCode);
@@ -62,8 +62,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
 		String hashPassword = new BCryptPasswordEncoder().encode(user.getPassword());
 		user.setPassword(hashPassword);
 		
-//		userRepository.save(user);
-		user.setUserStatus("0");
+		user.setUserStatus("0"); 
 		super.save(user);
 		return user;
 	}
@@ -74,12 +73,12 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
 		if (null == org) {
 			throw new RuntimeException("org is null");
 		}
-		return userRepository.findByOrg(org.getId(), Status.NORMAL.getCode());
+		return userRepository.findByOrg(org.getId(), DataStatus.NORMAL.getCode());
 	}
 
 	@Override
 	public User findOneByCode(String userCode) {
-		return userRepository.findOneByCode(userCode, Status.NORMAL.getCode());
+		return userRepository.findOneByCode(userCode, DataStatus.NORMAL.getCode());
 	}
 	
 	@Override
@@ -87,6 +86,6 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
 		if (null == role) {
 			throw new RuntimeException("role is null");
 		}
-		return userRepository.findByRole(role.getId(), Status.NORMAL.getCode());
+		return userRepository.findByRole(role.getId(), DataStatus.NORMAL.getCode());
 	}
 }

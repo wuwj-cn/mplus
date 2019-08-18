@@ -8,6 +8,6 @@ import com.mplus.entity.Permission;
 @Repository
 public interface PermissionRepository extends BaseRepository<Permission, String> {
 
-	@Query(value = "from Permission where status = ?2 and permissionCode = ?1")
-	Permission findOneByCode(String permissionCode, String status);
+	@Query(value = "from Permission where dataStatus = ?2 and permissionCode = ?1")
+	Permission findOneByCode(String permissionCode, String dataStatus);
 }
