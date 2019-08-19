@@ -3,10 +3,10 @@ package com.mplus.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import com.mplus.entity.Org;
 import com.mplus.enums.Status;
@@ -32,6 +32,9 @@ public class OrgServiceImpl extends BaseServiceImpl<Org, String> implements OrgS
 	public Org saveOrg(Org org) {
 		if (!StringUtils.isEmpty(org.getId())) {
 			throw new RuntimeException("object id is not null or empty");
+		}
+		if(StringUtils.isEmpty(org.getParentOrgCode())) {
+			org.setParentOrgCode("0");
 		}
 		return orgRepository.save(org);
 	}
