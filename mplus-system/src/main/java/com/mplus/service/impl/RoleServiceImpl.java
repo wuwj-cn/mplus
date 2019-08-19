@@ -7,7 +7,7 @@ import org.springframework.util.StringUtils;
 
 import com.mplus.entity.Role;
 import com.mplus.enums.RuleCode;
-import com.mplus.enums.Status;
+import com.mplus.enums.DataStatus;
 import com.mplus.repo.RoleRepository;
 import com.mplus.service.CodeRuleService;
 import com.mplus.service.RoleService;
@@ -44,13 +44,13 @@ public class RoleServiceImpl implements RoleService {
 	public void removeRole(Role role) {
 		role.setUsers(null); // remove all user
 		role.setPermissions(null); // remove all permissions
-		role.setStatus(Status.DELETED.getCode());
+		role.setDataStatus(DataStatus.DELETED.getCode());
 		roleRepository.save(role);
 	}
 
 	@Override
 	public Role findOneByCode(String roleCode) {
-		return roleRepository.findOneByCode(roleCode, Status.NORMAL.getCode());
+		return roleRepository.findOneByCode(roleCode, DataStatus.NORMAL.getCode());
 	}
 
 }

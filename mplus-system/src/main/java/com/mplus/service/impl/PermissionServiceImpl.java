@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.mplus.entity.Permission;
-import com.mplus.enums.Status;
+import com.mplus.enums.DataStatus;
 import com.mplus.repo.PermissionRepository;
 import com.mplus.service.PermissionService;
 
@@ -36,13 +36,13 @@ public class PermissionServiceImpl implements PermissionService {
 	@Override
 	public void removePermission(Permission permission) {
 		permission.setRoles(null);
-		permission.setStatus(Status.DELETED.getCode());
+		permission.setDataStatus(DataStatus.DELETED.getCode());
 		privilegeRepository.save(permission);
 	}
 
 	@Override
 	public Permission findOneByCode(String priviCode) {
-		return privilegeRepository.findOneByCode(priviCode, Status.NORMAL.getCode());
+		return privilegeRepository.findOneByCode(priviCode, DataStatus.NORMAL.getCode());
 	}
 
 }

@@ -24,7 +24,7 @@ public class Menu extends BaseEntity implements Serializable {
 	private String icon;
 	
 	@Column(length=64)
-	private String parentId;
+	private String parentCode;
 
 	public String getMenuCode() {
 		return menuCode;
@@ -58,11 +58,11 @@ public class Menu extends BaseEntity implements Serializable {
 		this.icon = icon;
 	}
 
-	public String getParentId() {
-		return parentId;
+	public String getParentCode() {
+		return parentCode;
 	}
 
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
+	public void setParentCode(String parentCode) {
+		this.parentCode = parentCode;
 	}
 }

@@ -22,7 +22,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.Nullable;
 
 import com.mplus.entity.BaseEntity;
-import com.mplus.enums.Status;
+import com.mplus.enums.DataStatus;
 import com.mplus.repo.BaseRepository;
 import com.mplus.service.BaseService;
 
@@ -41,7 +41,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
 		t.setCreateDate(now);
 //		t.setUpdateBy(user.getId());
 		t.setUpdateDate(now);
-		t.setStatus(Status.NORMAL.getCode());
+		t.setDataStatus(DataStatus.NORMAL.getCode());
 		return getRepository().save(t);
 	}
 	
@@ -57,7 +57,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
 			t.setCreateDate(now);
 //			t.setUpdateBy(user.getId());
 			t.setUpdateDate(now);
-			t.setStatus(Status.NORMAL.getCode());
+			t.setDataStatus(DataStatus.NORMAL.getCode());
 		}
 		return getRepository().saveAll(entities);
 	}
@@ -103,7 +103,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
 		Date now = new Date();
 //		t.setUpdateBy(user.getId());
 		t.setUpdateDate(now);
-		t.setStatus(Status.DELETED.getCode());
+		t.setDataStatus(DataStatus.DELETED.getCode());
 		getRepository().save(t);
 	}
 	
@@ -159,11 +159,11 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
 					String[] arr = key.split(":");
 					predicate = getPredicate(arr,value,root,cb);
 					list.add(predicate);
-					if(key.startsWith("status")) containStatusKey = true;
+					if(key.startsWith("dataStatus")) containStatusKey = true;
 				}
-				//查询条件默认增加status的条件，默认status="0"
+				//查询条件默认增加dataStatus的条件，默认dataStatus="0"
 				if(!containStatusKey) {
-					predicate = getPredicate("status:eq".split(":"), Status.NORMAL.getCode(), root, cb);
+					predicate = getPredicate("dataStatus:eq".split(":"), DataStatus.NORMAL.getCode(), root, cb);
 				}
 				list.add(predicate);
 			    Predicate[] p = new Predicate[list.size()];  

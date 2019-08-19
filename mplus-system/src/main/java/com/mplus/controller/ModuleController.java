@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mplus.advice.Result;
 import com.mplus.entity.Module;
-import com.mplus.enums.Status;
+import com.mplus.enums.DataStatus;
 import com.mplus.service.ModuleService;
 
 @RestController
@@ -50,7 +50,7 @@ public class ModuleController {
 		if(StringUtils.isNotBlank(moduleName)) searchParams.put("moduleName:like", moduleName);
 		if(StringUtils.isNotBlank(moduleCode)) searchParams.put("moduleCode:like", moduleCode);
 		if(StringUtils.isBlank(status)) {
-			searchParams.put("status:ne", Status.DELETED.getCode());
+			searchParams.put("status:ne", DataStatus.DELETED.getCode());
 		} else {
 			searchParams.put("status:eq", status);
 		}

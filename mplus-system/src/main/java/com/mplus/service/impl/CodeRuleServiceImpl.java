@@ -9,7 +9,7 @@ import org.springframework.util.StringUtils;
 
 import com.mplus.entity.CodeRule;
 import com.mplus.enums.RuleCode;
-import com.mplus.enums.Status;
+import com.mplus.enums.DataStatus;
 import com.mplus.repo.CodeRuleRepository;
 import com.mplus.service.CodeRuleService;
 import com.mplus.utils.RuleUtil;
@@ -25,7 +25,7 @@ public class CodeRuleServiceImpl implements CodeRuleService {
 
 	@Override
 	public CodeRule saveCodeRule(CodeRule rule) {
-		CodeRule r = codeRuleRespository.findOneByCode(rule.getRuleCode(), Status.NORMAL.getCode());
+		CodeRule r = codeRuleRespository.findOneByCode(rule.getRuleCode(), DataStatus.NORMAL.getCode());
 		if (r != null) {
 			throw new RuntimeException("规则编码已存在");
 		}
@@ -44,7 +44,7 @@ public class CodeRuleServiceImpl implements CodeRuleService {
 
 	@Override
 	public void removeCodeRule(CodeRule rule) {
-		rule.setStatus(Status.DELETED.getCode());
+		rule.setDataStatus(DataStatus.DELETED.getCode());
 		codeRuleRespository.save(rule);
 	}
 
@@ -55,7 +55,7 @@ public class CodeRuleServiceImpl implements CodeRuleService {
 
 	@Override
 	public CodeRule findOneByCode(String ruleCode) {
-		return codeRuleRespository.findOneByCode(ruleCode, Status.NORMAL.getCode());
+		return codeRuleRespository.findOneByCode(ruleCode, DataStatus.NORMAL.getCode());
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class CodeRuleServiceImpl implements CodeRuleService {
 		String serial = null;
 		try {
 			lock.readLock().lock();
-			CodeRule rule = codeRuleRespository.findOneByCode(ruleCode.getCode(), Status.NORMAL.getCode());
+			CodeRule rule = codeRuleRespository.findOneByCode(ruleCode.getCode(), DataStatus.NORMAL.getCode());
 			if(null == rule) {
 				throw new RuntimeException("not set rule code");
 			}

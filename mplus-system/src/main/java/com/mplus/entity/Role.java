@@ -25,17 +25,17 @@ public class Role extends BaseEntity implements Serializable {
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "MP_SYS_USER_ROLE_REL", joinColumns = {
-			@JoinColumn(name = "ROLE_ID")
+			@JoinColumn(name = "ROLE_CODE")
 	}, inverseJoinColumns = {
-			@JoinColumn(name = "USER_ID")
+			@JoinColumn(name = "USER_CODE")
 	})
 	private Set<User> users = new HashSet<User>();
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "MP_SYS_ROLE_PERMI_REL", joinColumns = {
-			@JoinColumn(name = "ROLE_ID")
+			@JoinColumn(name = "ROLE_CODE")
 	}, inverseJoinColumns = {
-			@JoinColumn(name = "PERMI_ID")
+			@JoinColumn(name = "PERMISSION_CODE")
 	})
 	private Set<Permission> permissions = new HashSet<Permission>();
 	

@@ -10,7 +10,7 @@ import javax.persistence.MappedSuperclass;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.mplus.enums.Status;
+import com.mplus.enums.DataStatus;
 
 @MappedSuperclass
 public abstract class BaseEntity {
@@ -34,11 +34,11 @@ public abstract class BaseEntity {
 	private Date updateDate; // 修改时间
 
 	@Column(length=2, nullable = false)
-	private String status; // 状态, 0正常 1删除 2停用
+	private String dataStatus; // 状态, 0正常 1删除 2停用
 
 	public BaseEntity() {
 		this.createDate = this.updateDate = new Date();
-		this.status = Status.NORMAL.getCode();
+		this.dataStatus = DataStatus.NORMAL.getCode();
 	}
 
 	public String getId() {
@@ -81,12 +81,12 @@ public abstract class BaseEntity {
 		this.updateDate = updateDate;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getDataStatus() {
+		return dataStatus;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setDataStatus(String status) {
+		this.dataStatus = status;
 	}
 
 }
