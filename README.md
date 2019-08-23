@@ -8,3 +8,4 @@ spring cloud Greenwich + spring cloud alibaba + spring security OAuth2.0
 mplus-zuul | 9000 | 路由网关服务   
 mplus-auth | 9001 | 认证服务  
 mplus-system | 9002 | 系统管理服务  
+mplus-flow | 9003 | 流程平台服务

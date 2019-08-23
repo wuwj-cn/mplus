@@ -1,0 +1,8 @@
+server:
+  port: 9003
+  servlet.context-path: /flow
+spring:
+  application:
+    name: mplus-flow #应用名称
+  # spring boot升级至2.1.x时默认禁用bean覆盖，需要配置启用
+  main.allow-bean-definition-overriding: true
