@@ -34,9 +34,9 @@ public class Permission extends BaseEntity implements Serializable {
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "MP_SYS_ROLE_PERMI_REL", joinColumns = {
-			@JoinColumn(name = "PERMISSION_CODE")
+			@JoinColumn(name = "PERMISSION_ID")
 	}, inverseJoinColumns = {
-			@JoinColumn(name = "ROLE_CODE")
+			@JoinColumn(name = "ROLE_ID")
 	})
 	private Set<Role> roles = new HashSet<Role>();
 	

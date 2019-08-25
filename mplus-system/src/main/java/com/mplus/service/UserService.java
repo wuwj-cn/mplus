@@ -2,7 +2,6 @@ package com.mplus.service;
 
 import java.util.List;
 
-import com.mplus.entity.Org;
 import com.mplus.entity.Role;
 import com.mplus.entity.User;
 
@@ -12,7 +11,7 @@ public interface UserService extends BaseService<User, String> {
 	
 	User findByUsername(String username);
 	
-	List<User> findByOrg(Org org);
+	List<User> findByOrgId(String orgId);
 	
 	User findOneByCode(String userCode);
 	

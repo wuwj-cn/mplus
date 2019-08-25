@@ -40,12 +40,12 @@ public class User extends BaseEntity implements Serializable {
 	private String userStatus;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ORG_CODE")
+	@JoinColumn(name = "ORG_ID")
 	private Org org;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "MP_SYS_USER_ROLE_REL", joinColumns = { @JoinColumn(name = "ORG_CODE") }, inverseJoinColumns = {
-			@JoinColumn(name = "ROLE_CODE") })
+	@JoinTable(name = "MP_SYS_USER_ROLE_REL", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {
+			@JoinColumn(name = "ROLE_ID") })
 	private Set<Role> roles = new HashSet<Role>();
 	
 	@Transient

@@ -8,15 +8,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mplus.entity.Org;
 import com.mplus.entity.Role;
 import com.mplus.entity.User;
-import com.mplus.enums.RuleCode;
 import com.mplus.enums.DataStatus;
+import com.mplus.enums.RuleCode;
 import com.mplus.repo.BaseRepository;
 import com.mplus.repo.UserRepository;
 import com.mplus.service.CodeRuleService;
-import com.mplus.service.OrgService;
 import com.mplus.service.UserService;
 
 @Service
@@ -29,9 +27,6 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
 	@Autowired
 	private CodeRuleService codeRuleService;
 	
-	@Autowired
-	private OrgService orgService;
-
 	@Override
 	public BaseRepository<User, String> getRepository() {
 		return userRepository;
@@ -48,17 +43,13 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
 		if (!StringUtils.isEmpty(user.getId())) {
 			throw new RuntimeException("object id is not null or empty");
 		}
-		if (StringUtils.isEmpty(user.getOrg().getOrgCode())) {
-			throw new RuntimeException("org code is null");
+		if (StringUtils.isEmpty(user.getOrg().getId())) {
+			throw new RuntimeException("org id is null");
 		}
-		Org org = orgService.findOneByCode(user.getOrg().getOrgCode());
-		user.setOrg(org);
-		
 		String userCode = codeRuleService.getSerial(RuleCode.USER);
 		user.setUserCode(userCode);
 		
 		//对用户进行散列加密
-//		String hashPassword = EncryptUtil.encryptPassword(user.getPassword());
 		String hashPassword = new BCryptPasswordEncoder().encode(user.getPassword());
 		user.setPassword(hashPassword);
 		
@@ -69,11 +60,11 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<User> findByOrg(Org org) {
-		if (null == org) {
+	public List<User> findByOrgId(String orgId) {
+		if (StringUtils.isEmpty(orgId)) {
 			throw new RuntimeException("org is null");
 		}
-		return userRepository.findByOrg(org.getId(), DataStatus.NORMAL.getCode());
+		return userRepository.findByOrg(orgId, DataStatus.NORMAL.getCode());
 	}
 
 	@Override

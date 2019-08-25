@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mplus.advice.Result;
-import com.mplus.entity.Org;
 import com.mplus.entity.User;
-import com.mplus.service.OrgService;
 import com.mplus.service.UserService;
 
 @RestController
@@ -31,9 +29,6 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-	
-	@Autowired
-	private OrgService orgService;
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public Result<User> add(@RequestBody User user) {
@@ -67,10 +62,9 @@ public class UserController {
 		return Result.sucess(user);
 	}
 	
-	@RequestMapping(value = "/org/{orgCode}", method = RequestMethod.GET)
-	public Result<List<User>> listByOrg(@PathVariable String orgCode) {
-		Org org = orgService.findOneByCode(orgCode);
-		List<User> users = userService.findByOrg(org);
+	@RequestMapping(value = "/org/{orgId}", method = RequestMethod.GET)
+	public Result<List<User>> listByOrg(@PathVariable String orgId) {
+		List<User> users = userService.findByOrgId(orgId);
 		return Result.sucess(users);
 	}
 	
