@@ -6,7 +6,7 @@
 /out-tsc
 
 # IDEs and editors
-/.idea
+.idea
 .project
 .classpath
 .c9/
@@ -19,3 +19,4 @@
 .DS_Store
 Thumbs.db
 *.iml
+
