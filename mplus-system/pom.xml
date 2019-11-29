@@ -41,18 +41,6 @@
 		</dependency>
 		<!-- spring-boot end -->
 
-		<!-- spring cloud start -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
-		</dependency>
-		<!-- spring cloud end -->
-
 		<!-- mysql start -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -61,33 +49,6 @@
 		</dependency>
 		<!-- mysql end -->
 
-		<!-- GENERAL UTILS begin -->
-		<dependency>
-			<!-- java基本工具类包 -->
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-		</dependency>
-		<dependency>
-			<!-- IO流处理工具, 简化IO流和操作文件的代码 -->
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-		</dependency>
-		<dependency>
-			<!-- 公共的编解码实现 -->
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-		</dependency>
-		<dependency>
-			<!-- 文件上传下载 -->
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
-		</dependency>
-		<dependency>
-			<!-- javabean操作开源库 -->
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
@@ -95,12 +56,6 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid-spring-boot-starter</artifactId>
-		</dependency>
-
-		<!-- redis依赖 -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-pool2</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.mplus</groupId>

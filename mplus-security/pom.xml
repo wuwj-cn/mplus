@@ -62,6 +62,11 @@
 			<artifactId>mplus-common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>com.mplus</groupId>
+			<artifactId>mplus-common-cache-redis</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>
