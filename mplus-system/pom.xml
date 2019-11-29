@@ -94,12 +94,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
-			<artifactId>druid</artifactId>
-		</dependency>
-		<dependency>
-			<!-- druid依赖log4j -->
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
+			<artifactId>druid-spring-boot-starter</artifactId>
 		</dependency>
 
 		<!-- redis依赖 -->
