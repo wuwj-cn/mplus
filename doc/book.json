@@ -1,0 +1,16 @@
+{
+  "title" : "MPLUS文档库",
+  "author": "wuwj",
+  "description" : "MPLUS产品相关文档整理",
+  "theme-default": {
+    "showLevel": true
+  },
+  "plugins": [
+    "-search",
+    "back-to-top-button",
+    "expandable-chapters-small"
+  ],
+  "pluginsConfig": {
+    "expandable-chapters":{}
+  }
+}
