@@ -21,7 +21,7 @@ public class PermissionController {
 	@RequestMapping(method = RequestMethod.POST)
 	public Result<Permission> add(@RequestBody Permission permission) {
 		permissionService.savePermission(permission);
-		return Result.sucess(permission);	
+		return Result.success(permission);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -29,19 +29,19 @@ public class PermissionController {
 		if(!id.contentEquals(permission.getId()))
 			throw new RuntimeException("update object is not equals");
 		permissionService.updatePermission(permission);
-		return Result.sucess(permission);
+		return Result.success(permission);
 	}
 	
 	@RequestMapping(value = "/{permissionCode}", method = RequestMethod.DELETE)
 	public Result<Permission> remove(@PathVariable String permissionCode) {
 		Permission permission = permissionService.findOneByCode(permissionCode);
 		permissionService.removePermission(permission);
-		return Result.sucess(permission);
+		return Result.success(permission);
 	}
 	
 	@RequestMapping(value = "/{permissionCode}", method = RequestMethod.GET)
 	public Result<Permission> getOne(@PathVariable String permissionCode) {
 		Permission permission = permissionService.findOneByCode(permissionCode);
-		return Result.sucess(permission);
+		return Result.success(permission);
 	}
 }

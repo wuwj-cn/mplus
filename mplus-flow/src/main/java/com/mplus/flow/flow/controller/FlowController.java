@@ -24,7 +24,7 @@ public class FlowController {
 	@RequestMapping(value = "/start/{processKey}", method = RequestMethod.POST)
 	public Result<Object> startProcessInstance(@PathVariable String processKey) {
 		flowService.startProcess(processKey);
-		return Result.sucess(null);
+		return Result.success(null);
 	}
 
 	@RequestMapping(value = "/tasks", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -34,7 +34,7 @@ public class FlowController {
 		for (Task task : tasks) {
 			dtos.add(new TaskRepresentation(task.getId(), task.getName()));
 		}
-		return Result.sucess(dtos);
+		return Result.success(dtos);
 	}
 
 	static class TaskRepresentation {

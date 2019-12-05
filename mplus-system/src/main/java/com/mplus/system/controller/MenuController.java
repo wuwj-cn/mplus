@@ -23,26 +23,26 @@ public class MenuController {
 	@RequestMapping(method = RequestMethod.POST)
 	public Result<Menu> add(@RequestBody Menu menu) {
 		menuService.saveMenu(menu);
-		return Result.sucess(menu);
+		return Result.success(menu);
 	}
 	
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public Result<List<Menu>> getAll() {
 		Menu parent = menuService.findOneByCode("0");
 		List<Menu> menus = menuService.findMenusByParent(parent.getId());
-		return Result.sucess(menus);
+		return Result.success(menus);
 	}
 	
 	@RequestMapping(value = "/{menuCode}", method = RequestMethod.GET)
 	public Result<Menu> getOneByCode(@PathVariable String menuCode) {
 		Menu menu = menuService.findOneByCode(menuCode);
-		return Result.sucess(menu);
+		return Result.success(menu);
 	}
 	
 	@RequestMapping(value = "/{menuCode}/children", method = RequestMethod.GET)
 	public Result<List<Menu>> getChildren(@PathVariable String menuCode) {
 		Menu parent = menuService.findOneByCode(menuCode);
 		List<Menu> children = menuService.findMenusByParent(parent.getId());
-		return Result.sucess(children);
+		return Result.success(children);
 	}
 }

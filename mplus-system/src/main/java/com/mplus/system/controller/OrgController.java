@@ -24,7 +24,7 @@ public class OrgController {
 	@RequestMapping(method = RequestMethod.POST)
 	public Result<Org> add(@RequestBody Org org) {
 		orgService.saveOrg(org);
-		return Result.sucess(org);
+		return Result.success(org);
 	}
 	
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
@@ -32,32 +32,32 @@ public class OrgController {
 //		Org parent = orgService.findOneByCode("0");
 //		List<Org> orgs = orgService.findOrgsByParent(parent.getOrgCode());
 		List<Org> orgs = orgService.find(Collections.emptyMap());
-		return Result.sucess(orgs);
+		return Result.success(orgs);
 	}
 	
 	@RequestMapping(value = "/{orgCode}", method = RequestMethod.GET)
 	public Result<Org> getOneByCode(@PathVariable String orgCode) {
 		Org org = orgService.findOneByCode(orgCode);
-		return Result.sucess(org);
+		return Result.success(org);
 	}
 	
 	@RequestMapping(value = "/{orgCode}/children", method = RequestMethod.GET)
 	public Result<List<Org>> getChildren(@PathVariable String orgCode) {
 		Org parent = orgService.findOneByCode(orgCode);
 		List<Org> children = orgService.findOrgsByParent(parent.getOrgCode());
-		return Result.sucess(children);
+		return Result.success(children);
 	}
 	
 	@RequestMapping(value = "/{orgCode}", method = RequestMethod.PUT)
 	public Result<Org> update(@PathVariable String orgCode, @RequestBody Org org) {
 		orgService.update(org);
-		return Result.sucess(org);
+		return Result.success(org);
 	}
 	
 	@RequestMapping(value = "/{orgCode}", method = RequestMethod.DELETE)
 	public Result<Org> delete(@PathVariable String orgCode) {
 		Org org = orgService.findOneByCode(orgCode);
 		orgService.delete(org);
-		return Result.sucess(org);
+		return Result.success(org);
 	}
 }

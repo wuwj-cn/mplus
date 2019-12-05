@@ -1,4 +1,4 @@
-package com.mplus.common.advice;
+package com.mplus.common.exception;
 
 import com.mplus.common.response.Result;
 import org.slf4j.Logger;

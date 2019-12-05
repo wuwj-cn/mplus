@@ -1,54 +1,33 @@
 package com.mplus.common.response;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
+@Data
 public class Result<T> implements Serializable {
 	private static final long serialVersionUID = 7212115037072836975L;
 	
-	private int status;
-	private String msg;
+	private int code;
+	private String message;
 	private T data;
 
 	private Result() {
 	}
 
-	public static <T> Result<T> sucess(T data) {
+	public static <T> Result<T> success(T data) {
 		Result<T> result = new Result<T>();
-		result.setStatus(ResponseStatus.SUCCESS.value());
-		result.setMsg(ResponseStatus.SUCCESS.getDesc());
+		result.setCode(ResponseStatus.SUCCESS.value());
+		result.setMessage(ResponseStatus.SUCCESS.getReasonPhrase());
 		result.setData(data);
 		return result;
 	}
 
-	public static <T> Result<T> failure(int stauts, String msg) {
+	public static <T> Result<T> failure(int code, String msg) {
 		Result<T> result = new Result<T>();
-		result.setStatus(stauts);
-		result.setMsg(msg);
+		result.setCode(code);
+		result.setMessage(msg);
 		result.setData(null);
 		return result;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
-	public String getMsg() {
-		return msg;
-	}
-
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}
-
-	public T getData() {
-		return data;
-	}
-
-	public void setData(T data) {
-		this.data = data;
 	}
 }

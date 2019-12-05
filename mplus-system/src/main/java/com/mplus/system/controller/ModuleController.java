@@ -34,7 +34,7 @@ public class ModuleController {
 	@RequestMapping(method = RequestMethod.POST)
 	public Result<Module> add(@RequestBody Module module) {
 		moduleService.save(module);
-		return Result.sucess(module);
+		return Result.success(module);
 	}
 	
 	@RequestMapping(value = "/list/{pageIndex}/{pageSize}", method = RequestMethod.GET)
@@ -69,12 +69,12 @@ public class ModuleController {
 		
 		Pageable pageable = PageRequest.of(pageIndex, pageSize, new Sort(direction, properties));
 		Page<Module> modules = moduleService.findPage(searchParams, pageable);
-		return Result.sucess(modules);
+		return Result.success(modules);
 	}
 	
 	@RequestMapping(value = "/{moduleCode}", method = RequestMethod.GET)
 	public Result<?> getOneByCode(@PathVariable String moduleCode) {
-		return Result.sucess(null);
+		return Result.success(null);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -82,12 +82,12 @@ public class ModuleController {
 		if(!id.contentEquals(module.getId()))
 			throw new RuntimeException("update object is not equals");
 		moduleService.update(module);
-		return Result.sucess(module);
+		return Result.success(module);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public Result<String> delete(@PathVariable String id) {
 		moduleService.delete(id);
-		return Result.sucess(id);
+		return Result.success(id);
 	}
 }

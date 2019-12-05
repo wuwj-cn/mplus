@@ -21,7 +21,7 @@ public class RoleController {
 	@RequestMapping(method = RequestMethod.POST)
 	public Result<Role> add(@RequestBody Role role) {
 		roleService.saveRole(role);
-		return Result.sucess(role);	
+		return Result.success(role);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -29,19 +29,19 @@ public class RoleController {
 		if(!id.contentEquals(role.getId()))
 			throw new RuntimeException("update object is not equals");
 		roleService.updateRole(role);
-		return Result.sucess(role);
+		return Result.success(role);
 	}
 	
 	@RequestMapping(value = "/{roleCode}", method = RequestMethod.DELETE)
 	public Result<Role> remove(@PathVariable String roleCode) {
 		Role role = roleService.findOneByCode(roleCode);
 		roleService.removeRole(role);
-		return Result.sucess(role);
+		return Result.success(role);
 	}
 	
 	@RequestMapping(value = "/{roleCode}", method = RequestMethod.GET)
 	public Result<Role> getOne(@PathVariable String roleCode) {
 		Role role = roleService.findOneByCode(roleCode);
-		return Result.sucess(role);
+		return Result.success(role);
 	}
 }

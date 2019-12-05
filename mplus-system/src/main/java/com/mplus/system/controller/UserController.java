@@ -34,20 +34,20 @@ public class UserController {
 	public Result<User> add(@RequestBody User user) {
 		user.setPassword("123456"); //初始默认密码
 		userService.saveUser(user);
-		return Result.sucess(user);	
+		return Result.success(user);
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT)
 	public Result<User> update(@RequestBody User user) {
 		userService.update(user);
-		return Result.sucess(user);
+		return Result.success(user);
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE)
 	public Result<User> remove(@PathVariable String userCode) {
 		User user = userService.findOneByCode(userCode);
 		userService.delete(user);
-		return Result.sucess(user);
+		return Result.success(user);
 	}
 	
 //	@RequestMapping(value = "/{userCode}", method = RequestMethod.GET)
@@ -59,13 +59,13 @@ public class UserController {
 	@RequestMapping(value = "/{username}", method = RequestMethod.GET)
 	public Result<User> getUserByUsername(@PathVariable String username) {
 		User user = userService.findByUsername(username);
-		return Result.sucess(user);
+		return Result.success(user);
 	}
 	
 	@RequestMapping(value = "/org/{orgId}", method = RequestMethod.GET)
 	public Result<List<User>> listByOrg(@PathVariable String orgId) {
 		List<User> users = userService.findByOrgId(orgId);
-		return Result.sucess(users);
+		return Result.success(users);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
@@ -95,7 +95,7 @@ public class UserController {
 		
 		Pageable pageable = PageRequest.of(pi, ps, new Sort(direction, properties));
 		Page<User> users = userService.findPage(searchParams, pageable);
-		return Result.sucess(users);
+		return Result.success(users);
 	}
 	
 }
