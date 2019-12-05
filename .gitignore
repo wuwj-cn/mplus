@@ -20,3 +20,6 @@
 Thumbs.db
 *.iml
 
+# gitBook Files
+/doc/_book/
+/doc/node_modules/

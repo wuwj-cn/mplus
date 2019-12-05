@@ -1,16 +1,50 @@
 {
-  "title" : "MPLUS文档库",
-  "author": "wuwj",
-  "description" : "MPLUS产品相关文档整理",
-  "theme-default": {
-    "showLevel": true
+  "title": "MPLUS产品文档",
+  "author": "wuwj <wenjie0617@163.com>",
+  "description": "MPLUS产品相关文档整理",
+  "language": "zh-hans",
+  "root": ".",
+  "links" : {
+    "sidebar" : {
+      "个人主页" : "https://github.com/wuwj-cn"
+    }
+  },
+  "styles": {
+    "website": "styles/website.css",
+    "ebook": "styles/ebook.css",
+    "pdf": "styles/pdf.css",
+    "mobi": "styles/mobi.css",
+    "epub": "styles/epub.css"
   },
   "plugins": [
+    "-lunr",
     "-search",
+    "search-pro",
+    "favicon",
+    "chapter-fold",
+    "expandable-chapters-small",
     "back-to-top-button",
-    "expandable-chapters-small"
+    "code",
+    "tbfed-pagefooter",
+    "github"
   ],
   "pluginsConfig": {
-    "expandable-chapters":{}
+    "github": {
+      "url": "https://github.com/wuwj-cn/mplus"
+    },
+    "favicon": {
+      "shortcut": "favicon.ico",
+      "bookmark": "favicon.ico"
+    },
+    "tbfed-pagefooter": {
+      "copyright":"Copyright &copy mplus168.cn 2019",
+      "modify_label": "latest modified：",
+      "modify_format": "YYYY-MM-DD HH:mm:ss"
+    },
+    "fontSettings": {
+      "theme": "white",
+      "family": "sans",
+      "size": 2
+    }
   }
 }
