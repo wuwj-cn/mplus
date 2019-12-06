@@ -10,7 +10,7 @@ GET /system/v1/users/{userName}
 #### 参数说明  
 | 名称 | 是否必选 | 参数类型 | 说明 |
 | --- | --- | --- | --- |
-| userName | 是 | String | 用户名称 |
+| userName | 是 | String | 用户名 |
 
 ### 请求消息
 #### 参数说明  
@@ -34,10 +34,12 @@ GET http://{Endpoint}/system/v1/users/wuwj
 ##### User结构体说明
 | 名称 | 参数类型 | 说明 |
 | --- | --- | --- |
-| id | String | 用户ID |
-| userName | String | 用户名称 |
+| userId | String | 用户ID |
+| userName | String | 用户名 |
 | nickName | String | 用户昵称 |
-| email | String | 用户邮箱 |
+| userAccount | String | 用户账号 |
+| email | String | 邮箱 |
+| mobile | String | 手机号 |
 | orgId | String | 归属机构ID |
 | orgName | String | 归属机构名称 |
 | userStatus | String | 用户状态 |
