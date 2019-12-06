@@ -1,43 +1,42 @@
-# 新增用户
+# 分页查询指定机构下属用户
 
 ### 功能说明
-新增保存用户信息
+根据组织机构分页查找其下属所有用户列表信息
 
 ### URI
 #### URI格式  
-POST /system/v1/users
+GET /system/v1/orgs/{orgId}/users/page?pageNumber={pageNumber}&pageSize={pageSize}&userName={userName}
 
-#### 参数说明  
-无
-
-### 请求消息
 #### 参数说明  
 | 名称 | 是否必选 | 参数类型 | 说明 |
 | --- | --- | --- | --- |
-| userName | 是 | String | 用户名称 |
-| nickName | 否 | String | 用户昵称 |
-| orgId | 是 | String | 归属机构ID |
-| email | 否 | String | 用户邮箱 |
-#### 请求样例  
+| orgId | 是 | String | 机构ID |
+| pageNumber | 是 | int | 页号 |
+| pageSize | 是 | int | 每页大小 |
+| userName | 否 | String | 用户名 |
+
+### 请求消息
+#### 请求样例 
 ```
-POST http://{Endpoint}/system/v1/users
+GET http://{Endpoint}/system/v1/orgs/1/users/page?pageNumber=1&pageSize=20&userName=wuwj
 ```
-##### 请求body样例
-```json
-{
-  "userName": "wuwj",
-  "nickName": "wuwj",
-  "orgId": "001",
-  "email": "wuwj@qq.com"
-}
-```
+
 ### 响应消息
 #### 要素说明
 | 名称 | 参数类型 | 说明 |
 | --- | --- | --- |
-| data | User结构体 | 请参见 [User结构体说明](#user结构体说明) |
+| data | Page<User>结构体 | 请参见 [Page结构体说明](#page结构体说明) |
 
 详细请参考 [响应结果说明](../../../common/response/result.md#要素说明)  
+
+##### Page结构体说明
+| 名称 | 参数类型 | 说明 |
+| --- | --- | --- |
+| totalElements | int | 查询结果总数量 |
+| totalPages | int | 总页数 |
+| pageNumber | int | 当前页号 |
+| pageSize | int | 每页大小 |
+| users | User结构体数组 | 请参见 [User结构体说明](#user结构体说明) |
 
 ##### User结构体说明
 | 名称 | 参数类型 | 说明 |

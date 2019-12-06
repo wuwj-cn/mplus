@@ -8,7 +8,7 @@
 
 ## API文档
 * [公共参数](api/common/README.md)
-    * [通用请求返回值](api/common/response/README.md)
+    * [通用响应结果](api/common/response/README.md)
         * [响应结果说明](api/common/response/result.md)
         * [响应状态码](api/common/response/status.md)
     * [错误码说明](api/common/errorCode/README.md)
@@ -18,7 +18,9 @@
             * [新增用户](api/system/organization/user/addUser.md)
             * [更新用户](api/system/organization/user/updateUser.md)
             * [删除用户](api/system/organization/user/deleteUser.md)
-            * [查询用户](api/system/organization/user/findUser.md)
+            * [查询指定用户信息](api/system/organization/user/findUser.md)
+            * [查询指定机构下属用户](api/system/organization/user/findUsersByOrg.md)
+            * [分页查询指定机构下属用户](api/system/organization/user/findPageUsersByOrg.md)
         * [机构管理](api/system/organization/org/README.md)
         * [岗位管理](api/system/organization/post/README.md)
     * [系统设置](api/system/systemSetting/README.md)
