@@ -38,10 +38,10 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
 //		User user = UserUtils.getCurrentUser();
 		Date now = new Date();
 //		t.setCreateBy(user.getId());
-		t.setCreateDate(now);
+		t.setCreateTime(now);
 //		t.setUpdateBy(user.getId());
-		t.setUpdateDate(now);
-		t.setDataStatus(DataStatus.NORMAL.getCode());
+		t.setModifyTime(now);
+		t.setDataState(DataStatus.NORMAL.getCode());
 		return getRepository().save(t);
 	}
 	
@@ -54,10 +54,10 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
 				throw new RuntimeException("object id is not null");
 			}
 //			t.setCreateBy(user.getId());
-			t.setCreateDate(now);
+			t.setCreateTime(now);
 //			t.setUpdateBy(user.getId());
-			t.setUpdateDate(now);
-			t.setDataStatus(DataStatus.NORMAL.getCode());
+			t.setModifyTime(now);
+			t.setDataState(DataStatus.NORMAL.getCode());
 		}
 		return getRepository().saveAll(entities);
 	}
@@ -70,7 +70,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
 //		User user = UserUtils.getCurrentUser();
 		Date now = new Date();
 //		t.setUpdateBy(user.getId());
-		t.setUpdateDate(now);
+		t.setModifyTime(now);
 		return getRepository().save(t);
 	}
 
@@ -83,7 +83,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
 				throw new RuntimeException("object id is null or empty");
 			}
 //			t.setUpdateBy(user.getId());
-			t.setUpdateDate(now);
+			t.setModifyTime(now);
 		}
 		return getRepository().saveAll(entities);
 	}
@@ -102,8 +102,8 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
 //		User user = UserUtils.getCurrentUser();
 		Date now = new Date();
 //		t.setUpdateBy(user.getId());
-		t.setUpdateDate(now);
-		t.setDataStatus(DataStatus.DELETED.getCode());
+		t.setModifyTime(now);
+		t.setDataState(DataStatus.DELETED.getCode());
 		getRepository().save(t);
 	}
 	

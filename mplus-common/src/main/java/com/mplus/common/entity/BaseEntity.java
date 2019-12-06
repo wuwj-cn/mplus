@@ -1,18 +1,33 @@
+/*
+ * Copyright 2018-2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mplus.common.entity;
 
-import java.util.Date;
-
-import javax.persistence.*;
-
+import com.alibaba.fastjson.annotation.JSONField;
 import com.mplus.common.listeners.BaseEntityListener;
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.mplus.common.enums.DataStatus;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 @EntityListeners(value = {BaseEntityListener.class})
 @MappedSuperclass
-public abstract class BaseEntity {
+@Data
+public abstract class BaseEntity implements Serializable {
 	
 	@Id
     @Column(length=64)
@@ -21,71 +36,18 @@ public abstract class BaseEntity {
 	private String id;
 	
 	@Column(length=64)
-	private String createBy; // 插入人
+	private String creatorId; // 插入人
 
 	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
-	private Date createDate; // 插入时间
+	private Date createTime; // 插入时间
 
 	@Column(length=64)
-	private String updateBy; // 修改人
+	private String operatorId; // 修改人
 
 	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
-	private Date updateDate; // 修改时间
+	private Date modifyTime; // 修改时间
 
 	@Column(length=2, nullable = false)
-	private String dataStatus; // 状态, 0正常 1删除 2停用
-
-	public BaseEntity() {
-		this.createDate = this.updateDate = new Date();
-		this.dataStatus = DataStatus.NORMAL.getCode();
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getCreateBy() {
-		return createBy;
-	}
-
-	public void setCreateBy(String createBy) {
-		this.createBy = createBy;
-	}
-
-	public Date getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
-	public String getUpdateBy() {
-		return updateBy;
-	}
-
-	public void setUpdateBy(String updateBy) {
-		this.updateBy = updateBy;
-	}
-
-	public Date getUpdateDate() {
-		return updateDate;
-	}
-
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
-
-	public String getDataStatus() {
-		return dataStatus;
-	}
-
-	public void setDataStatus(String status) {
-		this.dataStatus = status;
-	}
+	private String dataState; // 状态, 0正常 1删除 2停用
 
 }
