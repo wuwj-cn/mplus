@@ -1,4 +1,4 @@
-package com.mplus.system.utils;
+package com.mplus.system.util;
 
 import java.util.UUID;
 

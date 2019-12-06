@@ -1,16 +1,18 @@
 package com.mplus.system.service.impl;
 
+import com.mplus.common.enums.DataStatus;
+import com.mplus.common.repo.BaseRepository;
+import com.mplus.common.service.impl.BaseServiceImpl;
 import com.mplus.system.entity.Role;
 import com.mplus.system.entity.User;
-import com.mplus.common.enums.DataStatus;
-import com.mplus.common.enums.RuleCode;
-import com.mplus.common.repo.BaseRepository;
+import com.mplus.system.enums.RuleCode;
+import com.mplus.system.enums.UserStatus;
 import com.mplus.system.repo.UserRepository;
 import com.mplus.system.service.CodeRuleService;
 import com.mplus.system.service.UserService;
-import com.mplus.common.service.impl.BaseServiceImpl;
+import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,12 +20,10 @@ import java.util.List;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class UserServiceImpl extends BaseServiceImpl<User, String> implements UserService {
 
-	@Autowired
 	private UserRepository userRepository;
-
-	@Autowired
 	private CodeRuleService codeRuleService;
 	
 	@Override
@@ -38,21 +38,22 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
 	}
 
 	@Override
+	@SneakyThrows
 	public User saveUser(User user) {
 		if (!StringUtils.isEmpty(user.getId())) {
 			throw new RuntimeException("object id is not null or empty");
 		}
-		if (StringUtils.isEmpty(user.getOrg().getId())) {
+		if (StringUtils.isEmpty(user.getOrg().getOrgId())) {
 			throw new RuntimeException("org id is null");
 		}
-		String userCode = codeRuleService.getSerial(RuleCode.USER);
-		user.setUserCode(userCode);
+		String userId = codeRuleService.getSerial(RuleCode.USER);
+		user.setUserId(userId);
 		
 		//对用户进行散列加密
-//		String hashPassword = new BCryptPasswordEncoder().encode(user.getPassword());
+//		String hashPassword = new BCryptPasswordEncoder().encode("123456");
 //		user.setPassword(hashPassword);
-		
-		user.setUserStatus("0"); 
+		user.setPassword("123456");
+		user.setUserStatus(UserStatus.ENABLE.code());
 		super.save(user);
 		return user;
 	}

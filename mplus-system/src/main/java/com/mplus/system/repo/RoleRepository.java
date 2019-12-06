@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RoleRepository extends BaseRepository<Role, String> {
 
-	@Query(value = "from Role where dataStatus = ?2 and roleCode = ?1")
+	@Query(value = "from Role where dataState = ?2 and roleId = ?1")
 	Role findOneByCode(String roleCode, String dataStatus);
 	
 }

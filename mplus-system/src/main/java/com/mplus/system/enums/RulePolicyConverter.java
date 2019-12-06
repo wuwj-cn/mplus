@@ -13,35 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mplus.system.entity;
 
-import com.mplus.common.entity.BaseEntity;
-import lombok.Data;
+package com.mplus.system.enums;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 
-/**
- * @author wuwj
- */
-@Data
-@Entity
-@Table(name = "mp_sys_org")
-public class Org extends BaseEntity {
+@Converter
+public class RulePolicyConverter implements AttributeConverter<RulePolicy, String> {
 
-    @Column(length = 32, nullable = false, unique = true)
-    private String orgId;
+	@Override
+	public String convertToDatabaseColumn(RulePolicy policy) {
+		return policy.getCode();
+	}
 
-    @Column(length = 50, nullable = false)
-    private String orgName;
-
-    @Column(length = 100)
-    private String fullName;
-
-    @Column(length = 32)
-    private String parentOrgId;
-
-    @Column(length = 255)
-    private String remark;
+	@Override
+	public RulePolicy convertToEntityAttribute(String dbData) {
+		return RulePolicy.fromString(dbData);
+	}
+	
 }

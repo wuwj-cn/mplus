@@ -44,7 +44,7 @@ public class OrgController {
 	@RequestMapping(value = "/{orgCode}/children", method = RequestMethod.GET)
 	public Result<List<Org>> getChildren(@PathVariable String orgCode) {
 		Org parent = orgService.findOneByCode(orgCode);
-		List<Org> children = orgService.findOrgsByParent(parent.getOrgCode());
+		List<Org> children = orgService.findOrgsByParent(parent.getOrgId());
 		return Result.success(children);
 	}
 	

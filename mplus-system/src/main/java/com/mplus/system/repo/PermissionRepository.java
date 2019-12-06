@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PermissionRepository extends BaseRepository<Permission, String> {
 
-	@Query(value = "from Permission where dataStatus = ?2 and permissionCode = ?1")
+	@Query(value = "from Permission where dataState = ?2 and permId = ?1")
 	Permission findOneByCode(String permissionCode, String dataStatus);
 }

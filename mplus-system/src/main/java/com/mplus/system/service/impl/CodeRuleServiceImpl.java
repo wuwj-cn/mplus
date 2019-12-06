@@ -1,35 +1,34 @@
 package com.mplus.system.service.impl;
 
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
 import com.mplus.common.enums.DataStatus;
-import com.mplus.common.enums.RuleCode;
-import com.mplus.system.utils.RuleUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.mplus.system.enums.RuleCode;
+import com.mplus.system.entity.CodeRule;
+import com.mplus.system.repo.CodeRuleRepository;
+import com.mplus.system.service.CodeRuleService;
+import com.mplus.system.util.RuleUtil;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import com.mplus.system.entity.CodeRule;
-import com.mplus.system.repo.CodeRuleRepository;
-import com.mplus.system.service.CodeRuleService;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class CodeRuleServiceImpl implements CodeRuleService {
 
 	private static ReentrantReadWriteLock lock = new ReentrantReadWriteLock();;
 
-	@Autowired
-	CodeRuleRepository codeRuleRespository;
+	CodeRuleRepository codeRuleRepository;
 
 	@Override
 	public CodeRule saveCodeRule(CodeRule rule) {
-		CodeRule r = codeRuleRespository.findOneByCode(rule.getRuleCode(), DataStatus.NORMAL.getCode());
+		CodeRule r = codeRuleRepository.findOneByCode(rule.getRuleId(), DataStatus.NORMAL.getCode());
 		if (r != null) {
 			throw new RuntimeException("规则编码已存在");
 		}
-		codeRuleRespository.save(rule);
+		codeRuleRepository.save(rule);
 		return rule;
 	}
 
@@ -38,24 +37,24 @@ public class CodeRuleServiceImpl implements CodeRuleService {
 		if (StringUtils.isEmpty(rule.getId())) {
 			throw new RuntimeException("object id is null or empty");
 		}
-		codeRuleRespository.save(rule);
+		codeRuleRepository.save(rule);
 		return rule;
 	}
 
 	@Override
 	public void removeCodeRule(CodeRule rule) {
-		rule.setDataStatus(DataStatus.DELETED.getCode());
-		codeRuleRespository.save(rule);
+		rule.setDataState(DataStatus.DELETED.getCode());
+		codeRuleRepository.save(rule);
 	}
 
 	@Override
 	public CodeRule findOneById(String ruleId) {
-		return codeRuleRespository.findOneById(ruleId);
+		return codeRuleRepository.findOneById(ruleId);
 	}
 
 	@Override
 	public CodeRule findOneByCode(String ruleCode) {
-		return codeRuleRespository.findOneByCode(ruleCode, DataStatus.NORMAL.getCode());
+		return codeRuleRepository.findOneByCode(ruleCode, DataStatus.NORMAL.getCode());
 	}
 
 	/**
@@ -65,7 +64,7 @@ public class CodeRuleServiceImpl implements CodeRuleService {
 		String serial = null;
 		try {
 			lock.readLock().lock();
-			CodeRule rule = codeRuleRespository.findOneByCode(ruleCode.getCode(), DataStatus.NORMAL.getCode());
+			CodeRule rule = codeRuleRepository.findOneByCode(ruleCode.getCode(), DataStatus.NORMAL.getCode());
 			if(null == rule) {
 				throw new RuntimeException("not set rule code");
 			}
@@ -74,7 +73,7 @@ public class CodeRuleServiceImpl implements CodeRuleService {
 				lock.writeLock().lock();
 				serial = RuleUtil.getSerial(rule);
 				rule.setCurrentValue(serial);
-				codeRuleRespository.save(rule);
+				codeRuleRepository.save(rule);
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {

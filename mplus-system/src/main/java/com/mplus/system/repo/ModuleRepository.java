@@ -5,6 +5,6 @@ import com.mplus.system.entity.Module;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ModuleRepsitory extends BaseRepository<Module, String> {
+public interface ModuleRepository extends BaseRepository<Module, String> {
 
 }

@@ -1,27 +1,26 @@
 package com.mplus.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.mplus.common.enums.DataStatus;
 import com.mplus.common.repo.BaseRepository;
 import com.mplus.common.service.impl.BaseServiceImpl;
 import com.mplus.common.utils.tree.entity.CheckboxTreeNode;
 import com.mplus.common.utils.tree.entity.TreeNode;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.mplus.system.entity.Org;
 import com.mplus.system.repo.OrgRepository;
 import com.mplus.system.service.OrgService;
+import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class OrgServiceImpl extends BaseServiceImpl<Org, String> implements OrgService {
 
-	@Autowired
 	private OrgRepository orgRepository;
 	
 	@Override
@@ -34,8 +33,8 @@ public class OrgServiceImpl extends BaseServiceImpl<Org, String> implements OrgS
 		if (!StringUtils.isEmpty(org.getId())) {
 			throw new RuntimeException("object id is not null or empty");
 		}
-		if(StringUtils.isEmpty(org.getParentOrgCode())) {
-			org.setParentOrgCode("0");
+		if(StringUtils.isEmpty(org.getParentOrgId())) {
+			org.setParentOrgId("0");
 		}
 		return orgRepository.save(org);
 	}
@@ -50,7 +49,7 @@ public class OrgServiceImpl extends BaseServiceImpl<Org, String> implements OrgS
 
 	@Override
 	public void removeOrg(Org org) {
-		org.setDataStatus(DataStatus.DELETED.getCode());
+		org.setDataState(DataStatus.DELETED.getCode());
 		orgRepository.save(org);
 	}
 
@@ -72,7 +71,7 @@ public class OrgServiceImpl extends BaseServiceImpl<Org, String> implements OrgS
 		List<Org> orgs = this.findOrgsByParent(orgCode);
 		List<TreeNode> nodes = new ArrayList<TreeNode>();
 		orgs.stream().forEach(
-				org -> nodes.add(new TreeNode(org.getId(), org.getOrgCode(), org.getOrgName(), false, false)));
+				org -> nodes.add(new TreeNode(org.getId(), org.getOrgId(), org.getOrgName(), false, false)));
 		return nodes;
 	}
 
@@ -82,7 +81,7 @@ public class OrgServiceImpl extends BaseServiceImpl<Org, String> implements OrgS
 		List<Org> orgs = this.findOrgsByParent(id);
 		List<TreeNode> nodes = new ArrayList<TreeNode>();
 		orgs.stream().forEach(org -> nodes
-				.add(new CheckboxTreeNode(org.getId(), org.getOrgCode(), org.getOrgName(), false, false, false)));
+				.add(new CheckboxTreeNode(org.getId(), org.getOrgId(), org.getOrgName(), false, false, false)));
 		return nodes;
 	}
 

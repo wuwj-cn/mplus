@@ -6,69 +6,73 @@ import java.util.List;
 import java.util.Map;
 
 import com.mplus.common.response.Result;
+import com.mplus.system.entity.Org;
+import com.mplus.system.service.OrgService;
+import com.mplus.system.vo.UserVo;
+import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.mplus.system.entity.User;
 import com.mplus.system.service.UserService;
 
 @RestController
-@RequestMapping(value = "/v1/user")
+@RequestMapping(value = "/v1")
+@AllArgsConstructor
 public class UserController {
 
-	@Autowired
-	private UserService userService;
-	
-	@RequestMapping(method = RequestMethod.POST)
-	public Result<User> add(@RequestBody User user) {
-		user.setPassword("123456"); //初始默认密码
+	private final UserService userService;
+	private final OrgService orgService;
+
+    @PostMapping(value = "/users")
+	@SneakyThrows
+	public Result<String> add(@RequestBody UserVo userVo) {
+    	User user = new User();
+    	user.setUserId(userVo.getUserId());
+    	user.setUserName(userVo.getUserName());
+    	user.setUserAccount(userVo.getUserAccount());
+    	user.setNickName(userVo.getNickName());
+    	user.setEmail(userVo.getEmail());
+    	user.setMobile(userVo.getMobile());
+
+    	Org org = orgService.findOneByCode(userVo.getOrgId());
+    	user.setOrg(org);
 		userService.saveUser(user);
-		return Result.success(user);
+		return Result.success(user.getUserId());
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT)
-	public Result<User> update(@RequestBody User user) {
+	@PutMapping(value = "/users/{userId}")
+	public Result<User> update(@RequestBody User user, @PathVariable String userId) {
 		userService.update(user);
 		return Result.success(user);
 	}
 	
-	@RequestMapping(method = RequestMethod.DELETE)
-	public Result<User> remove(@PathVariable String userCode) {
-		User user = userService.findOneByCode(userCode);
+	@DeleteMapping(value = "/users/{userId")
+	public Result<User> remove(@PathVariable String userId) {
+		User user = userService.findOneByCode(userId);
 		userService.delete(user);
 		return Result.success(user);
 	}
 	
-//	@RequestMapping(value = "/{userCode}", method = RequestMethod.GET)
-//	public Result<User> list(@PathVariable String userCode) {
-//		User user = userService.findOneByCode(userCode);
-//		return Result.sucess(user);
-//	}
-	
-	@RequestMapping(value = "/{username}", method = RequestMethod.GET)
-	public Result<User> getUserByUsername(@PathVariable String username) {
-		User user = userService.findByUsername(username);
+	@GetMapping(value = "/users/{userName}")
+	public Result<User> getUserByUsername(@PathVariable String userName) {
+		User user = userService.findByUsername(userName);
 		return Result.success(user);
 	}
 	
-	@RequestMapping(value = "/org/{orgId}", method = RequestMethod.GET)
+	@GetMapping(value = "/orgs/{orgId}/users")
 	public Result<List<User>> listByOrg(@PathVariable String orgId) {
 		List<User> users = userService.findByOrgId(orgId);
 		return Result.success(users);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping(value = "/orgs/{orgId}/users/page")
 	public Result<Page<User>> list(
 			@RequestParam int pi, 
 			@RequestParam int ps, 

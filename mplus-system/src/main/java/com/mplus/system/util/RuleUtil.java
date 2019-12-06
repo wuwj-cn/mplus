@@ -1,11 +1,11 @@
-package com.mplus.system.utils;
+package com.mplus.system.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.mplus.system.entity.CodeRule;
-import com.mplus.common.enums.RulePolicy;
+import com.mplus.system.enums.RulePolicy;
 import org.springframework.util.StringUtils;
 
 /**

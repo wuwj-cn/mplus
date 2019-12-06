@@ -13,35 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mplus.system.entity;
 
-import com.mplus.common.entity.BaseEntity;
+package com.mplus.system.vo;
+
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
 /**
+ * UserVO
+ *
  * @author wuwj
+ * @since 1.0
  */
 @Data
-@Entity
-@Table(name = "mp_sys_org")
-public class Org extends BaseEntity {
-
-    @Column(length = 32, nullable = false, unique = true)
+public class UserVo {
+    private String userId;
+    private String userName;
+    private String nickName;
+    private String userAccount;
     private String orgId;
-
-    @Column(length = 50, nullable = false)
     private String orgName;
-
-    @Column(length = 100)
-    private String fullName;
-
-    @Column(length = 32)
-    private String parentOrgId;
-
-    @Column(length = 255)
-    private String remark;
+    private String email;
+    private String mobile;
+    private String userStatus;
 }

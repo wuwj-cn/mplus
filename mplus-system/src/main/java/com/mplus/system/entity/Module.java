@@ -1,71 +1,44 @@
+/*
+ * Copyright 2018-2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mplus.system.entity;
 
 import com.mplus.common.entity.BaseEntity;
-
-import java.io.Serializable;
+import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-@SuppressWarnings("JpaDataSourceORMInspection")
+
+@Data
 @Entity
-@Table(name = "MP_SYS_MODULE")
-public class Module extends BaseEntity implements Serializable {
-	private static final long serialVersionUID = 9101244152735169725L;
+@Table(name = "mp_sys_module")
+public class Module extends BaseEntity {
 
-	@Column(length=20, nullable = false, unique = true)
-	private String moduleCode;
-	
-	@Column(length=20, nullable = false)
-	private String moduleName;
-	
-	@Column(length=100)
-	private String moduleDesc;
-	
-	@Column(length=10)
-	private String version;
-	
-	@Column(length=100)
-	private String upgradeInfo;
+    @Column(length = 32, nullable = false, unique = true)
+    private String moduleId;
 
-	public String getModuleCode() {
-		return moduleCode;
-	}
+    @Column(length = 50, nullable = false)
+    private String moduleName;
 
-	public void setModuleCode(String moduleCode) {
-		this.moduleCode = moduleCode;
-	}
+    @Column(length = 100)
+    private String moduleDesc;
 
-	public String getModuleName() {
-		return moduleName;
-	}
+    @Column(length = 10)
+    private String version;
 
-	public void setModuleName(String moduleName) {
-		this.moduleName = moduleName;
-	}
-
-	public String getModuleDesc() {
-		return moduleDesc;
-	}
-
-	public void setModuleDesc(String moduleDesc) {
-		this.moduleDesc = moduleDesc;
-	}
-
-	public String getVersion() {
-		return version;
-	}
-
-	public void setVersion(String version) {
-		this.version = version;
-	}
-
-	public String getUpgradeInfo() {
-		return upgradeInfo;
-	}
-
-	public void setUpgradeInfo(String upgradeInfo) {
-		this.upgradeInfo = upgradeInfo;
-	}
-	
+    @Column(length = 100)
+    private String upgradeInfo;
 }

@@ -1,7 +1,7 @@
 package com.mplus.system.service;
 
 import com.mplus.system.entity.CodeRule;
-import com.mplus.common.enums.RuleCode;
+import com.mplus.system.enums.RuleCode;
 
 public interface CodeRuleService {
 

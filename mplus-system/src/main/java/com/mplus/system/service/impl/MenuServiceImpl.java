@@ -1,22 +1,21 @@
 package com.mplus.system.service.impl;
 
-import java.util.List;
-
 import com.mplus.common.enums.DataStatus;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.mplus.system.entity.Menu;
+import com.mplus.system.repo.MenuRepository;
+import com.mplus.system.service.MenuService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import com.mplus.system.entity.Menu;
-import com.mplus.system.repo.MenuRepository;
-import com.mplus.system.service.MenuService;
+import java.util.List;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class MenuServiceImpl implements MenuService {
 
-	@Autowired
 	private MenuRepository menuRepository;
 	
 	@Override
@@ -37,7 +36,7 @@ public class MenuServiceImpl implements MenuService {
 
 	@Override
 	public void removeOrg(Menu menu) {
-		menu.setDataStatus(DataStatus.DELETED.getCode());
+		menu.setDataState(DataStatus.DELETED.getCode());
 		menuRepository.save(menu);
 	}
 

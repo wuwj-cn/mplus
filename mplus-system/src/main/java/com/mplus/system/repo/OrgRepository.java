@@ -17,12 +17,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OrgRepository extends BaseRepository<Org, String> {
 
-	@Query(value = "from Org where dataStatus = ?2 and orgCode = ?1")
+	@Query(value = "from Org where dataState = ?2 and orgId = ?1")
 	Org findOneByCode(String orgCode, String dataStatus);
 	
-	@Query(value = "from Org where dataStatus = ?2 and parentOrgCode = ?1")
+	@Query(value = "from Org where dataState = ?2 and parentOrgId = ?1")
 	List<Org> findOrgsByParent(String parentOrgCode, String dataStatus);
 	
-	@Query(value = "from Org where dataStatus = ?1")
+	@Query(value = "from Org where dataState = ?1")
 	List<Org> findAll(String dataStatus);
 }

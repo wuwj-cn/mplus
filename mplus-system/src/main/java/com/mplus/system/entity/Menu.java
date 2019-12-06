@@ -1,71 +1,44 @@
+/*
+ * Copyright 2018-2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mplus.system.entity;
 
 import com.mplus.common.entity.BaseEntity;
-
-import java.io.Serializable;
+import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@SuppressWarnings("JpaDataSourceORMInspection")
+@Data
 @Entity
-@Table(name = "MP_SYS_MENU")
-public class Menu extends BaseEntity implements Serializable {
-	private static final long serialVersionUID = 5001754947956101113L;
+@Table(name = "mp_sys_menu")
+public class Menu extends BaseEntity {
 
-	@Column(length = 20, nullable = false, unique = true)
-	private String menuCode;
+    @Column(length = 32, nullable = false, unique = true)
+    private String menuId;
 
-	@Column(length = 100, nullable = false, unique = true)
-	private String menuName;
-	
-	@Column(length = 100, nullable = false, unique = true)
-	private String url;
-	
-	@Column(length = 20)
-	private String icon;
-	
-	@Column(length=64)
-	private String parentCode;
+    @Column(length = 50, nullable = false, unique = true)
+    private String menuName;
 
-	public String getMenuCode() {
-		return menuCode;
-	}
+    @Column(length = 100, nullable = false, unique = true)
+    private String url;
 
-	public void setMenuCode(String menuCode) {
-		this.menuCode = menuCode;
-	}
+    @Column(length = 20)
+    private String icon;
 
-	public String getMenuName() {
-		return menuName;
-	}
-
-	public void setMenuName(String menuName) {
-		this.menuName = menuName;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public String getIcon() {
-		return icon;
-	}
-
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
-
-	public String getParentCode() {
-		return parentCode;
-	}
-
-	public void setParentCode(String parentCode) {
-		this.parentCode = parentCode;
-	}
+    @Column(length = 32)
+    private String parentMenuId;
 }

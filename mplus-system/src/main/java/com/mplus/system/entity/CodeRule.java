@@ -1,113 +1,54 @@
+/*
+ * Copyright 2018-2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mplus.system.entity;
 
-import java.io.Serializable;
+import com.mplus.common.entity.BaseEntity;
+import com.mplus.system.enums.RulePolicy;
+import com.mplus.system.enums.RulePolicyConverter;
+import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.mplus.common.entity.BaseEntity;
-import com.mplus.common.enums.RulePolicy;
-import com.mplus.common.enums.RulePolicyConverter;
-
-@SuppressWarnings("JpaDataSourceORMInspection")
+@Data
 @Entity
-@Table(name = "MP_SYS_CODE_RULE")
-public class CodeRule extends BaseEntity implements Serializable {
-	private static final long serialVersionUID = -4498917973674072910L;
-	
-	@Column(length=20, nullable = false)
-	private String ruleCode;
-	
-	@Column(length=100, nullable = false)
-	private String ruleName;
-	
-	@Column(length=100)
-	private String rulePrefix;
-	
-	@Column(length=3, nullable = false)
-	@Convert(converter = RulePolicyConverter.class)
-	private RulePolicy rulePolicy;
-	
-	@Column(length=5)
-	private Integer serialLength;
-	
-	@Column(length=13)
-	private String currentValue;
-	
-	@Column(length=255)
-	private String remark;
-	
-	public CodeRule() {}
+@Table(name = "mp_sys_code_rule")
+public class CodeRule extends BaseEntity {
 
-	public String getRuleCode() {
-		return ruleCode;
-	}
+    @Column(length = 32, nullable = false, unique = true)
+    private String ruleId;
 
-	public void setRuleCode(String ruleCode) {
-		this.ruleCode = ruleCode;
-	}
+    @Column(length = 50, nullable = false)
+    private String ruleName;
 
-	public String getRuleName() {
-		return ruleName;
-	}
+    @Column(length = 100)
+    private String rulePrefix;
 
-	public void setRuleName(String ruleName) {
-		this.ruleName = ruleName;
-	}
+    @Column(length = 3, nullable = false)
+    @Convert(converter = RulePolicyConverter.class)
+    private RulePolicy rulePolicy;
 
-	public String getRulePrefix() {
-		return rulePrefix;
-	}
+    @Column(length = 5)
+    private Integer serialLength;
 
-	public void setRulePrefix(String rulePrefix) {
-		this.rulePrefix = rulePrefix;
-	}
+    @Column(length = 13)
+    private String currentValue;
 
-	@JSONField(serialize = false)
-	public RulePolicy getRulePolicy() {
-		return rulePolicy;
-	}
-
-	@JSONField(serialize = false)
-	public void setRulePolicy(RulePolicy rulePolicy) {
-		this.rulePolicy = rulePolicy;
-	}
-	
-	@JSONField(name = "policy")
-	public String getPolicy() {
-		return rulePolicy.getCode();
-	}
-	
-	@JSONField(name = "policy")
-	public void setPolicy(String code) {
-		this.rulePolicy = RulePolicy.fromString(code);
-	}
-
-	public Integer getSerialLength() {
-		return serialLength;
-	}
-
-	public void setSerialLength(Integer serialLength) {
-		this.serialLength = serialLength;
-	}
-
-	public String getCurrentValue() {
-		return currentValue;
-	}
-
-	public void setCurrentValue(String currentValue) {
-		this.currentValue = currentValue;
-	}
-
-	public String getRemark() {
-		return remark;
-	}
-
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
-	
+    @Column(length = 255)
+    private String remark;
 }

@@ -14,10 +14,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MenuRepository extends BaseRepository<Menu, String> {
 
-	@Query(value = "from Menu where dataStatus = ?2 and menuCode = ?1")
+	@Query(value = "from Menu where dataState = ?2 and menuId = ?1")
 	Menu findOneByCode(String menuCode, String dataStatus);
 	
-	@Query(value = "from Menu where dataStatus = ?2 and parentCode = ?1")
+	@Query(value = "from Menu where dataState = ?2 and parentMenuId = ?1")
 	List<Menu> findMenusByParent(String parentCode, String dataStatus);
 	
 }
