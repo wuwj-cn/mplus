@@ -1,3 +1,19 @@
+/*
+ * Copyright 2018-2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.mplus.system.controller;
 
 import java.util.ArrayList;
@@ -6,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.mplus.common.response.Result;
+import com.mplus.common.utils.MBeanUtils;
 import com.mplus.system.entity.Org;
 import com.mplus.system.service.OrgService;
 import com.mplus.system.vo.UserVo;
@@ -22,6 +39,9 @@ import org.springframework.web.bind.annotation.*;
 import com.mplus.system.entity.User;
 import com.mplus.system.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping(value = "/v1")
 @AllArgsConstructor
@@ -30,16 +50,14 @@ public class UserController {
 	private final UserService userService;
 	private final OrgService orgService;
 
+	private final HttpServletRequest request;
+	private final HttpServletResponse response;
+
     @PostMapping(value = "/users")
 	@SneakyThrows
 	public Result<String> add(@RequestBody UserVo userVo) {
     	User user = new User();
-    	user.setUserId(userVo.getUserId());
-    	user.setUserName(userVo.getUserName());
-    	user.setUserAccount(userVo.getUserAccount());
-    	user.setNickName(userVo.getNickName());
-    	user.setEmail(userVo.getEmail());
-    	user.setMobile(userVo.getMobile());
+        MBeanUtils.copyPropertiesIgnoreNull(userVo, user);
 
     	Org org = orgService.findOneByCode(userVo.getOrgId());
     	user.setOrg(org);

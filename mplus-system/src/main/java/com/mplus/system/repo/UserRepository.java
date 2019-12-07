@@ -1,3 +1,19 @@
+/*
+ * Copyright 2018-2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.mplus.system.repo;
 
 import java.util.List;
@@ -16,7 +32,7 @@ public interface UserRepository extends BaseRepository<User, String> {
 	@Query(value = "from User where dataState = ?2 and org.id = ?1")
 	List<User> findByOrg(String orgId, String dataStatus);
 	
-	@Query(value = "from User where dataState = ?2 and userCode = ?1")
+	@Query(value = "from User where dataState = ?2 and userId = ?1")
 	User findOneByCode(String userCode, String dataStatus);
 	
 	@Query(value = "select u from User u left outer join fetch u.roles r "
