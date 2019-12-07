@@ -1,3 +1,4 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.mplus.common.config.RedisConfig
+com.mplus.common.config.RedisConfig,\
+com.mplus.common.config.WebMvcConfig
