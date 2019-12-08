@@ -1,12 +1,11 @@
-# 查询指定用户信息
+# 删除用户
 
 ### 功能说明
-根据用户名称查找对应用户详细信息
+删除指定的用户信息
 
 ### URI
 #### URI格式  
-GET /system/v1/users/{userName}
-
+DELETE /system/v1/users/{userName}  
 #### 参数说明  
 | 名称 | 是否必选 | 参数类型 | 说明 |
 | --- | --- | --- | --- |
@@ -18,7 +17,7 @@ GET /system/v1/users/{userName}
 
 #### 请求样例  
 ```
-GET http://{Endpoint}/system/v1/users/wuwj
+DELETE http://{Endpoint}/system/v1/users/wuwj
 ```
 ##### 请求body样例
 无
@@ -27,31 +26,18 @@ GET http://{Endpoint}/system/v1/users/wuwj
 #### 要素说明
 | 名称 | 参数类型 | 说明 |
 | --- | --- | --- |
-| data | User结构体 | 请参见 [User结构体说明](#user结构体说明) |
+| data | null | 无响应数据内容 |
 
 详细请参考 [响应结果说明](../../../common/response/result.md#要素说明)  
-
-##### User结构体说明
-| 名称 | 参数类型 | 说明 |
-| --- | --- | --- |
-| userId | String | 用户ID |
-| userName | String | 用户名 |
-| nickName | String | 用户昵称 |
-| userAccount | String | 用户账号 |
-| email | String | 邮箱 |
-| mobile | String | 手机号 |
-| orgId | String | 归属机构ID |
-| orgName | String | 归属机构名称 |
-| userStatus | String | 用户状态 |
 
 #### 响应样例
 ##### 正常响应
 ```json
 {
-  "request_id": "0f1ab304fcc945819abab3dcec89f194",
-  "code": "MP:0000",
-  "data": {
-  }
+	"code": 9000,
+	"data": null,
+	"message": "success",
+	"request_id": "06c2fbb044c6486688425b09aea27612"
 }
 ```
 ##### 异常响应

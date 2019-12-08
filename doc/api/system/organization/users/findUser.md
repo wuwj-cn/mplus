@@ -1,24 +1,24 @@
-# 查询指定机构下属用户
+# 查询指定用户信息
 
 ### 功能说明
-根据组织机构查找其下属所有用户列表信息
+根据用户名称查找对应用户详细信息
 
 ### URI
 #### URI格式  
-GET /system/v1/orgs/{orgId}/users
+GET /system/v1/users/{userName}
 
 #### 参数说明  
 | 名称 | 是否必选 | 参数类型 | 说明 |
 | --- | --- | --- | --- |
-| orgId | 是 | String | 机构ID |
+| userName | 是 | String | 用户名 |
 
 ### 请求消息
 #### 参数说明  
 无
 
-#### 请求样例 
+#### 请求样例  
 ```
-GET http://{Endpoint}/system/v1/orgs/1/users
+GET http://{Endpoint}/system/v1/users/wuwj
 ```
 ##### 请求body样例
 无
@@ -27,7 +27,7 @@ GET http://{Endpoint}/system/v1/orgs/1/users
 #### 要素说明
 | 名称 | 参数类型 | 说明 |
 | --- | --- | --- |
-| data | User结构体数组 | 请参见 [User结构体说明](#user结构体说明) |
+| data | User结构体 | 请参见 [User结构体说明](#user结构体说明) |
 
 详细请参考 [响应结果说明](../../../common/response/result.md#要素说明)  
 
@@ -48,10 +48,20 @@ GET http://{Endpoint}/system/v1/orgs/1/users
 ##### 正常响应
 ```json
 {
-  "request_id": "0f1ab304fcc945819abab3dcec89f194",
-  "code": "MP:0000",
-  "data": {
-  }
+	"code": 9000,
+	"data": {
+		"email": "11@qq.com",
+		"mobile": "",
+		"nickName": "test",
+		"orgId": "0",
+		"orgName": "ROOT",
+		"userAccount": "",
+		"userId": "00020",
+		"userName": "wuwj",
+		"userStatus": "0"
+	},
+	"message": "success",
+	"request_id": "f4e1888523c5461f93f207e04e5be215"
 }
 ```
 ##### 异常响应

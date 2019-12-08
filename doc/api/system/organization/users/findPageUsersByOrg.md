@@ -11,7 +11,7 @@ GET /system/v1/orgs/{orgId}/users/page?pageNumber={pageNumber}&pageSize={pageSiz
 | 名称 | 是否必选 | 参数类型 | 说明 |
 | --- | --- | --- | --- |
 | orgId | 是 | String | 机构ID |
-| pageNumber | 是 | int | 页号 |
+| pageNumber | 是 | int | 页号，**注意** 页号从1开始 |
 | pageSize | 是 | int | 每页大小 |
 | userName | 否 | String | 用户名 |
 
@@ -55,10 +55,72 @@ GET http://{Endpoint}/system/v1/orgs/1/users/page?pageNumber=1&pageSize=20&userN
 ##### 正常响应
 ```json
 {
-  "request_id": "0f1ab304fcc945819abab3dcec89f194",
-  "code": "MP:0000",
-  "data": {
-  }
+	"code": 9000,
+	"data": {
+		"content": [
+			{
+				"email": "11@qq.com",
+				"mobile": "",
+				"nickName": "test",
+				"orgId": "0",
+				"orgName": "ROOT",
+				"userAccount": "",
+				"userId": "00020",
+				"userName": "wuwj",
+				"userStatus": "0"
+			},
+			{
+				"email": "wuwj@123.com",
+				"mobile": "",
+				"nickName": "123",
+				"orgId": "0",
+				"orgName": "ROOT",
+				"userAccount": "",
+				"userId": "00004",
+				"userName": "1232",
+				"userStatus": "0"
+			},
+			{
+				"email": "wuwj@123.com",
+				"mobile": "",
+				"nickName": "123",
+				"orgId": "0",
+				"orgName": "ROOT",
+				"userAccount": "",
+				"userId": "00003",
+				"userName": "1231",
+				"userStatus": "0"
+			},
+			{
+				"email": "wuwj@123.com",
+				"mobile": "",
+				"nickName": "123",
+				"orgId": "0",
+				"orgName": "ROOT",
+				"userAccount": "",
+				"userId": "00002",
+				"userName": "1234",
+				"userStatus": "0"
+			},
+			{
+				"email": "wuwj@123.com",
+				"mobile": "",
+				"nickName": "123",
+				"orgId": "0",
+				"orgName": "ROOT",
+				"userAccount": "",
+				"userId": "00001",
+				"userName": "123",
+				"userStatus": "0"
+			}
+		],
+		"pageNumber": 0,
+		"pageSize": 10,
+		"totalElements": 5,
+		"totalPages": 1
+	},
+	"message": "success",
+	"request_id": "55181474887b441982432395e0295e68"
 }
 ```
 ##### 异常响应

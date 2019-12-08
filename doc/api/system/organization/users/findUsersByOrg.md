@@ -1,46 +1,33 @@
-# 更新用户
+# 查询指定机构下属用户
 
 ### 功能说明
-更新指定用户的信息
+根据组织机构查找其下属所有用户列表信息
 
 ### URI
 #### URI格式  
-PUT /system/v1/users/{userName}  
+GET /system/v1/orgs/{orgId}/users
+
 #### 参数说明  
 | 名称 | 是否必选 | 参数类型 | 说明 |
 | --- | --- | --- | --- |
-| userName | 是 | String | 用户名 |
+| orgId | 是 | String | 机构ID |
 
 ### 请求消息
 #### 参数说明  
-| 名称 | 是否必选 | 参数类型 | 说明 |
-| --- | --- | --- | --- |
-| orgId | 是 | String | 归属机构ID |
-| nickName | 否 | String | 用户昵称 |
-| userAccount | 否 | String | 用户账号 |
-| email | 否 | String | 邮箱 |
-| mobile | 否 | String | 手机号 |
-| userStatus| 否 | String | 用户状态 |
+无
 
-#### 请求样例  
+#### 请求样例 
 ```
-PUT http://{Endpoint}/system/v1/users/1
+GET http://{Endpoint}/system/v1/orgs/1/users
 ```
 ##### 请求body样例
-```json
-{
-  "orgId": "01",
-  "nickName": "test",
-  "email": "test@qq.com",
-  "userStatus": "0"
-}
-```
+无
 
 ### 响应消息
 #### 要素说明
 | 名称 | 参数类型 | 说明 |
 | --- | --- | --- |
-| data | User结构体 | 请参见 [User结构体说明](#user结构体说明) |
+| data | User结构体数组 | 请参见 [User结构体说明](#user结构体说明) |
 
 详细请参考 [响应结果说明](../../../common/response/result.md#要素说明)  
 
@@ -61,10 +48,33 @@ PUT http://{Endpoint}/system/v1/users/1
 ##### 正常响应
 ```json
 {
-  "request_id": "0f1ab304fcc945819abab3dcec89f194",
-  "code": "MP:0000",
-  "data": {
-  }
+	"code": 9000,
+	"data": [
+		{
+			"email": "wuwj@123.com",
+			"mobile": "",
+			"nickName": "123",
+			"orgId": "0",
+			"orgName": "ROOT",
+			"userAccount": "",
+			"userId": "00001",
+			"userName": "123",
+			"userStatus": "0"
+		},
+		{
+			"email": "wuwj@123.com",
+			"mobile": "",
+			"nickName": "123",
+			"orgId": "0",
+			"orgName": "ROOT",
+			"userAccount": "",
+			"userId": "00002",
+			"userName": "1234",
+			"userStatus": "0"
+		}
+	],
+	"message": "success",
+	"request_id": "b54699d869664517a93667f0148a1e72"
 }
 ```
 ##### 异常响应

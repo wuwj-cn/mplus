@@ -26,10 +26,10 @@ POST http://{Endpoint}/system/v1/users
 ##### 请求body样例
 ```json
 {
-	"userName": "1231",
-	"nickName": "123",
-	"orgId": "0",
-	"email": "wuwj@123.com"
+	"userName": "wuwj",
+	"nickName": "wuwj",
+	"email": "11@qq.com",
+	"orgId": "0"
 }
 ```
 ### 响应消息
@@ -44,13 +44,21 @@ POST http://{Endpoint}/system/v1/users
 ##### 正常响应
 ```json
 {
-    "request_id": "0f1ab304fcc945819abab3dcec89f194",
-    "code": 900,
-    "message": "success",
-    "data": "00003"
+	"code": 900,
+	"data": "00020",
+	"message": "success",
+	"request_id": "2dd0a746aadd4a0d9dce0bfda67d46f1"
 }
 ```
 ##### 异常响应
+```json
+{
+	"code": 500,
+	"data": null,
+	"message": "could not execute statement; SQL [n/a]; constraint [UK_rjjy9bmaqmpo2hna5urj15g93]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement",
+	"request_id": "d800f3ac3d6c4feabd466ff93f36f82b"
+}
+```
 请参考 [响应结果说明](../../../common/response/result.md#异常响应样例)
 
 ### 响应状态码
