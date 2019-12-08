@@ -5,13 +5,13 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.mplus.system.controller;
@@ -53,13 +53,13 @@ public class OrgController {
 	
 	@RequestMapping(value = "/{orgCode}", method = RequestMethod.GET)
 	public Result<Org> getOneByCode(@PathVariable String orgCode) {
-		Org org = orgService.findOneByCode(orgCode);
+		Org org = orgService.findOneByOrgId(orgCode);
 		return Result.success(org);
 	}
 	
 	@RequestMapping(value = "/{orgCode}/children", method = RequestMethod.GET)
 	public Result<List<Org>> getChildren(@PathVariable String orgCode) {
-		Org parent = orgService.findOneByCode(orgCode);
+		Org parent = orgService.findOneByOrgId(orgCode);
 		List<Org> children = orgService.findOrgsByParent(parent.getOrgId());
 		return Result.success(children);
 	}
@@ -72,7 +72,7 @@ public class OrgController {
 	
 	@RequestMapping(value = "/{orgCode}", method = RequestMethod.DELETE)
 	public Result<Org> delete(@PathVariable String orgCode) {
-		Org org = orgService.findOneByCode(orgCode);
+		Org org = orgService.findOneByOrgId(orgCode);
 		orgService.delete(org);
 		return Result.success(org);
 	}

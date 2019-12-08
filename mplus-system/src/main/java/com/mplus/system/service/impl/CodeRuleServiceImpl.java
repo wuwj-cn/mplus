@@ -5,18 +5,18 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.mplus.system.service.impl;
 
-import com.mplus.common.enums.DataStatus;
+import com.mplus.common.enums.DataState;
 import com.mplus.system.enums.RuleCode;
 import com.mplus.system.entity.CodeRule;
 import com.mplus.system.repo.CodeRuleRepository;
@@ -40,7 +40,7 @@ public class CodeRuleServiceImpl implements CodeRuleService {
 
 	@Override
 	public CodeRule saveCodeRule(CodeRule rule) {
-		CodeRule r = codeRuleRepository.findOneByCode(rule.getRuleId(), DataStatus.NORMAL.getCode());
+		CodeRule r = codeRuleRepository.findOneByCode(rule.getRuleId(), DataState.NORMAL.getCode());
 		if (r != null) {
 			throw new RuntimeException("规则编码已存在");
 		}
@@ -59,7 +59,7 @@ public class CodeRuleServiceImpl implements CodeRuleService {
 
 	@Override
 	public void removeCodeRule(CodeRule rule) {
-		rule.setDataState(DataStatus.DELETED.getCode());
+		rule.setDataState(DataState.DELETED.getCode());
 		codeRuleRepository.save(rule);
 	}
 
@@ -70,7 +70,7 @@ public class CodeRuleServiceImpl implements CodeRuleService {
 
 	@Override
 	public CodeRule findOneByCode(String ruleCode) {
-		return codeRuleRepository.findOneByCode(ruleCode, DataStatus.NORMAL.getCode());
+		return codeRuleRepository.findOneByCode(ruleCode, DataState.NORMAL.getCode());
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class CodeRuleServiceImpl implements CodeRuleService {
 		String serial = null;
 		try {
 			lock.readLock().lock();
-			CodeRule rule = codeRuleRepository.findOneByCode(ruleCode.getCode(), DataStatus.NORMAL.getCode());
+			CodeRule rule = codeRuleRepository.findOneByCode(ruleCode.getCode(), DataState.NORMAL.getCode());
 			if(null == rule) {
 				throw new RuntimeException("not set rule code");
 			}

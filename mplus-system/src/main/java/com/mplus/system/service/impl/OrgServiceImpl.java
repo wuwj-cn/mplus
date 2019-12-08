@@ -5,18 +5,18 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.mplus.system.service.impl;
 
-import com.mplus.common.enums.DataStatus;
+import com.mplus.common.enums.DataState;
 import com.mplus.common.repo.BaseRepository;
 import com.mplus.common.service.impl.BaseServiceImpl;
 import com.mplus.common.utils.tree.entity.CheckboxTreeNode;
@@ -65,20 +65,20 @@ public class OrgServiceImpl extends BaseServiceImpl<Org, String> implements OrgS
 
 	@Override
 	public void removeOrg(Org org) {
-		org.setDataState(DataStatus.DELETED.getCode());
+		org.setDataState(DataState.DELETED.getCode());
 		orgRepository.save(org);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Org findOneByCode(String orgCode) {
-		return orgRepository.findOneByCode(orgCode, DataStatus.NORMAL.getCode());
+	public Org findOneByOrgId(String orgId) {
+		return orgRepository.findOneByOrgId(orgId, DataState.NORMAL.getCode());
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public List<Org> findOrgsByParent(String parentOrgCode) {
-		return orgRepository.findOrgsByParent(parentOrgCode, DataStatus.NORMAL.getCode());
+		return orgRepository.findOrgsByParent(parentOrgCode, DataState.NORMAL.getCode());
 	}
 
 	@Override
