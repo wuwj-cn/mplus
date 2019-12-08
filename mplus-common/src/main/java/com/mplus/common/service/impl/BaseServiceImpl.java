@@ -5,13 +5,13 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.mplus.common.service.impl;
@@ -38,7 +38,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.Nullable;
 
 import com.mplus.common.entity.BaseEntity;
-import com.mplus.common.enums.DataStatus;
+import com.mplus.common.enums.DataState;
 import com.mplus.common.repo.BaseRepository;
 import com.mplus.common.service.BaseService;
 
@@ -57,7 +57,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
 		t.setCreateTime(now);
 //		t.setUpdateBy(user.getId());
 		t.setModifyTime(now);
-		t.setDataState(DataStatus.NORMAL.getCode());
+		t.setDataState(DataState.NORMAL.getCode());
 		return getRepository().save(t);
 	}
 	
@@ -73,7 +73,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
 			t.setCreateTime(now);
 //			t.setUpdateBy(user.getId());
 			t.setModifyTime(now);
-			t.setDataState(DataStatus.NORMAL.getCode());
+			t.setDataState(DataState.NORMAL.getCode());
 		}
 		return getRepository().saveAll(entities);
 	}
@@ -119,7 +119,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
 		Date now = new Date();
 //		t.setUpdateBy(user.getId());
 		t.setModifyTime(now);
-		t.setDataState(DataStatus.DELETED.getCode());
+		t.setDataState(DataState.DELETED.getCode());
 		getRepository().save(t);
 	}
 	
@@ -175,11 +175,11 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
 					String[] arr = key.split(":");
 					predicate = getPredicate(arr,value,root,cb);
 					list.add(predicate);
-					if(key.startsWith("dataStatus")) containStatusKey = true;
+					if(key.startsWith("dataState")) containStatusKey = true;
 				}
 				//查询条件默认增加dataStatus的条件，默认dataStatus="0"
 				if(!containStatusKey) {
-					predicate = getPredicate("dataStatus:eq".split(":"), DataStatus.NORMAL.getCode(), root, cb);
+					predicate = getPredicate("dataState:eq".split(":"), DataState.NORMAL.getCode(), root, cb);
 				}
 				list.add(predicate);
 			    Predicate[] p = new Predicate[list.size()];  

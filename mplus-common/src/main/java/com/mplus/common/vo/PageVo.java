@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-package com.mplus.common.enums;
+package com.mplus.common.vo;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import lombok.Data;
 
-@Converter
-public class DataStateConverter implements AttributeConverter<DataState, String> {
+import java.util.List;
 
-	@Override
-	public String convertToDatabaseColumn(DataState state) {
-		return state.getCode();
-	}
-
-	@Override
-	public DataState convertToEntityAttribute(String dbData) {
-		return DataState.fromString(dbData);
-	}
-	
+/**
+ * PageVo
+ *
+ * @author wuwj [254513235@qq.com]
+ * @since 1.0
+ */
+@Data
+public class PageVo<T> {
+    private long totalElements;
+    private int totalPages;
+    private int pageNumber;
+    private int pageSize;
+    private List<T> content;
 }

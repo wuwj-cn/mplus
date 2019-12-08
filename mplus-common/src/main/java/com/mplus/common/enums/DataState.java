@@ -5,13 +5,13 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.mplus.common.enums;
@@ -20,13 +20,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public enum DataStatus {
+public enum DataState {
 	NORMAL("0", "正常"), DELETED("1", "删除"), DISABLED("2", "停用");
 
 	private String code;
 	private String name;
 
-	private DataStatus(String code, String name) {
+	private DataState(String code, String name) {
 		this.code = code;
 		this.name = name;
 	}
@@ -47,16 +47,16 @@ public enum DataStatus {
 		this.name = name;
 	}
 
-	private static final Map<String, DataStatus> MAP = new HashMap<String, DataStatus>();
+	private static final Map<String, DataState> MAP = new HashMap<String, DataState>();
     static {
-        for (DataStatus e : DataStatus.values()) {
+        for (DataState e : DataState.values()) {
             MAP.put(e.getCode(), e);
         }
     }
     
-	public static DataStatus fromString(String code) {
+	public static DataState fromString(String code) {
 		Objects.requireNonNull(code, "value can not be null");
-		DataStatus e = MAP.get(code);
+		DataState e = MAP.get(code);
 		if(null == e) throw new IllegalArgumentException("code [" + code + "] not supported.");
 		return e;
 	}
