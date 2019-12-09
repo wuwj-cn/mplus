@@ -20,7 +20,7 @@ import com.mplus.common.response.Result;
 import com.mplus.common.utils.jpa.JpaUtils;
 import com.mplus.common.utils.MBeanUtils;
 import com.mplus.common.utils.jpa.QueryParam;
-import com.mplus.common.utils.jpa.QueryTypeEnum;
+import com.mplus.common.utils.jpa.QueryType;
 import com.mplus.common.vo.PageVo;
 import com.mplus.system.entity.Org;
 import com.mplus.system.entity.User;
@@ -42,9 +42,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/v1")
@@ -143,9 +141,12 @@ public class UserController {
 		List<QueryParam> searchParams = new ArrayList<>();
 		QueryParam param = null;
 		if(StringUtils.isNotBlank(userName)) {
-			param = new QueryParam("userName", QueryTypeEnum.like, userName);
+			param = QueryParam.build("userName", QueryType.like, userName);
 			searchParams.add(param);
 		}
+
+		param = QueryParam.build("dataState", QueryType.eq, DataState.NORMAL.code());
+		searchParams.add(param);
 		
 		List<String> properties = new ArrayList<>();
 		properties.add("createTime"); //默认排序条件

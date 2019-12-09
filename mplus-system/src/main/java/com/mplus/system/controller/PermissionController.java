@@ -16,7 +16,10 @@
 
 package com.mplus.system.controller;
 
+import com.mplus.common.enums.DataState;
 import com.mplus.common.response.Result;
+import com.mplus.system.repo.PermissionRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,18 +28,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mplus.system.entity.Permission;
-import com.mplus.system.service.PermissionService;
 
 @RestController
 @RequestMapping(value = "/v1/permission")
+@AllArgsConstructor
 public class PermissionController {
 
 	@Autowired
-	private PermissionService permissionService;
+	private PermissionRepository permissionRepository;
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public Result<Permission> add(@RequestBody Permission permission) {
-		permissionService.savePermission(permission);
+		permissionRepository.save(permission);
 		return Result.success(permission);
 	}
 	
@@ -44,20 +47,20 @@ public class PermissionController {
 	public Result<Permission> update(@PathVariable String id, @RequestBody Permission permission) {
 		if(!id.contentEquals(permission.getId()))
 			throw new RuntimeException("update object is not equals");
-		permissionService.updatePermission(permission);
+		permissionRepository.save(permission);
 		return Result.success(permission);
 	}
 	
 	@RequestMapping(value = "/{permissionCode}", method = RequestMethod.DELETE)
 	public Result<Permission> remove(@PathVariable String permissionCode) {
-		Permission permission = permissionService.findOneByCode(permissionCode);
-		permissionService.removePermission(permission);
+		Permission permission = permissionRepository.findOneByCode(permissionCode, DataState.NORMAL.code());
+		permissionRepository.save(permission);
 		return Result.success(permission);
 	}
 	
 	@RequestMapping(value = "/{permissionCode}", method = RequestMethod.GET)
 	public Result<Permission> getOne(@PathVariable String permissionCode) {
-		Permission permission = permissionService.findOneByCode(permissionCode);
+		Permission permission = permissionRepository.findOneByCode(permissionCode, DataState.NORMAL.code());
 		return Result.success(permission);
 	}
 }

@@ -16,8 +16,11 @@
 
 package com.mplus.system.controller;
 
+import com.mplus.common.enums.DataState;
 import com.mplus.common.response.Result;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.mplus.system.repo.RoleRepository;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,18 +28,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mplus.system.entity.Role;
-import com.mplus.system.service.RoleService;
 
 @RestController
 @RequestMapping(value = "/v1/role")
+@AllArgsConstructor
 public class RoleController {
 
-	@Autowired
-	private RoleService roleService;
+	private RoleRepository roleRepository;
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public Result<Role> add(@RequestBody Role role) {
-		roleService.saveRole(role);
+		roleRepository.save(role);
 		return Result.success(role);
 	}
 	
@@ -44,20 +46,20 @@ public class RoleController {
 	public Result<Role> update(@PathVariable String id, @RequestBody Role role) {
 		if(!id.contentEquals(role.getId()))
 			throw new RuntimeException("update object is not equals");
-		roleService.updateRole(role);
+		roleRepository.save(role);
 		return Result.success(role);
 	}
 	
 	@RequestMapping(value = "/{roleCode}", method = RequestMethod.DELETE)
 	public Result<Role> remove(@PathVariable String roleCode) {
-		Role role = roleService.findOneByCode(roleCode);
-		roleService.removeRole(role);
+		Role role = roleRepository.findOneByCode(roleCode, DataState.NORMAL.code());
+		roleRepository.save(role);
 		return Result.success(role);
 	}
 	
 	@RequestMapping(value = "/{roleCode}", method = RequestMethod.GET)
 	public Result<Role> getOne(@PathVariable String roleCode) {
-		Role role = roleService.findOneByCode(roleCode);
+		Role role = roleRepository.findOneByCode(roleCode, DataState.NORMAL.code());
 		return Result.success(role);
 	}
 }

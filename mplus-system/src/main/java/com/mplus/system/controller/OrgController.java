@@ -20,19 +20,18 @@ import com.mplus.common.response.Result;
 import com.mplus.common.utils.MBeanUtils;
 import com.mplus.common.utils.jpa.JpaUtils;
 import com.mplus.common.utils.jpa.QueryParam;
-import com.mplus.common.utils.jpa.QueryTypeEnum;
+import com.mplus.common.utils.jpa.QueryType;
 import com.mplus.system.entity.Org;
-import com.mplus.system.entity.User;
 import com.mplus.system.repo.OrgRepository;
 import com.mplus.system.vo.OrgVo;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/v1")
@@ -55,30 +54,6 @@ public class OrgController {
 		org.setOrgId(generateMaxOrgId(org.getParentOrgId()));
 		orgRepository.save(org);
 
-		return Result.success(org.getOrgId());
-	}
-
-	@PutMapping(value = "/orgs/{orgId}")
-	public Result<Object> update(@PathVariable String orgId, @RequestBody OrgVo orgVo) {
-		Org org = orgRepository.findOneByOrgId(orgId, DataState.NORMAL.code());
-		MBeanUtils.copyPropertiesIgnoreNull(orgVo, org);
-		orgRepository.save(org);
-		return Result.success(org.getOrgId());
-	}
-
-	@DeleteMapping(value = "/orgs/{orgId}")
-	public Result<Object> delete(@PathVariable String orgId) {
-		Org org = new Org();
-		List<QueryParam> searchParams = new ArrayList<>();
-		QueryParam param = null;
-		param = new QueryParam("orgId", QueryTypeEnum.eq, orgId);
-		searchParams.add(param);
-		param = new QueryParam("dataState", QueryTypeEnum.eq, DataState.NORMAL.code());
-		searchParams.add(param);
-		Specification<Org> spec = JpaUtils.buildSpecification(searchParams);
-//		Optional<Org> org = orgRepository.findOne(spec);
-//		org.setDataState(DataState.DELETED.code());
-//		orgRepository.save(org);
 		return Result.success(org.getOrgId());
 	}
 
@@ -110,6 +85,47 @@ public class OrgController {
 			temp = temp.concat(String.valueOf(maxOrgId + 1));
 		}
 		return parentOrgId.concat(temp);
+	}
+
+	@PutMapping(value = "/orgs/{orgId}")
+	public Result<Object> update(@PathVariable String orgId, @RequestBody OrgVo orgVo) {
+		Org org = orgRepository.findOneByOrgId(orgId, DataState.NORMAL.code());
+		MBeanUtils.copyPropertiesIgnoreNull(orgVo, org);
+		orgRepository.save(org);
+		return Result.success(org.getOrgId());
+	}
+
+	@DeleteMapping(value = "/orgs/{orgId}")
+	public Result<Object> delete(@PathVariable String orgId) {
+		List<QueryParam> searchParams = new ArrayList<>();
+		QueryParam param = null;
+		param = QueryParam.build("orgId", QueryType.eq, orgId);
+		searchParams.add(param);
+		Specification<Org> spec = JpaUtils.buildSpecification(searchParams);
+		Org org = orgRepository.findOne(spec).get();
+		org.setDataState(DataState.DELETED.code());
+		orgRepository.save(org);
+		return Result.success(org.getOrgId());
+	}
+
+	@GetMapping(value = "/orgs/{orgId}/children")
+	public Result<List<OrgVo>> findOrgsByParent(@PathVariable String orgId) {
+		List<QueryParam> searchParams = new ArrayList<>();
+		searchParams.add(QueryParam.build("parentOrgId", QueryType.eq, orgId));
+		searchParams.add(QueryParam.build("dataState", QueryType.eq, DataState.NORMAL.code()));
+
+		Specification<Org> spec = JpaUtils.buildSpecification(searchParams);
+		List<Org> orgs = orgRepository.findAll(spec, Sort.by("orgId"));
+
+		List<OrgVo> orgVos = new ArrayList<>();
+		orgs.stream().forEach(org -> {
+			OrgVo orgVo = new OrgVo();
+			MBeanUtils.copyPropertiesIgnoreNull(org, orgVo);
+			Org parentOrg = orgRepository.findOneByOrgId(org.getParentOrgId(), DataState.NORMAL.code());
+			orgVo.setParentOrgName(parentOrg.getOrgName());
+			orgVos.add(orgVo);
+		});
+		return Result.success(orgVos);
 	}
 
 }

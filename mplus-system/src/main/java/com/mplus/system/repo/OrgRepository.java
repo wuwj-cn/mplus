@@ -39,10 +39,10 @@ public interface OrgRepository extends BaseRepository<Org, String> {
 
 	@Query(value = "from Org where dataState = ?2 and orgId = ?1")
 	Org findOneByOrgId(String orgId, String dataStatus);
-	
+
 	@Query(value = "from Org where dataState = ?2 and parentOrgId = ?1")
 	List<Org> findOrgsByParent(String parentOrgId, String dataStatus);
-	
+
 	@Query(value = "from Org where dataState = ?1")
 	List<Org> findAll(String dataStatus);
 
