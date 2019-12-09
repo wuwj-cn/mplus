@@ -16,7 +16,6 @@
 
 package com.mplus.common.utils.jpa;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -26,9 +25,18 @@ import lombok.Data;
  * @since 1.0
  */
 @Data
-@AllArgsConstructor
 public class QueryParam {
     private String name;
-    private QueryTypeEnum queryType;
+    private QueryType queryType;
     private Object value;
+
+    private QueryParam(String name, QueryType queryType, Object value){
+        this.name = name;
+        this.queryType = queryType;
+        this.value = value;
+    }
+
+    public static QueryParam build(String name, QueryType queryType, Object value) {
+        return new QueryParam(name, queryType, value);
+    }
 }

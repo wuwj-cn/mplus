@@ -22,7 +22,7 @@ package com.mplus.common.utils.jpa;
  * @author wuwj [254513235@qq.com]
  * @since 1.0
  */
-public enum QueryTypeEnum {
+public enum QueryType {
     like,
     eq,
     ne,

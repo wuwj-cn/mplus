@@ -47,13 +47,13 @@ public class JpaUtils<T extends BaseEntity> {
                 }
                 predicate = getPredicate(param, root, cb);
                 list.add(predicate);
-                if (param.getName().equals("dataState")) containStatusKey = true;
+//                if (param.getName().equals("dataState")) containStatusKey = true;
             }
             //查询条件默认增加dataStatus的条件，默认dataStatus="0"
-            if (!containStatusKey) {
-                QueryParam param = new QueryParam("dataState", QueryTypeEnum.eq, DataState.NORMAL.code());
-                predicate = getPredicate(param, root, cb);
-            }
+//            if (!containStatusKey) {
+//                QueryParam param = QueryParam.build("dataState", QueryTypeEnum.eq, DataState.NORMAL.code());
+//                predicate = getPredicate(param, root, cb);
+//            }
             list.add(predicate);
             Predicate[] p = new Predicate[list.size()];
             return cb.and(list.toArray(p));
@@ -64,19 +64,19 @@ public class JpaUtils<T extends BaseEntity> {
     private static <T> Predicate getPredicate(QueryParam param, Root<T> root, CriteriaBuilder cb) {
         switch (param.getQueryType()) {
             case eq:
-                cb.equal(root.get(param.getName()).as(param.getValue().getClass()), param.getValue());
+                return cb.equal(root.get(param.getName()).as(param.getValue().getClass()), param.getValue());
             case like:
-                cb.like(root.get(param.getName()).as(String.class), String.format("%%s%", param.getValue()));
+                return cb.like(root.get(param.getName()).as(String.class), String.format("%%%s%%", param.getValue()));
             case ne:
-                cb.notEqual(root.get(param.getName()).as(param.getValue().getClass()), param.getValue());
+                return cb.notEqual(root.get(param.getName()).as(param.getValue().getClass()), param.getValue());
             case lt:
-                getLessThanPredicate(param, root, cb);
+                return getLessThanPredicate(param, root, cb);
             case lte:
-                getLessThanOrEqualToPredicate(param, root, cb);
+                return getLessThanOrEqualToPredicate(param, root, cb);
             case gt:
-                getGreaterThanPredicate(param, root, cb);
+                return getGreaterThanPredicate(param, root, cb);
             case gte:
-                getGreaterThanOrEqualToPredicate(param, root, cb);
+                return getGreaterThanOrEqualToPredicate(param, root, cb);
             default:
                 throw new UnsupportedOperationException(String.format("不支持的查询类型[%s]", param.getQueryType().name()));
         }
