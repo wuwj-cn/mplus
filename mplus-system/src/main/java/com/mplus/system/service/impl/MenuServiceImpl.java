@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -52,20 +52,20 @@ public class MenuServiceImpl implements MenuService {
 
 	@Override
 	public void removeOrg(Menu menu) {
-		menu.setDataState(DataState.DELETED.getCode());
+		menu.setDataState(DataState.DELETED.code());
 		menuRepository.save(menu);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Menu findOneByCode(String menuCode) {
-		return menuRepository.findOneByCode(menuCode, DataState.NORMAL.getCode());
+		return menuRepository.findOneByCode(menuCode, DataState.NORMAL.code());
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public List<Menu> findMenusByParent(String parentMenuId) {
-		return menuRepository.findMenusByParent(parentMenuId, DataState.NORMAL.getCode());
+		return menuRepository.findMenusByParent(parentMenuId, DataState.NORMAL.code());
 	}
 
 }

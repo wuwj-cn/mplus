@@ -5,11 +5,11 @@
 
 ### URI
 #### URI格式  
-PUT /system/v1/users/{userName}  
+PUT /system/v1/users/{userId}  
 #### 参数说明  
 | 名称 | 是否必选 | 参数类型 | 说明 |
 | --- | --- | --- | --- |
-| userName | 是 | String | 用户名 |
+| userId | 是 | String | 用户ID |
 
 ### 请求消息
 #### 参数说明  
@@ -24,7 +24,7 @@ PUT /system/v1/users/{userName}
 
 #### 请求样例  
 ```
-PUT http://{Endpoint}/system/v1/users/wuwj
+PUT http://{Endpoint}/system/v1/users/00001
 ```
 ##### 请求body样例
 ```json
@@ -39,7 +39,7 @@ PUT http://{Endpoint}/system/v1/users/wuwj
 #### 要素说明
 | 名称 | 参数类型 | 说明 |
 | --- | --- | --- |
-| data | null | 无响应数据内容 |
+| data | String | 更新的用户ID |
 
 详细请参考 [响应结果说明](../../../common/response/result.md#要素说明)  
 
@@ -48,7 +48,7 @@ PUT http://{Endpoint}/system/v1/users/wuwj
 ```json
 {
 	"code": 9000,
-	"data": null,
+	"data": "00001",
 	"message": "success",
 	"request_id": "95e2074b15f34bab90133c68e1d28c46"
 }

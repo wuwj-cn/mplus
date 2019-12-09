@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,7 +20,9 @@ import java.util.Objects;
 
 public enum RuleCode {
 
-	USER("USER", "用户"), ROLE("ROLE", "角色");
+	USER("USER", "用户"),
+	ORG("ORG", "机构"),
+	ROLE("ROLE", "角色");
 	
 	private final String code;
 	private final String name;
@@ -43,6 +45,8 @@ public enum RuleCode {
         switch (code) {
         case "USER":
             return RuleCode.USER;
+		case "ORG":
+			return RuleCode.ORG;
         default:
             throw new IllegalArgumentException("code [" + code + "] not supported.");
         }

@@ -5,11 +5,11 @@
 
 ### URI
 #### URI格式  
-DELETE /system/v1/users/{userName}  
+DELETE /system/v1/users/{userId}  
 #### 参数说明  
 | 名称 | 是否必选 | 参数类型 | 说明 |
 | --- | --- | --- | --- |
-| userName | 是 | String | 用户名 |
+| userId | 是 | String | 用户ID |
 
 ### 请求消息
 #### 参数说明  
@@ -17,7 +17,7 @@ DELETE /system/v1/users/{userName}
 
 #### 请求样例  
 ```
-DELETE http://{Endpoint}/system/v1/users/wuwj
+DELETE http://{Endpoint}/system/v1/users/00001
 ```
 ##### 请求body样例
 无
@@ -26,7 +26,7 @@ DELETE http://{Endpoint}/system/v1/users/wuwj
 #### 要素说明
 | 名称 | 参数类型 | 说明 |
 | --- | --- | --- |
-| data | null | 无响应数据内容 |
+| data | String | 删除的用户ID |
 
 详细请参考 [响应结果说明](../../../common/response/result.md#要素说明)  
 
@@ -35,7 +35,7 @@ DELETE http://{Endpoint}/system/v1/users/wuwj
 ```json
 {
 	"code": 9000,
-	"data": null,
+	"data": "00001",
 	"message": "success",
 	"request_id": "06c2fbb044c6486688425b09aea27612"
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,12 +19,16 @@
  */
 package com.mplus.system.repo;
 
-import java.util.List;
-
+import com.mplus.common.enums.DataState;
 import com.mplus.common.repo.BaseRepository;
+import com.mplus.common.utils.tree.entity.CheckboxTreeNode;
+import com.mplus.common.utils.tree.entity.TreeNode;
 import com.mplus.system.entity.Org;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author wuwj
@@ -37,8 +41,24 @@ public interface OrgRepository extends BaseRepository<Org, String> {
 	Org findOneByOrgId(String orgId, String dataStatus);
 	
 	@Query(value = "from Org where dataState = ?2 and parentOrgId = ?1")
-	List<Org> findOrgsByParent(String parentOrgCode, String dataStatus);
+	List<Org> findOrgsByParent(String parentOrgId, String dataStatus);
 	
 	@Query(value = "from Org where dataState = ?1")
 	List<Org> findAll(String dataStatus);
+
+	default List<TreeNode> getNodes(String orgId) {
+		List<Org> orgs = this.findOrgsByParent(orgId, DataState.NORMAL.code());
+		List<TreeNode> nodes = new ArrayList<TreeNode>();
+		orgs.stream().forEach(
+				org -> nodes.add(new TreeNode(org.getId(), org.getOrgId(), org.getOrgName(), false, false)));
+		return nodes;
+	}
+
+	default List<TreeNode> getCheckboxNodes(String orgId) {
+		List<Org> orgs = this.findOrgsByParent(orgId, DataState.NORMAL.code());
+		List<TreeNode> nodes = new ArrayList<TreeNode>();
+		orgs.stream().forEach(org -> nodes
+				.add(new CheckboxTreeNode(org.getId(), org.getOrgId(), org.getOrgName(), false, false, false)));
+		return nodes;
+	}
 }

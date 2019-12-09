@@ -5,12 +5,12 @@
 
 ### URI
 #### URI格式  
-GET /system/v1/users/{userName}
+GET /system/v1/users/{userId}
 
 #### 参数说明  
 | 名称 | 是否必选 | 参数类型 | 说明 |
 | --- | --- | --- | --- |
-| userName | 是 | String | 用户名 |
+| userId | 是 | String | 用户ID |
 
 ### 请求消息
 #### 参数说明  
@@ -18,7 +18,7 @@ GET /system/v1/users/{userName}
 
 #### 请求样例  
 ```
-GET http://{Endpoint}/system/v1/users/wuwj
+GET http://{Endpoint}/system/v1/users/00001
 ```
 ##### 请求body样例
 无
@@ -56,7 +56,7 @@ GET http://{Endpoint}/system/v1/users/wuwj
 		"orgId": "0",
 		"orgName": "ROOT",
 		"userAccount": "",
-		"userId": "00020",
+		"userId": "00001",
 		"userName": "wuwj",
 		"userStatus": "0"
 	},

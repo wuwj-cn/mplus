@@ -22,7 +22,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @EntityListeners(value = {BaseEntityListener.class})
 @MappedSuperclass
@@ -39,13 +39,13 @@ public abstract class BaseEntity implements Serializable {
 	private String creatorId; // 插入人
 
 	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
-	private Date createTime; // 插入时间
+	private LocalDateTime createTime; // 插入时间
 
 	@Column(length=64)
 	private String operatorId; // 修改人
 
 	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
-	private Date modifyTime; // 修改时间
+	private LocalDateTime modifyTime; // 修改时间
 
 	@Column(length=2, nullable = false)
 	private String dataState; // 状态, 0正常 1删除 2停用

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package com.mplus.system.service;
+package com.mplus.common.utils.jpa;
 
-import com.mplus.system.entity.CodeRule;
-import com.mplus.system.enums.RuleCode;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-public interface CodeRuleService {
-
-	CodeRule saveCodeRule(CodeRule rule);
-	
-	CodeRule updateCodeRule(CodeRule rule);
-	
-	void removeCodeRule(CodeRule rule);
-	
-	CodeRule findOneById(String ruleId);
-	
-	CodeRule findOneByCode(String ruleCode);
-	
-	String getSerial(RuleCode ruleCode);
+/**
+ * QueryParam
+ *
+ * @author wuwj [254513235@qq.com]
+ * @since 1.0
+ */
+@Data
+@AllArgsConstructor
+public class QueryParam {
+    private String name;
+    private QueryTypeEnum queryType;
+    private Object value;
 }

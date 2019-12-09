@@ -24,7 +24,7 @@ public class DataStateConverter implements AttributeConverter<DataState, String>
 
 	@Override
 	public String convertToDatabaseColumn(DataState state) {
-		return state.getCode();
+		return state.code();
 	}
 
 	@Override

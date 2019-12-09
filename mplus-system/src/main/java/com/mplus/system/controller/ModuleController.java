@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -66,7 +66,7 @@ public class ModuleController {
 		if(StringUtils.isNotBlank(moduleName)) searchParams.put("moduleName:like", moduleName);
 		if(StringUtils.isNotBlank(moduleCode)) searchParams.put("moduleCode:like", moduleCode);
 		if(StringUtils.isBlank(status)) {
-			searchParams.put("status:ne", DataState.DELETED.getCode());
+			searchParams.put("status:ne", DataState.DELETED.code());
 		} else {
 			searchParams.put("status:eq", status);
 		}

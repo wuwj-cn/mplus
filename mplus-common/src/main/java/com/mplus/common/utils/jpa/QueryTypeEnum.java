@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,23 +14,20 @@
  * limitations under the License.
  */
 
-package com.mplus.system.service;
+package com.mplus.common.utils.jpa;
 
-import java.util.List;
-
-import com.mplus.system.entity.Org;
-import com.mplus.common.service.BaseService;
-import com.mplus.common.utils.tree.service.TreeService;
-
-public interface OrgService extends TreeService, BaseService<Org, String> {
-
-	Org saveOrg(Org org);
-	
-	Org updateOrg(Org org);
-	
-	void removeOrg(Org org);
-	
-	Org findOneByOrgId(String orgId);
-	
-	List<Org> findOrgsByParent(String parentOrgCode);
+/**
+ * QueryTypeEnum
+ *
+ * @author wuwj [254513235@qq.com]
+ * @since 1.0
+ */
+public enum QueryTypeEnum {
+    like,
+    eq,
+    ne,
+    lt,
+    lte,
+    gt,
+    gte
 }

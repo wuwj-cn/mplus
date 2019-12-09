@@ -16,15 +16,30 @@
 
 package com.mplus.common.listeners;
 
+import com.mplus.common.entity.BaseEntity;
+import com.mplus.common.enums.DataState;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.jni.Local;
 
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Slf4j
 public class BaseEntityListener {
 
     @PrePersist
-    public void prePersist(Object source) {
-      log.info("enter prePersist listener...");
+    public void prePersist(BaseEntity entity) {
+        log.info("enter prePersist listener...");
+        entity.setCreateTime(LocalDateTime.now());
+        entity.setModifyTime(LocalDateTime.now());
+        entity.setDataState(DataState.NORMAL.code());
+    }
+
+    @PreUpdate
+    public void preUpdate(BaseEntity entity) {
+        log.info("enter preUpdate listener...");
+        entity.setModifyTime(LocalDateTime.now());
     }
 }

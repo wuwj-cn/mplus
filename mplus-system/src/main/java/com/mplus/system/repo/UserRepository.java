@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,7 +33,7 @@ public interface UserRepository extends BaseRepository<User, String> {
 	List<User> findByOrg(String orgId, String dataStatus);
 	
 	@Query(value = "from User where dataState = ?2 and userId = ?1")
-	User findOneByCode(String userCode, String dataStatus);
+	User findByUserId(String userId, String dataStatus);
 	
 	@Query(value = "select u from User u left outer join fetch u.roles r "
 			+ "where u.dataState = r.dataState and u.dataState = ?2 "

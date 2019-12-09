@@ -31,26 +31,18 @@ public enum DataState {
 		this.name = name;
 	}
 
-	public String getCode() {
+	public String code() {
 		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	private static final Map<String, DataState> MAP = new HashMap<String, DataState>();
     static {
         for (DataState e : DataState.values()) {
-            MAP.put(e.getCode(), e);
+            MAP.put(e.code(), e);
         }
     }
     

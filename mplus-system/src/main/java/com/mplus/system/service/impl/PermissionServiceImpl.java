@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -51,13 +51,13 @@ public class PermissionServiceImpl implements PermissionService {
 	@Override
 	public void removePermission(Permission permission) {
 		permission.setRoles(null);
-		permission.setDataState(DataState.DELETED.getCode());
+		permission.setDataState(DataState.DELETED.code());
 		permissionRepository.save(permission);
 	}
 
 	@Override
 	public Permission findOneByCode(String priviCode) {
-		return permissionRepository.findOneByCode(priviCode, DataState.NORMAL.getCode());
+		return permissionRepository.findOneByCode(priviCode, DataState.NORMAL.code());
 	}
 
 }

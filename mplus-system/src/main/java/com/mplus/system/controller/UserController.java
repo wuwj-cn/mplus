@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,16 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.mplus.system.controller;
 
+import com.mplus.common.enums.DataState;
 import com.mplus.common.response.Result;
+import com.mplus.common.utils.jpa.JpaUtils;
 import com.mplus.common.utils.MBeanUtils;
+import com.mplus.common.utils.jpa.QueryParam;
+import com.mplus.common.utils.jpa.QueryTypeEnum;
+import com.mplus.common.vo.PageVo;
 import com.mplus.system.entity.Org;
 import com.mplus.system.entity.User;
-import com.mplus.system.service.OrgService;
-import com.mplus.system.service.UserService;
-import com.mplus.common.vo.PageVo;
+import com.mplus.system.enums.RuleCode;
+import com.mplus.system.enums.UserStatus;
+import com.mplus.system.repo.CodeRuleRepository;
+import com.mplus.system.repo.OrgRepository;
+import com.mplus.system.repo.UserRepository;
 import com.mplus.system.vo.UserVo;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -32,6 +38,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -44,8 +51,9 @@ import java.util.Map;
 @AllArgsConstructor
 public class UserController {
 
-	private final UserService userService;
-	private final OrgService orgService;
+	private final UserRepository userRepository;
+	private final OrgRepository orgRepository;
+	private final CodeRuleRepository codeRuleRepository;
 
 	@SneakyThrows
     @PostMapping(value = "/users")
@@ -53,39 +61,56 @@ public class UserController {
     	User user = new User();
         MBeanUtils.copyPropertiesIgnoreNull(userVo, user);
 
-    	Org org = orgService.findOneByOrgId(userVo.getOrgId());
+    	Org org = orgRepository.findOneByOrgId(userVo.getOrgId(), DataState.NORMAL.code());
     	user.setOrg(org);
-		userService.saveUser(user);
+
+		if (!StringUtils.isEmpty(user.getId())) {
+			throw new RuntimeException("object id is not null or empty");
+		}
+		if (StringUtils.isEmpty(user.getOrg().getOrgId())) {
+			throw new RuntimeException("org id is null");
+		}
+		String userId = codeRuleRepository.getSerial(RuleCode.USER);
+		user.setUserId(userId);
+
+		//对用户进行散列加密
+//		String hashPassword = new BCryptPasswordEncoder().encode("123456");
+//		user.setPassword(hashPassword);
+		user.setPassword("123456");
+		user.setUserStatus(UserStatus.ENABLE.code());
+		userRepository.save(user);
+
 		return Result.success(user.getUserId());
 	}
 
 	@SneakyThrows
-	@PutMapping(value = "/users/{userName}")
-	public Result<User> update(@RequestBody UserVo userVo, @PathVariable String userName) {
-    	User user = userService.findByUsername(userName);
+	@PutMapping(value = "/users/{userId}")
+	public Result<String> update(@RequestBody UserVo userVo, @PathVariable String userId) {
+    	User user = userRepository.findByUserId(userId, DataState.NORMAL.code());
     	MBeanUtils.copyPropertiesIgnoreNull(userVo, user);
     	if(StringUtils.isNotBlank(userVo.getOrgId())) {
-    		Org org = orgService.findOneByOrgId(userVo.getOrgId());
+    		Org org = orgRepository.findOneByOrgId(userVo.getOrgId(), DataState.NORMAL.code());
     		user.setOrg(org);
 		} else {
     		throw new RuntimeException("org id is null");
 		}
-		userService.update(user);
-		return Result.success(null);
+		userRepository.save(user);
+		return Result.success(user.getUserId());
 	}
 
 	@SneakyThrows
-	@DeleteMapping(value = "/users/{userName}")
-	public Result<User> remove(@PathVariable String userName) {
-		User user = userService.findByUsername(userName);
-		userService.delete(user);
-		return Result.success(null);
+	@DeleteMapping(value = "/users/{userId}")
+	public Result<String> remove(@PathVariable String userId) {
+		User user = userRepository.findByUserId(userId, DataState.NORMAL.code());
+		user.setDataState(DataState.DELETED.code());
+		userRepository.save(user);
+		return Result.success(user.getUserId());
 	}
 
 	@SneakyThrows
-	@GetMapping(value = "/users/{userName}")
-	public Result<UserVo> getUserByUsername(@PathVariable String userName) {
-		User user = userService.findByUsername(userName);
+	@GetMapping(value = "/users/{userId}")
+	public Result<UserVo> getUserByUsername(@PathVariable String userId) {
+		User user = userRepository.findByUserId(userId, DataState.NORMAL.code());
 		UserVo userVo = new UserVo();
 		MBeanUtils.copyPropertiesIgnoreNull(user, userVo);
 		userVo.setOrgId(user.getOrg().getOrgId());
@@ -96,7 +121,7 @@ public class UserController {
 	@SneakyThrows
 	@GetMapping(value = "/orgs/{orgId}/users")
 	public Result<List<UserVo>> listByOrg(@PathVariable String orgId) {
-		List<User> users = userService.findByOrgId(orgId);
+		List<User> users = userRepository.findByOrg(orgId, DataState.NORMAL.code());
 		List<UserVo> userVos = new ArrayList<>();
 		UserVo userVo = null;
 		for (User user: users) {
@@ -115,8 +140,12 @@ public class UserController {
 			@RequestParam int pageNumber,
 			@RequestParam int pageSize,
 			@RequestParam(required=false) String userName) {
-		Map<String, Object> searchParams = new HashMap<>();
-		if(StringUtils.isNotBlank(userName)) searchParams.put("userName:like", userName);
+		List<QueryParam> searchParams = new ArrayList<>();
+		QueryParam param = null;
+		if(StringUtils.isNotBlank(userName)) {
+			param = new QueryParam("userName", QueryTypeEnum.like, userName);
+			searchParams.add(param);
+		}
 		
 		List<String> properties = new ArrayList<>();
 		properties.add("createTime"); //默认排序条件
@@ -124,7 +153,9 @@ public class UserController {
 
 		// pageable的页号是从0开始计算，因此根据传入的页号-1
 		Pageable pageable = PageRequest.of(pageNumber-1, pageSize, new Sort(direction, properties));
-		Page<User> users = userService.findPage(searchParams, pageable);
+		Specification<User> spec = JpaUtils.buildSpecification(searchParams);
+		Page<User> users = userRepository.findAll(spec, pageable);
+
 		PageVo<UserVo> pageUsers = new PageVo<>();
 		pageUsers.setTotalElements(users.getTotalElements());
 		pageUsers.setTotalPages(users.getTotalPages());

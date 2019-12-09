@@ -81,7 +81,7 @@ public interface BaseService<T, ID extends Serializable> {
 	 * @param params {"username:like":"test"} 键的格式为字段名:过滤方式,过滤方式见{@code QueryTypeEnum}
 	 * @return
 	 */
-	List<T> find(@Nullable Map<String, Object> params);
+	List<T> findAll(@Nullable Map<String, Object> params);
 	
 	/**
 	 * 分页多条件查询
@@ -99,5 +99,5 @@ public interface BaseService<T, ID extends Serializable> {
 	 * @param sort must not be {@literal null}.
 	 * @return never {@literal null}.
 	 */
-	List<T> find(@Nullable Map<String, Object> params, Sort sort);
+	List<T> findAll(@Nullable Map<String, Object> params, Sort sort);
 }

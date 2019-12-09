@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-package com.mplus.system.service;
+package com.mplus.system.vo;
 
-import java.util.List;
+import lombok.Data;
 
-import com.mplus.system.entity.Role;
-import com.mplus.system.entity.User;
-import com.mplus.common.service.BaseService;
-
-public interface UserService extends BaseService<User, String> {
-
-	User saveUser(User user);
-	
-	User findByUsername(String username);
-	
-	List<User> findByOrgId(String orgId);
-	
-	User findOneByCode(String userCode);
-	
-	List<User> findByRole(Role role);
+/**
+ * OrgVo
+ *
+ * @author wuwj [254513235@qq.com]
+ * @since 1.0
+ */
+@Data
+public class OrgVo {
+    private String orgId;
+    private String orgName;
+    private String fullName;
+    private String parentOrgId;
+    private String parentOrgName;
+    private String remark;
 }
