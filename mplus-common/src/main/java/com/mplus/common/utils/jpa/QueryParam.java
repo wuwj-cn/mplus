@@ -18,6 +18,8 @@ package com.mplus.common.utils.jpa;
 
 import lombok.Data;
 
+import javax.persistence.criteria.JoinType;
+
 /**
  * QueryParam
  *
@@ -26,6 +28,8 @@ import lombok.Data;
  */
 @Data
 public class QueryParam {
+    private Class joinObject;
+    private JoinType joinType;
     private String name;
     private QueryType queryType;
     private Object value;
@@ -36,7 +40,19 @@ public class QueryParam {
         this.value = value;
     }
 
+    private QueryParam(Class joinObject, JoinType joinType, String name, QueryType queryType, Object value){
+        this.joinObject = joinObject;
+        this.joinType = joinType;
+        this.name = name;
+        this.queryType = queryType;
+        this.value = value;
+    }
+
     public static QueryParam build(String name, QueryType queryType, Object value) {
         return new QueryParam(name, queryType, value);
+    }
+
+    public static QueryParam build(Class joinObject, JoinType joinType, String name, QueryType queryType, Object value) {
+        return new QueryParam(joinObject, joinType, name, queryType, value);
     }
 }

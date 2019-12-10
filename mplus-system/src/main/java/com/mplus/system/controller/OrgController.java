@@ -21,11 +21,14 @@ import com.mplus.common.utils.MBeanUtils;
 import com.mplus.common.utils.jpa.JpaUtils;
 import com.mplus.common.utils.jpa.QueryParam;
 import com.mplus.common.utils.jpa.QueryType;
+import com.mplus.common.utils.tree.entity.TreeNode;
 import com.mplus.system.entity.Org;
 import com.mplus.system.repo.OrgRepository;
 import com.mplus.system.vo.OrgVo;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +44,7 @@ public class OrgController {
 	private OrgRepository orgRepository;
 
 	@PostMapping(value = "/orgs")
+	@SneakyThrows
 	public Result<String> add(@RequestBody OrgVo orgVo) {
 		Org org = new Org();
 		MBeanUtils.copyPropertiesIgnoreNull(orgVo, org);
@@ -48,10 +52,13 @@ public class OrgController {
 		if (!StringUtils.isEmpty(org.getId())) {
 			throw new RuntimeException("object id is not null or empty");
 		}
-		if(StringUtils.isEmpty(org.getParentOrgId())) {
-			org.setParentOrgId(Org.ROOT_ORG_ID);
+		String parentOrgId = orgVo.getParentOrgId();
+		if(StringUtils.isEmpty(parentOrgId)) {
+			parentOrgId = Org.ROOT_ORG_ID;
 		}
-		org.setOrgId(generateMaxOrgId(org.getParentOrgId()));
+		Org parentOrg = orgRepository.findOneByOrgId(parentOrgId, DataState.NORMAL.code());
+		org.setParentOrg(parentOrg);
+		org.setOrgId(generateMaxOrgId(org.getParentOrg().getOrgId()));
 		orgRepository.save(org);
 
 		return Result.success(org.getOrgId());
@@ -63,6 +70,7 @@ public class OrgController {
 	 * @param parentOrgId 上级机构ID
 	 * @return 当前可用的下级机构最大ID
 	 */
+	@SneakyThrows
 	private String generateMaxOrgId(String parentOrgId) {
 		List<Org> orgs = orgRepository.findOrgsByParent(parentOrgId, DataState.NORMAL.code());
 		if(orgs.isEmpty()) {
@@ -84,10 +92,11 @@ public class OrgController {
 		} else {
 			temp = temp.concat(String.valueOf(maxOrgId + 1));
 		}
-		return parentOrgId.concat(temp);
+		return parentOrgId.equals(Org.ROOT_ORG_ID) ? temp : parentOrgId.concat(temp);
 	}
 
 	@PutMapping(value = "/orgs/{orgId}")
+	@SneakyThrows
 	public Result<Object> update(@PathVariable String orgId, @RequestBody OrgVo orgVo) {
 		Org org = orgRepository.findOneByOrgId(orgId, DataState.NORMAL.code());
 		MBeanUtils.copyPropertiesIgnoreNull(orgVo, org);
@@ -96,6 +105,7 @@ public class OrgController {
 	}
 
 	@DeleteMapping(value = "/orgs/{orgId}")
+	@SneakyThrows
 	public Result<Object> delete(@PathVariable String orgId) {
 		List<QueryParam> searchParams = new ArrayList<>();
 		QueryParam param = null;
@@ -109,23 +119,66 @@ public class OrgController {
 	}
 
 	@GetMapping(value = "/orgs/{orgId}/children")
+	@SneakyThrows
 	public Result<List<OrgVo>> findOrgsByParent(@PathVariable String orgId) {
-		List<QueryParam> searchParams = new ArrayList<>();
-		searchParams.add(QueryParam.build("parentOrgId", QueryType.eq, orgId));
-		searchParams.add(QueryParam.build("dataState", QueryType.eq, DataState.NORMAL.code()));
-
-		Specification<Org> spec = JpaUtils.buildSpecification(searchParams);
-		List<Org> orgs = orgRepository.findAll(spec, Sort.by("orgId"));
-
-		List<OrgVo> orgVos = new ArrayList<>();
-		orgs.stream().forEach(org -> {
-			OrgVo orgVo = new OrgVo();
-			MBeanUtils.copyPropertiesIgnoreNull(org, orgVo);
-			Org parentOrg = orgRepository.findOneByOrgId(org.getParentOrgId(), DataState.NORMAL.code());
-			orgVo.setParentOrgName(parentOrg.getOrgName());
-			orgVos.add(orgVo);
-		});
+		List<OrgVo> orgVos = this.getOrgVosByParent(orgId);
 		return Result.success(orgVos);
 	}
 
+	@GetMapping(value = "/orgs/{orgId}")
+	@SneakyThrows
+	public Result<OrgVo> findOrg(@PathVariable String orgId) {
+		Org org = orgRepository.findOneByOrgId(orgId, DataState.NORMAL.code());
+
+		OrgVo orgVo = new OrgVo();
+		MBeanUtils.copyPropertiesIgnoreNull(org, orgVo);
+		orgVo.setParentOrgId(org.getParentOrg().getOrgId());
+		orgVo.setParentOrgName(org.getParentOrg().getOrgName());
+		return Result.success(orgVo);
+	}
+
+	@GetMapping(value = "/orgs/{orgId}/tree")
+	public Result<OrgVo> findAllOrgs(@PathVariable String orgId) {
+		Org _org = new Org();
+		_org.setOrgId(orgId);
+		Org root = orgRepository.findOne(Example.of(_org)).get();
+		OrgVo rootVo = new OrgVo();
+		MBeanUtils.copyPropertiesIgnoreNull(root, rootVo);
+		rootVo.setParentOrgId(root.getParentOrg().getOrgId());
+		rootVo.setParentOrgName(root.getParentOrg().getOrgName());
+		buildOrgTree(rootVo);
+		return Result.success(rootVo);
+	}
+
+	private void buildOrgTree(OrgVo root) {
+		List<OrgVo> orgVos = this.getOrgVosByParent(root.getOrgId());
+		orgVos.stream().forEach(orgVo -> {
+			buildOrgTree(orgVo);
+		});
+		root.setChildren(orgVos);
+	}
+
+	/**
+	 * 根据上级机构ID查找构建下属的orgVo
+	 *
+	 * @param parentOrgId 上级机构ID
+	 * @return 下属的orgVo列表
+	 */
+	private List<OrgVo> getOrgVosByParent(String parentOrgId) {
+		Org parentOrg = new Org();
+		parentOrg.setOrgId(parentOrgId);
+		Org _org = new Org();
+		_org.setParentOrg(parentOrg);
+		_org.setDataState(DataState.NORMAL.code());
+		List<Org> children = orgRepository.findAll(Example.of(_org), Sort.by("orgId"));
+		List<OrgVo> orgVos = new ArrayList<>();
+		children.stream().forEach(org -> {
+			OrgVo orgVo = new OrgVo();
+			MBeanUtils.copyPropertiesIgnoreNull(org, orgVo);
+			orgVo.setParentOrgId(org.getParentOrg().getOrgId());
+			orgVo.setParentOrgName(org.getParentOrg().getOrgName());
+			orgVos.add(orgVo);
+		});
+		return orgVos;
+	}
 }

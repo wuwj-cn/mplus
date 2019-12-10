@@ -18,6 +18,8 @@ package com.mplus.system.vo;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * OrgVo
  *
@@ -32,4 +34,5 @@ public class OrgVo {
     private String parentOrgId;
     private String parentOrgName;
     private String remark;
+    private List<OrgVo> children;
 }

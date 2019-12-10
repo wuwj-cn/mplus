@@ -18,9 +18,7 @@ package com.mplus.system.entity;
 import com.mplus.common.entity.BaseEntity;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author wuwj
@@ -32,7 +30,7 @@ public class Org extends BaseEntity {
 
     public static final String ROOT_ORG_ID = "0";
 
-    @Column(length = 32, nullable = false, unique = true)
+    @Column(name = "org_id", length = 32, nullable = false, unique = true)
     private String orgId;
 
     @Column(length = 50, nullable = false)
@@ -41,8 +39,9 @@ public class Org extends BaseEntity {
     @Column(length = 100)
     private String fullName;
 
-    @Column(length = 32)
-    private String parentOrgId;
+    @ManyToOne
+    @JoinColumn(name = "parent_org_id", referencedColumnName = "org_id")
+    private Org parentOrg;
 
     @Column(length = 255)
     private String remark;

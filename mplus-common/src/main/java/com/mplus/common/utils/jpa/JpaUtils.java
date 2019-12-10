@@ -16,13 +16,10 @@
 package com.mplus.common.utils.jpa;
 
 import com.mplus.common.entity.BaseEntity;
-import com.mplus.common.enums.DataState;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,7 +36,6 @@ public class JpaUtils<T extends BaseEntity> {
         Specification<T> spec = (Specification<T>) (root, query, cb) -> {
             List<Predicate> list = new ArrayList<>();
             Predicate predicate = null;
-            boolean containStatusKey = false;
             for (QueryParam param : params) {
                 Object value = param.getValue();
                 if (value == null || StringUtils.isBlank(value.toString())) {
@@ -47,14 +43,7 @@ public class JpaUtils<T extends BaseEntity> {
                 }
                 predicate = getPredicate(param, root, cb);
                 list.add(predicate);
-//                if (param.getName().equals("dataState")) containStatusKey = true;
             }
-            //查询条件默认增加dataStatus的条件，默认dataStatus="0"
-//            if (!containStatusKey) {
-//                QueryParam param = QueryParam.build("dataState", QueryTypeEnum.eq, DataState.NORMAL.code());
-//                predicate = getPredicate(param, root, cb);
-//            }
-            list.add(predicate);
             Predicate[] p = new Predicate[list.size()];
             return cb.and(list.toArray(p));
         };

@@ -74,9 +74,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 SerializerFeature.WriteMapNullValue,
                 SerializerFeature.WriteNullStringAsEmpty
         );
-
         // 处理中文乱码问题(不然出现中文乱码)
-        List<MediaType> fastMediaTypes = new ArrayList<MediaType>();
+        List<MediaType> fastMediaTypes = new ArrayList<>();
         fastMediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
         fastConverter.setSupportedMediaTypes(fastMediaTypes);
 
