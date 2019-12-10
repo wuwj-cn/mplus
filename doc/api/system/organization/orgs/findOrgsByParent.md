@@ -34,12 +34,12 @@ GET http://{Endpoint}/system/v1/orgs/01/children
 ##### Org结构体说明
 | 名称 | 参数类型 | 说明 |
 | --- | --- | --- |
-| orgId | String | 用户ID |
-| orgName | String | 用户名 |
-| fullName | String | 用户昵称 |
-| parentOrgId | String | 用户账号 |
-| parentOrgName | String | 邮箱 |
-| remark | String | 手机号 |
+| orgId | String | 机构ID|
+| orgName | String | 机构简称 |
+| fullName | String | 机构全称 |
+| parentOrgId | String | 上级机构ID |
+| parentOrgName | String | 上级机构简称 |
+| remark | String | 备注 |
 
 #### 响应样例
 ##### 正常响应
@@ -54,10 +54,18 @@ GET http://{Endpoint}/system/v1/orgs/01/children
 			"parentOrgId": "01",
 			"parentOrgName": "test",
 			"remark": ""
+		},
+		{
+			"fullName": "0101",
+			"orgId": "0103",
+			"orgName": "0103",
+			"parentOrgId": "01",
+			"parentOrgName": "test",
+			"remark": ""
 		}
 	],
 	"message": "success",
-	"request_id": "f9531cd905bb4badbac97a336504538b"
+	"request_id": "5777834aa60347ab8c99e0f25fe65efa"
 }
 ```
 ##### 异常响应
