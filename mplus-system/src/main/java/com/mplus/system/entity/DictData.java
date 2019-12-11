@@ -20,30 +20,26 @@ import com.mplus.common.entity.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
- * Dict
+ * DictData
  *
  * @author wuwj [254513235@qq.com]
  * @since 1.0
  */
 @Data
 @Entity
-@Table(name = "mp_sys_dict")
-public class Dict extends BaseEntity {
+@Table(name = "mp_sys_dict_data")
+public class DictData extends BaseEntity {
     @Column(length = 50, nullable = false)
-    private String dictName;
+    private String dictLabel;
 
     @Column(length = 50, nullable = false)
-    private String dictType;
+    private String dictValue;
 
     @Column(nullable = false)
     private Boolean buildIn;
 
-    @Column(length = 255)
-    private String remark;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "dict")
-    private List<DictData> dictDataList;
+    @ManyToOne
+    private Dict dict;
 }

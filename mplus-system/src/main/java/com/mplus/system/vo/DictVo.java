@@ -14,36 +14,26 @@
  * limitations under the License.
  */
 
-package com.mplus.system.entity;
+package com.mplus.system.vo;
 
-import com.mplus.common.entity.BaseEntity;
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
-import javax.persistence.*;
 import java.util.List;
 
 /**
- * Dict
+ * DictVo
  *
  * @author wuwj [254513235@qq.com]
  * @since 1.0
  */
 @Data
-@Entity
-@Table(name = "mp_sys_dict")
-public class Dict extends BaseEntity {
-    @Column(length = 50, nullable = false)
+public class DictVo {
+    @JSONField(name = "dictId")
+    private String id;
     private String dictName;
-
-    @Column(length = 50, nullable = false)
     private String dictType;
-
-    @Column(nullable = false)
     private Boolean buildIn;
-
-    @Column(length = 255)
     private String remark;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "dict")
-    private List<DictData> dictDataList;
+    private List dictDataList;
 }
