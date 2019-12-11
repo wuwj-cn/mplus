@@ -25,7 +25,7 @@ GET http://{Endpoint}/system/v1/orgs/1/users/page?pageNumber=1&pageSize=20&userN
 #### 要素说明
 | 名称 | 参数类型 | 说明 |
 | --- | --- | --- |
-| data | Page<User>结构体 | 请参见 [Page结构体说明](#page结构体说明) |
+| data | Page&#60;User&#62;结构体 | 请参见 [Page结构体说明](#page结构体说明) |
 
 详细请参考 [响应结果说明](../../../common/response/result.md#要素说明)  
 
@@ -36,7 +36,7 @@ GET http://{Endpoint}/system/v1/orgs/1/users/page?pageNumber=1&pageSize=20&userN
 | totalPages | int | 总页数 |
 | pageNumber | int | 当前页号 |
 | pageSize | int | 每页大小 |
-| users | User结构体数组 | 请参见 [User结构体说明](#user结构体说明) |
+| content | User结构体数组 | 请参见 [User结构体说明](#user结构体说明) |
 
 ##### User结构体说明
 | 名称 | 参数类型 | 说明 |
