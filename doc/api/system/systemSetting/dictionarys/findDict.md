@@ -27,7 +27,7 @@ PUT http://{Endpoint}/system/v1/dicts/{dictId}
 #### 要素说明
 | 名称 | 参数类型 | 说明 |
 | --- | --- | --- |
-| data | Dict结构体 | 请参见 [Dict结构体说明](#dict结构体说明)  |
+| data | Dict结构体 | 请参见 [Dict结构体说明](#dict结构体说明) |
 
 详细请参考 [响应结果说明](../../../common/response/result.md#要素说明)  
 
@@ -38,6 +38,7 @@ PUT http://{Endpoint}/system/v1/dicts/{dictId}
 | dictName | String | 字典名称 |
 | dictType | String | 字典类型 |
 | buildIn | boolean | 是否系统内置 |
+| status | String | 状态，正常 or 停用 |
 | remark | String | 备注 |
 
 #### 响应样例

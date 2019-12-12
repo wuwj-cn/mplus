@@ -44,7 +44,11 @@ http://localhost:9002/system/v1/dicts?pageNumber=1&pageSize=10
 | dictName | String | 字典名称 |
 | dictType | String | 字典类型 |
 | buildIn | boolean | 是否系统内置 |
+| status | String | 状态，正常 or 停用 |
 | remark | String | 备注 |
+| dataState | String | 数据状态，正常 or 删除 |
+| createTime | String | 创建时间 |
+| modifyTime | String | 更新时间 |
 
 #### 响应样例
 ##### 正常响应
@@ -55,11 +59,14 @@ http://localhost:9002/system/v1/dicts?pageNumber=1&pageSize=10
 		"content": [
 			{
 				"buildIn": true,
-				"dictDataList": [],
-				"dictId": "402809816ef44827016ef44f7d1c0000",
+				"createTime": "2019-12-12 15:45:07",
+				"dataState": "0",
+				"dictId": "402809816ef90f69016ef9118af30000",
 				"dictName": "数据状态",
 				"dictType": "common_data_state",
-				"remark": ""
+				"modifyTime": "2019-12-12 15:45:07",
+				"remark": "",
+				"status": "0"
 			}
 		],
 		"pageNumber": 1,
@@ -68,7 +75,7 @@ http://localhost:9002/system/v1/dicts?pageNumber=1&pageSize=10
 		"totalPages": 1
 	},
 	"message": "success",
-	"request_id": "7361eff3bf694743a0e8da748bb15a28"
+	"request_id": "e381bc80d00a43bbb1190c20e9e490f6"
 }
 ```
 ##### 异常响应
