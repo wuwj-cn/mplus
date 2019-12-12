@@ -90,6 +90,7 @@ public class DictDataController {
     private DictData findOne(String dictId, String dictDataId) {
         DictData dictData = new DictData();
         dictData.setId(dictDataId);
+        dictData.setDataState(DataState.NORMAL.code());
         dictData = dictDataRepository.findOne(Example.of(dictData)).get();
         if(!dictId.equals(dictData.getDict().getId())) {
             throw new RuntimeException(String.format("this object is not belong to [%s]", dictId));
