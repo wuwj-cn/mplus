@@ -20,20 +20,18 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.mplus.common.vo.BaseVo;
 import lombok.Data;
 
-import java.util.List;
-
 /**
- * DictVo
+ * DictDataVo
  *
  * @author wuwj [254513235@qq.com]
  * @since 1.0
  */
 @Data
-public class DictVo extends BaseVo {
-    @JSONField(name = "dictId")
+public class DictDataVo extends BaseVo {
+    @JSONField(name = "dictDataId")
     private String id;
-    private String dictName;
-    private String dictType;
+    private String dictLabel;
+    private String dictValue;
     private Boolean buildIn;
     private String status;
     private String remark;

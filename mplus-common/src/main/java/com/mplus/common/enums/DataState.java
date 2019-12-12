@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public enum DataState {
-	NORMAL("0", "正常"), DELETED("1", "删除"), DISABLED("2", "停用");
+	NORMAL("0", "正常"), DELETED("1", "删除");
 
 	private String code;
 	private String name;

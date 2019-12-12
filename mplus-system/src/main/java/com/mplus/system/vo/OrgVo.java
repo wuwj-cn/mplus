@@ -16,6 +16,7 @@
 
 package com.mplus.system.vo;
 
+import com.mplus.common.vo.BaseVo;
 import lombok.Data;
 
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.List;
  * @since 1.0
  */
 @Data
-public class OrgVo {
+public class OrgVo extends BaseVo {
     private String orgId;
     private String orgName;
     private String fullName;

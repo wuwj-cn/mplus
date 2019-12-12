@@ -14,27 +14,32 @@
  * limitations under the License.
  */
 
-package com.mplus.system.vo;
-
-import com.alibaba.fastjson.annotation.JSONField;
-import com.mplus.common.vo.BaseVo;
-import lombok.Data;
-
-import java.util.List;
+package com.mplus.common.enums;
 
 /**
- * DictVo
+ * Status
  *
  * @author wuwj [254513235@qq.com]
  * @since 1.0
  */
-@Data
-public class DictVo extends BaseVo {
-    @JSONField(name = "dictId")
-    private String id;
-    private String dictName;
-    private String dictType;
-    private Boolean buildIn;
-    private String status;
-    private String remark;
+public enum Status {
+
+    ENABLE("0", "启用"),
+    DISABLE("1", "停用");
+
+    private String code;
+    private String name;
+
+    private Status(String code, String name) {
+        this.code = code;
+        this.name = name;
+    }
+
+    public String code() {
+        return code;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

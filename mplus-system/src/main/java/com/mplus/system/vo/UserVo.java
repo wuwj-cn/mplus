@@ -16,6 +16,7 @@
 
 package com.mplus.system.vo;
 
+import com.mplus.common.vo.BaseVo;
 import lombok.Data;
 
 /**
@@ -25,7 +26,7 @@ import lombok.Data;
  * @since 1.0
  */
 @Data
-public class UserVo {
+public class UserVo extends BaseVo {
     private String userId;
     private String userName;
     private String nickName;

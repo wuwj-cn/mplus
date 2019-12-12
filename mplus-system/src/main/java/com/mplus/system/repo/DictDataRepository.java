@@ -14,27 +14,18 @@
  * limitations under the License.
  */
 
-package com.mplus.system.vo;
+package com.mplus.system.repo;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.mplus.common.vo.BaseVo;
-import lombok.Data;
-
-import java.util.List;
+import com.mplus.common.repo.BaseRepository;
+import com.mplus.system.entity.DictData;
+import org.springframework.stereotype.Repository;
 
 /**
- * DictVo
+ * DictDataRepository
  *
  * @author wuwj [254513235@qq.com]
  * @since 1.0
  */
-@Data
-public class DictVo extends BaseVo {
-    @JSONField(name = "dictId")
-    private String id;
-    private String dictName;
-    private String dictType;
-    private Boolean buildIn;
-    private String status;
-    private String remark;
+@Repository
+public interface DictDataRepository extends BaseRepository<DictData, String> {
 }

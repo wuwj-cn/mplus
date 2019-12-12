@@ -40,6 +40,9 @@ public class DictData extends BaseEntity {
     @Column(nullable = false)
     private Boolean buildIn;
 
+    @Column(nullable = false)
+    private String status;
+
     @ManyToOne
     private Dict dict;
 }

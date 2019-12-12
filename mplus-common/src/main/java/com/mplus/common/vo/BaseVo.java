@@ -14,27 +14,26 @@
  * limitations under the License.
  */
 
-package com.mplus.system.vo;
+package com.mplus.common.vo;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.mplus.common.vo.BaseVo;
 import lombok.Data;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 /**
- * DictVo
+ * BaseVo
  *
  * @author wuwj [254513235@qq.com]
  * @since 1.0
  */
 @Data
-public class DictVo extends BaseVo {
-    @JSONField(name = "dictId")
-    private String id;
-    private String dictName;
-    private String dictType;
-    private Boolean buildIn;
-    private String status;
-    private String remark;
+public class BaseVo {
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createTime; // 插入时间
+
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime modifyTime; // 修改时间
+
+    private String dataState; // 状态, 0正常 1删除 2停用
 }

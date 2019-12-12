@@ -41,6 +41,9 @@ public class Dict extends BaseEntity {
     @Column(nullable = false)
     private Boolean buildIn;
 
+    @Column(nullable = false)
+    private String status;
+
     @Column(length = 255)
     private String remark;
 

@@ -17,11 +17,13 @@
 package com.mplus.system.controller;
 
 import com.mplus.common.enums.DataState;
+import com.mplus.common.enums.Status;
 import com.mplus.common.response.Result;
 import com.mplus.common.utils.MBeanUtils;
 import com.mplus.common.vo.PageVo;
 import com.mplus.system.entity.Dict;
 import com.mplus.system.repo.DictRepository;
+import com.mplus.system.vo.DictDataVo;
 import com.mplus.system.vo.DictVo;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -49,6 +51,7 @@ public class DictController {
     public Result<String> addDict(@RequestBody DictVo dictVo) {
         Dict dict = new Dict();
         MBeanUtils.copyPropertiesIgnoreNull(dictVo, dict);
+        dict.setStatus(Status.ENABLE.code());
         dictRepository.save(dict);
         return Result.success(dict.getId());
     }
@@ -60,6 +63,9 @@ public class DictController {
         dict.setId(dictId);
         dict.setDataState(DataState.NORMAL.code());
         dict = dictRepository.findOne(Example.of(dict)).get();
+        if(dict.getBuildIn()) {
+            throw new RuntimeException("this object is build-in, it's not allow to update");
+        }
         MBeanUtils.copyPropertiesIgnoreNull(dictVo, dict);
         dictRepository.save(dict);
         return Result.success(dict.getId());
@@ -80,7 +86,7 @@ public class DictController {
         return Result.success(dict.getId());
     }
 
-    @GetMapping(value = "/dicts")
+    @GetMapping(value = "/dicts/page")
     public Result<PageVo<DictVo>> findPageDicts(
             @RequestParam int pageNumber,
             @RequestParam int pageSize,
@@ -119,5 +125,16 @@ public class DictController {
         });
         pageVo.setContent(dictVos);
         return Result.success(pageVo);
+    }
+
+    @GetMapping(value = "/dicts/{dictId}")
+    public Result<DictVo> findDict(@PathVariable String dictId) {
+        Dict dict = new Dict();
+        dict.setId(dictId);
+        dict.setDataState(DataState.NORMAL.code());
+        dict = dictRepository.findOne(Example.of(dict)).get();
+        DictVo dictVo = new DictVo();
+        MBeanUtils.copyPropertiesIgnoreNull(dict, dictVo);
+        return Result.success(dictVo);
     }
 }
