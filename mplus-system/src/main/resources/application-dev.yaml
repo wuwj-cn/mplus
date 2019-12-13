@@ -14,6 +14,20 @@ spring:
       url: jdbc:mysql://123.207.61.221:3306/mplus?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=GMT%2B8
       username: mplus
       password: LWcQ&@"YTKm`b4r:gwNo
+      platform: mysql
+      # 启动时需要初始化的建表语句
+      # schema: classpath:schema-mysql.sql
+      #初始化的数据
+      data: classpath:sql/data-mysql.sql
+      # Initialize the datasource with available DDL and DML scripts.
+      initialization-mode: always # always, embedded, never
+      continue-on-error: false
+      #data-password:
+      #data-username:
+      #schema-password:
+      #schema-username:
+      sql-script-encoding: utf-8
+      separator: ;
    druid:
       initialSize: 5 #初始化连接大小
       minIdle: 5 #最小连接池数量
