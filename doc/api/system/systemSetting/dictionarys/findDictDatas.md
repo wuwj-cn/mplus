@@ -5,12 +5,12 @@
 
 ### URI
 #### URI格式  
-GET /system/v1/dicts/{dictId}/data
+GET /system/v1/dicts/{dictType}/data
 
 #### 参数说明  
 | 名称 | 是否必选 | 参数类型 | 说明 |
 | --- | --- | --- | --- |
-| dictId | 是 | String | 字典ID |
+| dictType | 是 | String | 字典类型 |
 
 ### 请求消息
 #### 参数说明  
@@ -18,7 +18,7 @@ GET /system/v1/dicts/{dictId}/data
 
 #### 请求样例  
 ```
-GET http://{Endpoint}/system/v1/dicts/402809816ef90f69016ef9118af30000/data
+GET http://{Endpoint}/system/v1/dicts/common_date_state/data
 ```
 ##### 请求body样例
 无
@@ -52,18 +52,18 @@ GET http://{Endpoint}/system/v1/dicts/402809816ef90f69016ef9118af30000/data
 	"data": [
 		{
 			"buildIn": true,
-			"createTime": "2019-12-12 15:48:04",
+			"createTime": "2019-12-13 11:30:40",
 			"dataState": "0",
-			"dictDataId": "402809816ef90f69016ef914400a0001",
-			"dictLabel": "正常-test",
+			"dictDataId": "402809816efd4cb0016efd4ef3980002",
+			"dictLabel": "正常",
 			"dictValue": "0",
-			"modifyTime": "2019-12-12 16:10:02",
+			"modifyTime": "2019-12-13 11:30:40",
 			"remark": "",
 			"status": "0"
 		}
 	],
 	"message": "success",
-	"request_id": "6c11e46cdf9b4b72b33b140a86152968"
+	"request_id": "fc4bce7e81ad4f9ebfe091986eae897e"
 }
 ```
 ##### 异常响应

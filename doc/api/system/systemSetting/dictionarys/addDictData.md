@@ -5,12 +5,12 @@
 
 ### URI
 #### URI格式  
-POST /system/v1/dicts/{dictId}/data
+POST /system/v1/dicts/{dictType}/data
 
 #### 参数说明  
 | 名称 | 是否必选 | 参数类型 | 说明 |
 | --- | --- | --- | --- |
-| dictId | 是 | String | 字典ID |
+| dictType | 是 | String | 字典类型 |
 
 ### 请求消息
 #### 参数说明  
@@ -22,7 +22,7 @@ POST /system/v1/dicts/{dictId}/data
 | remark | 否 | String | 备注 |
 #### 请求样例  
 ```
-POST http://{Endpoint}/system/v1/dicts/402809816ef90f69016ef9118af30000/data
+POST http://{Endpoint}/system/v1/dicts/common_data_state/data
 ```
 ##### 请求body样例
 ```json

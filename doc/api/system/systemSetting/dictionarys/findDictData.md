@@ -5,12 +5,12 @@
 
 ### URI
 #### URI格式  
-GET /system/v1/dicts/{dictId}/data/{dictDataId}
+GET /system/v1/dicts/{dictType}/data/{dictDataId}
 
 #### 参数说明  
 | 名称 | 是否必选 | 参数类型 | 说明 |
 | --- | --- | --- | --- |
-| dictId | 是 | String | 字典ID |
+| dictType | 是 | String | 字典类型 |
 | dictDataId | 是 | String | 字典数据ID |
 
 ### 请求消息
@@ -19,7 +19,7 @@ GET /system/v1/dicts/{dictId}/data/{dictDataId}
 
 #### 请求样例  
 ```
-GET http://{Endpoint}/system/v1/dicts/402809816ef90f69016ef9118af30000/data/402809816ef90f69016ef914400a0001
+GET http://{Endpoint}/system/v1/dicts/common_data_state/data/402809816ef90f69016ef914400a0001
 ```
 ##### 请求body样例
 无
