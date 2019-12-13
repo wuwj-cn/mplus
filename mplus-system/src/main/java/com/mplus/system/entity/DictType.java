@@ -14,27 +14,39 @@
  * limitations under the License.
  */
 
-package com.mplus.system.vo;
+package com.mplus.system.entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.mplus.common.vo.BaseVo;
+import com.mplus.common.entity.BaseEntity;
 import lombok.Data;
 
+import javax.persistence.*;
 import java.util.List;
 
 /**
- * DictVo
+ * Dict
  *
  * @author wuwj [254513235@qq.com]
  * @since 1.0
  */
 @Data
-public class DictVo extends BaseVo {
-    @JSONField(name = "dictId")
-    private String id;
-    private String dictName;
-    private String dictType;
+@Entity
+@Table(name = "mp_sys_dict_type")
+public class DictType extends BaseEntity {
+    @Column(length = 32, nullable = false, unique = true)
+    private String typeCode;
+
+    @Column(length = 50, nullable = false)
+    private String typeName;
+
+    @Column(nullable = false)
     private Boolean buildIn;
+
+    @Column(nullable = false)
     private String status;
+
+    @Column(length = 255)
     private String remark;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "dictType")
+    private List<DictItem> dictItems;
 }

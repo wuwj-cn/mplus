@@ -17,7 +17,7 @@
 package com.mplus.system.repo;
 
 import com.mplus.common.repo.BaseRepository;
-import com.mplus.system.entity.Dict;
+import com.mplus.system.entity.DictType;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -27,5 +27,5 @@ import org.springframework.stereotype.Repository;
  * @since 1.0
  */
 @Repository
-public interface DictRepository extends BaseRepository<Dict, String> {
+public interface DictTypeRepository extends BaseRepository<DictType, String> {
 }

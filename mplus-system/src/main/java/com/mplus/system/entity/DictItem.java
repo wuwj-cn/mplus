@@ -29,13 +29,16 @@ import javax.persistence.*;
  */
 @Data
 @Entity
-@Table(name = "mp_sys_dict_data")
-public class DictData extends BaseEntity {
-    @Column(length = 50, nullable = false)
-    private String dictLabel;
+@Table(name = "mp_sys_dict_item")
+public class DictItem extends BaseEntity {
+    @Column(length = 50, nullable = false, unique = true)
+    private String itemCode;
 
     @Column(length = 50, nullable = false)
-    private String dictValue;
+    private String itemLabel;
+
+    @Column(length = 50, nullable = false)
+    private String itemValue;
 
     @Column(nullable = false)
     private Boolean buildIn;
@@ -44,5 +47,5 @@ public class DictData extends BaseEntity {
     private String status;
 
     @ManyToOne
-    private Dict dict;
+    private DictType dictType;
 }

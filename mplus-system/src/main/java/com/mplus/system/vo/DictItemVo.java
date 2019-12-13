@@ -27,12 +27,10 @@ import lombok.Data;
  * @since 1.0
  */
 @Data
-public class DictDataVo extends BaseVo {
-    @JSONField(name = "dictDataId")
-    private String id;
-    private String dictLabel;
-    private String dictValue;
+public class DictItemVo extends BaseVo {
+    private String itemCode;
+    private String itemLabel;
+    private String itemValue;
     private Boolean buildIn;
     private String status;
-    private String remark;
 }

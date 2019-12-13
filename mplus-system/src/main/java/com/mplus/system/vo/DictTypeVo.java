@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
-package com.mplus.system.repo;
+package com.mplus.system.vo;
 
-import com.mplus.common.repo.BaseRepository;
-import com.mplus.system.entity.DictData;
-import org.springframework.stereotype.Repository;
+import com.mplus.common.vo.BaseVo;
+import lombok.Data;
 
 /**
- * DictDataRepository
+ * DictVo
  *
  * @author wuwj [254513235@qq.com]
  * @since 1.0
  */
-@Repository
-public interface DictDataRepository extends BaseRepository<DictData, String> {
+@Data
+public class DictTypeVo extends BaseVo {
+    private String typeCode;
+    private String typeName;
+    private Boolean buildIn;
+    private String status;
+    private String remark;
 }

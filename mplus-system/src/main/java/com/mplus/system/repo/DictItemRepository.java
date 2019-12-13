@@ -14,39 +14,18 @@
  * limitations under the License.
  */
 
-package com.mplus.system.entity;
+package com.mplus.system.repo;
 
-import com.mplus.common.entity.BaseEntity;
-import lombok.Data;
-
-import javax.persistence.*;
-import java.util.List;
+import com.mplus.common.repo.BaseRepository;
+import com.mplus.system.entity.DictItem;
+import org.springframework.stereotype.Repository;
 
 /**
- * Dict
+ * DictDataRepository
  *
  * @author wuwj [254513235@qq.com]
  * @since 1.0
  */
-@Data
-@Entity
-@Table(name = "mp_sys_dict")
-public class Dict extends BaseEntity {
-    @Column(length = 50, nullable = false)
-    private String dictName;
-
-    @Column(length = 50, nullable = false)
-    private String dictType;
-
-    @Column(nullable = false)
-    private Boolean buildIn;
-
-    @Column(nullable = false)
-    private String status;
-
-    @Column(length = 255)
-    private String remark;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "dict")
-    private List<DictData> dictDataList;
+@Repository
+public interface DictItemRepository extends BaseRepository<DictItem, String> {
 }
