@@ -47,11 +47,11 @@ public class DictDataController {
     private DictRepository dictRepository;
     private DictDataRepository dictDataRepository;
 
-    @PostMapping(value = "/dicts/{dictId}/data")
+    @PostMapping(value = "/dicts/{dictType}/data")
     @SneakyThrows
-    public Result<String> addDictData(@PathVariable String dictId, @RequestBody DictDataVo dictDataVo) {
+    public Result<String> addDictData(@PathVariable String dictType, @RequestBody DictDataVo dictDataVo) {
         Dict dict = new Dict();
-        dict.setId(dictId);
+        dict.setDictType(dictType);
         dict.setDataState(DataState.NORMAL.code());
         dict = dictRepository.findOne(Example.of(dict)).get();
         DictData dictData = new DictData();
@@ -62,11 +62,11 @@ public class DictDataController {
         return Result.success(dictData.getId());
     }
 
-    @PutMapping(value = "/dicts/{dictId}/data/{dictDataId}")
+    @PutMapping(value = "/dicts/{dictType}/data/{dictDataId}")
     @SneakyThrows
-    public Result<String> updateDictData(@PathVariable String dictId, @PathVariable String dictDataId,
+    public Result<String> updateDictData(@PathVariable String dictType, @PathVariable String dictDataId,
                                          @RequestBody DictDataVo dictDataVo) {
-        DictData dictData = findOne(dictId, dictDataId);
+        DictData dictData = findOne(dictType, dictDataId);
         if(dictData.getBuildIn()) {
             throw new RuntimeException("this object is build-in, it's not allow to update");
         }
@@ -75,10 +75,10 @@ public class DictDataController {
         return Result.success(dictData.getId());
     }
 
-    @DeleteMapping(value = "/dicts/{dictId}/data/{dictDataId}")
+    @DeleteMapping(value = "/dicts/{dictType}/data/{dictDataId}")
     @SneakyThrows
-    public Result<String> deleteDictData(@PathVariable String dictId, @PathVariable String dictDataId) {
-        DictData dictData = findOne(dictId, dictDataId);
+    public Result<String> deleteDictData(@PathVariable String dictType, @PathVariable String dictDataId) {
+        DictData dictData = findOne(dictType, dictDataId);
         if(dictData.getBuildIn()) {
             throw new RuntimeException("this object is build-in, it's not allow to delete");
         }
@@ -87,22 +87,22 @@ public class DictDataController {
         return Result.success(dictData.getId());
     }
 
-    private DictData findOne(String dictId, String dictDataId) {
+    private DictData findOne(String dictType, String dictDataId) {
         DictData dictData = new DictData();
         dictData.setId(dictDataId);
         dictData.setDataState(DataState.NORMAL.code());
         dictData = dictDataRepository.findOne(Example.of(dictData)).get();
-        if(!dictId.equals(dictData.getDict().getId())) {
-            throw new RuntimeException(String.format("this object is not belong to [%s]", dictId));
+        if(!dictType.equals(dictData.getDict().getDictType())) {
+            throw new RuntimeException(String.format("this object is not belong to [%s]", dictType));
         }
         return dictData;
     }
 
-    @GetMapping(value = "/dicts/{dictId}/data")
+    @GetMapping(value = "/dicts/{dictType}/data")
     @SneakyThrows
-    public Result<List<DictDataVo>> findDictDatas(@PathVariable String dictId) {
+    public Result<List<DictDataVo>> findDictDatas(@PathVariable String dictType) {
         Dict dict = new Dict();
-        dict.setId(dictId);
+        dict.setDictType(dictType);
         DictData dictData = new DictData();
         dictData.setDataState(DataState.NORMAL.code());
         dictData.setDict(dict);
@@ -116,10 +116,10 @@ public class DictDataController {
         return Result.success(retList);
     }
 
-    @GetMapping(value = "/dicts/{dictId}/data/{dictDataId}")
+    @GetMapping(value = "/dicts/{dictType}/data/{dictDataId}")
     @SneakyThrows
-    public Result<DictDataVo> findDictData(@PathVariable String dictId, @PathVariable String dictDataId) {
-        DictData dictData = findOne(dictId, dictDataId);
+    public Result<DictDataVo> findDictData(@PathVariable String dictType, @PathVariable String dictDataId) {
+        DictData dictData = findOne(dictType, dictDataId);
         DictDataVo vo = new DictDataVo();
         MBeanUtils.copyPropertiesIgnoreNull(dictData, vo);
         return Result.success(vo);
