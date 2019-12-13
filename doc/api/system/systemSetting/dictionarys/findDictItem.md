@@ -1,17 +1,17 @@
-# 查询指定字典标签
+# 查询指定字典数据
 
 ### 功能说明
-查询指定字典下的指定的标签数据信息
+查询指定字典类型下的数据信息
 
 ### URI
 #### URI格式  
-GET /system/v1/dicts/{dictType}/data/{dictDataId}
+GET /system/v1/dict/types/{typeCode}/items/{itemCode}
 
 #### 参数说明  
 | 名称 | 是否必选 | 参数类型 | 说明 |
 | --- | --- | --- | --- |
-| dictType | 是 | String | 字典类型 |
-| dictDataId | 是 | String | 字典数据ID |
+| typeCode | 是 | String | 字典类型编码 |
+| itemCode | 是 | String | 字典数据编码 |
 
 ### 请求消息
 #### 参数说明  
@@ -19,7 +19,7 @@ GET /system/v1/dicts/{dictType}/data/{dictDataId}
 
 #### 请求样例  
 ```
-GET http://{Endpoint}/system/v1/dicts/common_data_state/data/402809816ef90f69016ef914400a0001
+GET http://{Endpoint}/system/v1/dict/types/data_state/items/NORMAL
 ```
 ##### 请求body样例
 无
@@ -28,20 +28,18 @@ GET http://{Endpoint}/system/v1/dicts/common_data_state/data/402809816ef90f69016
 #### 要素说明
 | 名称 | 参数类型 | 说明 |
 | --- | --- | --- |
-| data | DictData结构体 | 请参见 [DictData结构体说明](#dictdata结构体说明) |
+| data | DictItem结构体 | 请参见 [DictItem结构体说明](#dictitem结构体说明) |
 
 详细请参考 [响应结果说明](../../../common/response/result.md#要素说明)  
 
-##### DictData结构体说明
+##### DictItem结构体说明
 | 名称 | 参数类型 | 说明 |
 | --- | --- | --- |
-| dictDataId | String | 标签ID |
-| dictLabel | String | 字典标签 |
-| dictValue | String | 字典键值 |
+| itemCode | String | 字典编码 |
+| itemLabel | String | 字典标签 |
+| itemValue | String | 字典键值 |
 | buildIn | boolean | 是否系统内置 |
 | status | String | 状态，正常 or 停用 |
-| remark | String | 备注 |
-| dataState | String | 数据状态，正常 or 删除 |
 | createTime | String | 创建时间 |
 | modifyTime | String | 更新时间 |
 
@@ -52,17 +50,16 @@ GET http://{Endpoint}/system/v1/dicts/common_data_state/data/402809816ef90f69016
 	"code": 9000,
 	"data": {
 		"buildIn": true,
-		"createTime": "2019-12-12 15:48:04",
+		"createTime": "2019-12-13 17:32:46",
 		"dataState": "0",
-		"dictDataId": "402809816ef90f69016ef914400a0001",
-		"dictLabel": "正常-test",
-		"dictValue": "0",
-		"modifyTime": "2019-12-12 16:10:02",
-		"remark": "",
+		"itemCode": "NORMAL",
+		"itemLabel": "正常",
+		"itemValue": "0",
+		"modifyTime": "2019-12-13 17:32:46",
 		"status": "0"
 	},
 	"message": "success",
-	"request_id": "c82fe60b09c64042b4841e1803e15b4b"
+	"request_id": "6f3a740b97dc426a8d363e62d3bb5173"
 }
 ```
 ##### 异常响应

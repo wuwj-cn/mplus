@@ -1,12 +1,12 @@
-# 查询字典列表
+# 查询字典类型列表
 
 ### 功能说明
-根据条件查询字典列表信息，以分页形式返回数据
+根据条件查询字典类型列表信息，以分页形式返回数据
 
 ### URI
 #### URI格式 
-GET /system/v1/dicts/page?pageNumber={pageNumber}&pageSize={pageSize}&dictName={dictName}&
-dictType={dictType}&buildIn={buildIn}&dataState={dataState}
+GET /system/v1/dict/types/page?pageNumber={pageNumber}&pageSize={pageSize}&dictName={dictName}&
+dictType={dictType}&buildIn={buildIn}&status={status}
 
 #### 参数说明  
 | 名称 | 是否必选 | 参数类型 | 说明 |
@@ -16,7 +16,7 @@ dictType={dictType}&buildIn={buildIn}&dataState={dataState}
 | dictName | 否 | String | 字典名称 |
 | dictType | 否 | String | 字典类型 |
 | buildIn | 否 | boolean | 是否系统内置 |
-| dataState | 否 | String | 数据状态 |
+| status | 否 | String | 状态 |
 
 ### 请求消息
 #### 参数说明  
@@ -24,7 +24,7 @@ dictType={dictType}&buildIn={buildIn}&dataState={dataState}
 
 #### 请求样例  
 ```
-http://localhost:9002/system/v1/dicts?pageNumber=1&pageSize=10
+GET http://{Endpoint}/system/v1/dict/types/page?pageNumber=1&pageSize=10
 ```
 ##### 请求body样例
 无
@@ -40,13 +40,11 @@ http://localhost:9002/system/v1/dicts?pageNumber=1&pageSize=10
 ##### Dict结构体说明
 | 名称 | 参数类型 | 说明 |
 | --- | --- | --- |
-| dictId | String | 字典ID |
-| dictName | String | 字典名称 |
-| dictType | String | 字典类型 |
+| typeCode | String | 字典类型编码 |
+| typeName | String | 字典类型名称 |
 | buildIn | boolean | 是否系统内置 |
 | status | String | 状态，正常 or 停用 |
 | remark | String | 备注 |
-| dataState | String | 数据状态，正常 or 删除 |
 | createTime | String | 创建时间 |
 | modifyTime | String | 更新时间 |
 
@@ -59,14 +57,13 @@ http://localhost:9002/system/v1/dicts?pageNumber=1&pageSize=10
 		"content": [
 			{
 				"buildIn": true,
-				"createTime": "2019-12-12 15:45:07",
+				"createTime": "2019-12-13 16:11:43",
 				"dataState": "0",
-				"dictId": "402809816ef90f69016ef9118af30000",
-				"dictName": "数据状态",
-				"dictType": "common_data_state",
-				"modifyTime": "2019-12-12 15:45:07",
+				"modifyTime": "2019-12-13 16:11:43",
 				"remark": "",
-				"status": "0"
+				"status": "0",
+				"typeCode": "data_state",
+				"typeName": "数据状态"
 			}
 		],
 		"pageNumber": 1,
@@ -75,7 +72,7 @@ http://localhost:9002/system/v1/dicts?pageNumber=1&pageSize=10
 		"totalPages": 1
 	},
 	"message": "success",
-	"request_id": "e381bc80d00a43bbb1190c20e9e490f6"
+	"request_id": "c96ea193ec2140d3b2cdd59b2b6aba11"
 }
 ```
 ##### 异常响应

@@ -1,40 +1,36 @@
-# 新增字典
+# 更新字典类型
 
 ### 功能说明
-新增保存系统字典信息
+更新指定字典类型信息，仅非系统内置字典类型可做修改更新
 
 ### URI
 #### URI格式  
-POST /system/v1/dicts
+PUT /system/v1/dict/types/{typeCode}
 
 #### 参数说明  
-无
+| 名称 | 参数类型 | 说明 |
+| --- | --- | --- |
+| typeCode | String | 字典类型编码 |
 
 ### 请求消息
 #### 参数说明  
-| 名称 | 是否必选 | 参数类型 | 说明 |
-| --- | --- | --- | --- |
-| dictName | 是 | String | 字典名称 |
-| dictType | 是 | String | 字典类型 |
-| buildIn | 是 | String | 是否系统内置 |
-| remark | 否 | String | 备注 |
+无
+
 #### 请求样例  
 ```
-POST http://{Endpoint}/system/v1/dicts
+PUT http://{Endpoint}/system/v1/dicts/data_state
 ```
 ##### 请求body样例
-```json
-{
-	"dictName": "数据状态",
-	"dictType": "common_data_state",
-	"buildIn": true
-}
-```
+| 名称 | 是否必选 | 参数类型 | 说明 |
+| --- | --- | --- | --- |
+| typeName | 否 | String | 字典类型名称 |
+| remark | 否 | String | 备注 |
+
 ### 响应消息
 #### 要素说明
 | 名称 | 参数类型 | 说明 |
 | --- | --- | --- |
-| data | String | 新增的字典ID |
+| data | String | 更新的字典类型ID |
 
 详细请参考 [响应结果说明](../../../common/response/result.md#要素说明)  
 
@@ -45,10 +41,18 @@ POST http://{Endpoint}/system/v1/dicts
 	"code": 9000,
 	"data": "402809816ef41f0a016ef421208a0000",
 	"message": "success",
-	"request_id": "d84d6a78757746d891a4c4925477e996"
+	"request_id": "8d45250b3ba24e6dbdfd128f864d97c4"
 }
 ```
 ##### 异常响应
+```json
+{
+	"code": 500,
+	"data": null,
+	"message": "this object is build-in, it's not allow to update",
+	"request_id": "f8b0875e44be4d2a9a915f728a77ea0b"
+}
+```
 请参考 [响应结果说明](../../../common/response/result.md#异常响应样例)
 
 ### 响应状态码

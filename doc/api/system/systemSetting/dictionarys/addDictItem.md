@@ -1,41 +1,43 @@
-# 更新指定字典标签
+# 新增指定字典数据
 
 ### 功能说明
-更新指定系统字典的标签数据信息
+新增保存字典的数据信息
 
 ### URI
 #### URI格式  
-PUT /system/v1/dicts/{dictType}/data/{dictDataId}
+POST /system/v1/dict/types/{typeCode}/items
 
 #### 参数说明  
 | 名称 | 是否必选 | 参数类型 | 说明 |
 | --- | --- | --- | --- |
-| dictType | 是 | String | 字典类型 |
-| dictDataId | 是 | String | 字典数据ID |
+| typeCode | 是 | String | 字典类型编码 |
 
 ### 请求消息
 #### 参数说明  
 | 名称 | 是否必选 | 参数类型 | 说明 |
 | --- | --- | --- | --- |
-| dictLabel | 是 | String | 字典标签 |
-| dictValue | 是 | String | 字典键值 |
-
+| itemCode | 是 | String | 字典编码 |
+| itemLabel | 是 | String | 字典标签 |
+| itemValue | 是 | String | 字典键值 |
+| buildIn | 是 | String | 是否系统内置 |
 #### 请求样例  
 ```
-PUT http://{Endpoint}/system/v1/dicts/common_data_state/data/402809816ef90f69016ef914400a0001
+POST http://{Endpoint}/system/v1/dict/types/data_state/items
 ```
 ##### 请求body样例
 ```json
 {
-	"dictLabel": "正常-test",
-	"dictValue": "0"
+	"itemCode": "NORMAL",
+	"itemLabel": "正常",
+	"itemValue": "0",
+	"buildIn": true
 }
 ```
 ### 响应消息
 #### 要素说明
 | 名称 | 参数类型 | 说明 |
 | --- | --- | --- |
-| data | String | 更新的字典下属具体数据ID |
+| data | String | 新增的字典数据ID |
 
 详细请参考 [响应结果说明](../../../common/response/result.md#要素说明)  
 
@@ -44,9 +46,9 @@ PUT http://{Endpoint}/system/v1/dicts/common_data_state/data/402809816ef90f69016
 ```json
 {
 	"code": 9000,
-	"data": "402809816ef90f69016ef914400a0001",
+	"data": "402809816efe9a38016efe9a76780000",
 	"message": "success",
-	"request_id": "d55630c428b14186a1ebb3fe00fa6f1f"
+	"request_id": "271f7686760b458c8369f8e1b1643a2b"
 }
 ```
 ##### 异常响应

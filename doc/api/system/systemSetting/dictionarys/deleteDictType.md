@@ -1,16 +1,16 @@
-# 更新字典
+# 删除字典类型
 
 ### 功能说明
-更新指定字典信息，仅非系统内置字典可做修改更新
+删除指定字典类型信息
 
 ### URI
 #### URI格式  
-PUT /system/v1/dicts/{dictId}
+DELETE /system/v1/dict/types/{typeCode}
 
 #### 参数说明  
 | 名称 | 参数类型 | 说明 |
 | --- | --- | --- |
-| dictId | String | 字典ID |
+| typeCode | String | 字典类型编码 |
 
 ### 请求消息
 #### 参数说明  
@@ -18,20 +18,16 @@ PUT /system/v1/dicts/{dictId}
 
 #### 请求样例  
 ```
-PUT http://{Endpoint}/system/v1/dicts/402809816ef41f0a016ef421208a0000
+DELETE http://{Endpoint}/system/v1/dicts/data_state
 ```
 ##### 请求body样例
-| 名称 | 是否必选 | 参数类型 | 说明 |
-| --- | --- | --- | --- |
-| dictName | 否 | String | 字典名称 |
-| dictType | 否 | String | 字典类型 |
-| remark | 否 | String | 备注 |
+无
 
 ### 响应消息
 #### 要素说明
 | 名称 | 参数类型 | 说明 |
 | --- | --- | --- |
-| data | String | 更新的字典ID |
+| data | String | 删除的字典类型ID |
 
 详细请参考 [响应结果说明](../../../common/response/result.md#要素说明)  
 
@@ -42,10 +38,18 @@ PUT http://{Endpoint}/system/v1/dicts/402809816ef41f0a016ef421208a0000
 	"code": 9000,
 	"data": "402809816ef41f0a016ef421208a0000",
 	"message": "success",
-	"request_id": "8d45250b3ba24e6dbdfd128f864d97c4"
+	"request_id": "012e645d06184381bd46f88a23374da9"
 }
 ```
 ##### 异常响应
+```json
+{
+	"code": 500,
+	"data": null,
+	"message": "this object is build-in, it's not allow to delete",
+	"request_id": "ad71c4da5b4248308bafd54b1bdbed60"
+}
+```
 请参考 [响应结果说明](../../../common/response/result.md#异常响应样例)
 
 ### 响应状态码

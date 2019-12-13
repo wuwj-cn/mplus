@@ -1,16 +1,16 @@
-# 查询指定字典信息
+# 查询指定字典类型信息
 
 ### 功能说明
-查询指定字典详细信息
+查询指定字典类型详细信息
 
 ### URI
 #### URI格式  
-GET /system/v1/dicts/{dictId}
+GET /system/v1/dict/types/{typeCode}
 
 #### 参数说明  
 | 名称 | 参数类型 | 说明 |
 | --- | --- | --- |
-| dictId | String | 字典ID |
+| typeCode | String | 字典类型编码 |
 
 ### 请求消息
 #### 参数说明  
@@ -18,7 +18,7 @@ GET /system/v1/dicts/{dictId}
 
 #### 请求样例  
 ```
-PUT http://{Endpoint}/system/v1/dicts/{dictId}
+PUT http://{Endpoint}/system/v1/dict/types/data_state
 ```
 ##### 请求body样例
 无
@@ -34,9 +34,8 @@ PUT http://{Endpoint}/system/v1/dicts/{dictId}
 ##### Dict结构体说明
 | 名称 | 参数类型 | 说明 |
 | --- | --- | --- |
-| dictId | String | 字典ID |
-| dictName | String | 字典名称 |
-| dictType | String | 字典类型 |
+| typeCode | String | 字典类型编码 |
+| typeName | String | 字典类型名称 |
 | buildIn | boolean | 是否系统内置 |
 | status | String | 状态，正常 or 停用 |
 | remark | String | 备注 |
@@ -46,9 +45,18 @@ PUT http://{Endpoint}/system/v1/dicts/{dictId}
 ```json
 {
 	"code": 9000,
-	"data": "0103",
+	"data": {
+		"buildIn": true,
+		"createTime": "2019-12-13 16:11:43",
+		"dataState": "0",
+		"modifyTime": "2019-12-13 16:11:43",
+		"remark": "",
+		"status": "0",
+		"typeCode": "data_state",
+		"typeName": "数据状态"
+	},
 	"message": "success",
-	"request_id": "4e9218fb4fcb4bd69c9fc34e057d0d6b"
+	"request_id": "c3fa60b9ea034ddb8ce8c0ebc0fda8ec"
 }
 ```
 ##### 异常响应

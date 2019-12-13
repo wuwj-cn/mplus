@@ -1,34 +1,40 @@
-# 删除指定字典标签
+# 新增字典类型
 
 ### 功能说明
-删除指定系统字典的标签数据信息
+新增保存系统字典类型信息
 
 ### URI
 #### URI格式  
-DELETE /system/v1/dicts/{dictType}/data/{dictDataId}
+POST /system/v1/dict/types
 
 #### 参数说明  
-| 名称 | 是否必选 | 参数类型 | 说明 |
-| --- | --- | --- | --- |
-| dictType | 是 | String | 字典类型 |
-| dictDataId | 是 | String | 字典标签ID |
+无
 
 ### 请求消息
 #### 参数说明  
-无
-
+| 名称 | 是否必选 | 参数类型 | 说明 |
+| --- | --- | --- | --- |
+| typeCode | 是 | String | 字典类型编码 |
+| typeName | 是 | String | 字典类型名称 |
+| buildIn | 是 | String | 是否系统内置 |
+| remark | 否 | String | 备注 |
 #### 请求样例  
 ```
-DELETE http://{Endpoint}/system/v1/dicts/common_data_state/data/402809816ef90f69016ef914400a0001
+POST http://{Endpoint}/system/v1/dict/types
 ```
 ##### 请求body样例
-无
-
+```json
+{
+	"typeCode": "data_state",
+	"typeName": "数据状态",
+	"buildIn": true
+}
+```
 ### 响应消息
 #### 要素说明
 | 名称 | 参数类型 | 说明 |
 | --- | --- | --- |
-| data | String | 更新的字典下属标签ID |
+| data | String | 新增的字典类型ID |
 
 详细请参考 [响应结果说明](../../../common/response/result.md#要素说明)  
 
@@ -37,9 +43,9 @@ DELETE http://{Endpoint}/system/v1/dicts/common_data_state/data/402809816ef90f69
 ```json
 {
 	"code": 9000,
-	"data": "402809816ef90f69016ef914400a0001",
+	"data": "402809816ef41f0a016ef421208a0000",
 	"message": "success",
-	"request_id": "b84d811bc42f43ca9aafed533b3400e9"
+	"request_id": "d84d6a78757746d891a4c4925477e996"
 }
 ```
 ##### 异常响应
