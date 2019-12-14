@@ -49,7 +49,7 @@ public class DictItemController {
 
     @PostMapping(value = "/dict/types/{typeCode}/items")
     @SneakyThrows
-    public Result<String> addDictData(@PathVariable String typeCode, @RequestBody DictItemVo dictItemVo) {
+    public Result<String> addDictItem(@PathVariable String typeCode, @RequestBody DictItemVo dictItemVo) {
         DictType type = new DictType();
         type.setTypeCode(typeCode);
         type.setDataState(DataState.NORMAL.code());
@@ -64,7 +64,7 @@ public class DictItemController {
 
     @PutMapping(value = "/dict/types/{typeCode}/items/{itemCode}")
     @SneakyThrows
-    public Result<String> updateDictData(@PathVariable String typeCode, @PathVariable String itemCode,
+    public Result<String> updateDictItem(@PathVariable String typeCode, @PathVariable String itemCode,
                                          @RequestBody DictItemVo dictItemVo) {
         DictItem item = findOne(typeCode, itemCode);
         if(item.getBuildIn()) {
@@ -77,7 +77,7 @@ public class DictItemController {
 
     @DeleteMapping(value = "/dict/types/{typeCode}/items/{itemCode}")
     @SneakyThrows
-    public Result<String> deleteDictData(@PathVariable String typeCode, @PathVariable String itemCode) {
+    public Result<String> deleteDictItem(@PathVariable String typeCode, @PathVariable String itemCode) {
         DictItem item = findOne(typeCode, itemCode);
         if(item.getBuildIn()) {
             throw new RuntimeException("this object is build-in, it's not allow to delete");
