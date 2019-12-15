@@ -33,7 +33,7 @@
             * [新增岗位](api/system/organization/posts/addPost.md)
             * [更新岗位](api/system/organization/posts/updatePost.md)
             * [删除岗位](api/system/organization/posts/deletePost.md)
-            * [查询指定机构下岗位列表](api/system/organization/posts/findOrgsByOrg.md)
+            * [查询指定机构下岗位列表](api/system/organization/posts/findPostsByOrg.md)
             * [查询指定岗位信息](api/system/organization/posts/findPost.md)
     * [系统设置](api/system/systemSetting/README.md)
         * [模块管理](api/system/systemSetting/module/README.md)
