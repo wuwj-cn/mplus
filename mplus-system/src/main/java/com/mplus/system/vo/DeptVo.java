@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,20 +20,17 @@ import com.mplus.common.vo.BaseVo;
 import lombok.Data;
 
 /**
- * UserVO
+ * DeptVo
  *
- * @author wuwj
+ * @author wuwj [254513235@qq.com]
  * @since 1.0
  */
 @Data
-public class UserVo extends BaseVo {
-    private String userId;
-    private String userName;
-    private String nickName;
-    private String userAccount;
+public class DeptVo extends BaseVo {
+    private String deptCode;
+    private String deptName;
     private String orgCode;
     private String orgName;
-    private String email;
-    private String mobile;
-    private String userStatus;
+    private String parentDeptCode;
+    private String parentDeptName;
 }

@@ -59,14 +59,14 @@ public class UserController {
     	User user = new User();
         MBeanUtils.copyPropertiesIgnoreNull(userVo, user);
 
-    	Org org = orgRepository.findOneByOrgId(userVo.getOrgId(), DataState.NORMAL.code());
+    	Org org = orgRepository.findOneByOrgCode(userVo.getOrgCode(), DataState.NORMAL.code());
     	user.setOrg(org);
 
 		if (!StringUtils.isEmpty(user.getId())) {
 			throw new RuntimeException("object id is not null or empty");
 		}
-		if (StringUtils.isEmpty(user.getOrg().getOrgId())) {
-			throw new RuntimeException("org id is null");
+		if (StringUtils.isEmpty(user.getOrg().getOrgCode())) {
+			throw new RuntimeException("org code is null");
 		}
 		String userId = codeRuleRepository.getSerial(RuleCode.USER);
 		user.setUserId(userId);
@@ -86,11 +86,11 @@ public class UserController {
 	public Result<String> update(@RequestBody UserVo userVo, @PathVariable String userId) {
     	User user = userRepository.findByUserId(userId, DataState.NORMAL.code());
     	MBeanUtils.copyPropertiesIgnoreNull(userVo, user);
-    	if(StringUtils.isNotBlank(userVo.getOrgId())) {
-    		Org org = orgRepository.findOneByOrgId(userVo.getOrgId(), DataState.NORMAL.code());
+    	if(StringUtils.isNotBlank(userVo.getOrgCode())) {
+    		Org org = orgRepository.findOneByOrgCode(userVo.getOrgCode(), DataState.NORMAL.code());
     		user.setOrg(org);
 		} else {
-    		throw new RuntimeException("org id is null");
+    		throw new RuntimeException("org code is null");
 		}
 		userRepository.save(user);
 		return Result.success(user.getUserId());
@@ -111,21 +111,21 @@ public class UserController {
 		User user = userRepository.findByUserId(userId, DataState.NORMAL.code());
 		UserVo userVo = new UserVo();
 		MBeanUtils.copyPropertiesIgnoreNull(user, userVo);
-		userVo.setOrgId(user.getOrg().getOrgId());
+		userVo.setOrgCode(user.getOrg().getOrgCode());
 		userVo.setOrgName(user.getOrg().getOrgName());
 		return Result.success(userVo);
 	}
 
 	@SneakyThrows
-	@GetMapping(value = "/orgs/{orgId}/users")
-	public Result<List<UserVo>> listByOrg(@PathVariable String orgId) {
-		List<User> users = userRepository.findByOrg(orgId, DataState.NORMAL.code());
+	@GetMapping(value = "/orgs/{orgCode}/users")
+	public Result<List<UserVo>> listByOrg(@PathVariable String orgCode) {
+		List<User> users = userRepository.findByOrg(orgCode, DataState.NORMAL.code());
 		List<UserVo> userVos = new ArrayList<>();
 		UserVo userVo = null;
 		for (User user: users) {
 			userVo = new UserVo();
 			MBeanUtils.copyPropertiesIgnoreNull(user, userVo);
-			userVo.setOrgId(user.getOrg().getOrgId());
+			userVo.setOrgCode(user.getOrg().getOrgCode());
 			userVo.setOrgName(user.getOrg().getOrgName());
 			userVos.add(userVo);
 		}
@@ -133,8 +133,9 @@ public class UserController {
 	}
 
 	@SneakyThrows
-	@GetMapping(value = "/orgs/{orgId}/users/page")
+	@GetMapping(value = "/orgs/{orgCode}/users/page")
 	public Result<PageVo<UserVo>> findPageUsersByOrg(
+			@PathVariable String orgCode,
 			@RequestParam int pageNumber,
 			@RequestParam int pageSize,
 			@RequestParam(required=false) String userName) {
@@ -167,7 +168,7 @@ public class UserController {
 		for(User user : users.getContent()) {
 			userVo = new UserVo();
 			MBeanUtils.copyPropertiesIgnoreNull(user, userVo);
-			userVo.setOrgId(user.getOrg().getOrgId());
+			userVo.setOrgCode(user.getOrg().getOrgCode());
 			userVo.setOrgName(user.getOrg().getOrgName());
 			userVos.add(userVo);
 		}

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.mplus.system.entity;
 
 import com.mplus.common.entity.BaseEntity;
@@ -21,28 +22,26 @@ import lombok.Data;
 import javax.persistence.*;
 
 /**
- * @author wuwj
+ * Dept
+ *
+ * @author wuwj [254513235@qq.com]
+ * @since 1.0
  */
 @Data
 @Entity
-@Table(name = "mp_sys_org")
-public class Org extends BaseEntity {
-
-    public static final String ROOT_ORG_CODE = "0";
-
-    @Column(name = "org_code", length = 20, nullable = false, unique = true)
-    private String orgCode;
+@Table(name = "mp_sys_dept")
+public class Dept extends BaseEntity {
+    @Column(name = "dept_code", length = 20, nullable = false, unique = true)
+    private String deptCode;
 
     @Column(length = 50, nullable = false)
-    private String orgName;
-
-    @Column(length = 100)
-    private String fullName;
+    private String deptName;
 
     @ManyToOne
-    @JoinColumn(name = "parent_org_code", referencedColumnName = "org_code")
-    private Org parentOrg;
+    @JoinColumn(name = "org_code", referencedColumnName = "org_code")
+    private Org org;
 
-    @Column(length = 255)
-    private String remark;
+    @ManyToOne
+    @JoinColumn(name = "parent_dept_code", referencedColumnName = "dept_code")
+    private Dept parentDept;
 }

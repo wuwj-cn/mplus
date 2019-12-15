@@ -20,7 +20,7 @@ spring:
       #初始化的数据
       data: classpath:sql/data-mysql.sql
       # Initialize the datasource with available DDL and DML scripts.
-      initialization-mode: always # always, embedded, never
+      initialization-mode: never # always, embedded, never
       continue-on-error: false
       #data-password:
       #data-username:

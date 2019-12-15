@@ -38,18 +38,18 @@ import java.util.List;
 @Repository
 public interface OrgRepository extends BaseRepository<Org, String> {
 
-	@Query(value = "from Org where dataState = ?2 and orgId = ?1")
-	Org findOneByOrgId(String orgId, String dataStatus);
+	@Query(value = "from Org where dataState = ?2 and orgCode = ?1")
+	Org findOneByOrgCode(String orgCode, String dataStatus);
 
-	@Query(value = "from Org where dataState = ?2 and parentOrg.orgId = ?1")
-	List<Org> findOrgsByParent(String parentOrgId, String dataStatus);
+	@Query(value = "from Org where dataState = ?2 and parentOrg.orgCode = ?1")
+	List<Org> findOrgsByParent(String parentOrgCode, String dataStatus);
 
 	@Query(value = "from Org where dataState = ?1")
 	List<Org> findAll(String dataStatus);
 
-	default List<TreeNode> getNodes(String orgId, Boolean checkbox) {
+	default List<TreeNode> getNodes(String orgCode, Boolean checkbox) {
 		Org parentOrg = new Org();
-		parentOrg.setOrgId(orgId);
+		parentOrg.setOrgCode(orgCode);
 		Org org = new Org();
 		org.setParentOrg(parentOrg);
 		org.setDataState(DataState.NORMAL.code());
@@ -57,11 +57,19 @@ public interface OrgRepository extends BaseRepository<Org, String> {
 		List<TreeNode> nodes = new ArrayList<>();
 		if(checkbox) {
 			orgs.stream().forEach(_org -> nodes
-					.add(new CheckboxTreeNode(_org.getId(), _org.getOrgId(), _org.getOrgName(), false, false, false)));
+					.add(new CheckboxTreeNode(_org.getId(), _org.getOrgCode(), _org.getOrgName(), false, false, false)));
 		} else {
 			orgs.stream().forEach(
-					_org -> nodes.add(new TreeNode(_org.getId(), _org.getOrgId(), _org.getOrgName(), false, false)));
+					_org -> nodes.add(new TreeNode(_org.getId(), _org.getOrgCode(), _org.getOrgName(), false, false)));
 		}
 		return nodes;
+	}
+
+	default Org findOneByOrgCode(String orgCode) {
+		Org org = new Org();
+		org.setOrgCode(orgCode);
+		org.setDataState(DataState.NORMAL.code());
+		org = this.findOne(Example.of(org)).get();
+		return org;
 	}
 }

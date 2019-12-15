@@ -29,8 +29,8 @@ public interface UserRepository extends BaseRepository<User, String> {
 	@Query(value = "select u from User u where u.userName = ?1 and u.dataState = ?2")
 	User findByUserName(String userName, String dataStatus);
 	
-	@Query(value = "from User where dataState = ?2 and org.id = ?1")
-	List<User> findByOrg(String orgId, String dataStatus);
+	@Query(value = "from User where dataState = ?2 and org.orgCode = ?1")
+	List<User> findByOrg(String orgCode, String dataStatus);
 	
 	@Query(value = "from User where dataState = ?2 and userId = ?1")
 	User findByUserId(String userId, String dataStatus);

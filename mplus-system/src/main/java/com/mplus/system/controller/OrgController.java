@@ -21,7 +21,6 @@ import com.mplus.common.utils.MBeanUtils;
 import com.mplus.common.utils.jpa.JpaUtils;
 import com.mplus.common.utils.jpa.QueryParam;
 import com.mplus.common.utils.jpa.QueryType;
-import com.mplus.common.utils.tree.entity.TreeNode;
 import com.mplus.system.entity.Org;
 import com.mplus.system.repo.OrgRepository;
 import com.mplus.system.vo.OrgVo;
@@ -52,36 +51,36 @@ public class OrgController {
 		if (!StringUtils.isEmpty(org.getId())) {
 			throw new RuntimeException("object id is not null or empty");
 		}
-		String parentOrgId = orgVo.getParentOrgId();
-		if(StringUtils.isEmpty(parentOrgId)) {
-			parentOrgId = Org.ROOT_ORG_ID;
+		String parentOrgCode = orgVo.getParentOrgCode();
+		if(StringUtils.isEmpty(parentOrgCode)) {
+			parentOrgCode = Org.ROOT_ORG_CODE;
 		}
-		Org parentOrg = orgRepository.findOneByOrgId(parentOrgId, DataState.NORMAL.code());
+		Org parentOrg = orgRepository.findOneByOrgCode(parentOrgCode, DataState.NORMAL.code());
 		org.setParentOrg(parentOrg);
-		org.setOrgId(generateMaxOrgId(org.getParentOrg().getOrgId()));
+		org.setOrgCode(generateMaxOrgId(org.getParentOrg().getOrgCode()));
 		orgRepository.save(org);
 
-		return Result.success(org.getOrgId());
+		return Result.success(org.getOrgCode());
 	}
 
 	/**
 	 * 生成下级机构最大orgId
 	 *
-	 * @param parentOrgId 上级机构ID
-	 * @return 当前可用的下级机构最大ID
+	 * @param parentOrgCode 上级机构code
+	 * @return 当前可用的下级机构最大code
 	 */
 	@SneakyThrows
-	private String generateMaxOrgId(String parentOrgId) {
-		List<Org> orgs = orgRepository.findOrgsByParent(parentOrgId, DataState.NORMAL.code());
+	private String generateMaxOrgId(String parentOrgCode) {
+		List<Org> orgs = orgRepository.findOrgsByParent(parentOrgCode, DataState.NORMAL.code());
 		if(orgs.isEmpty()) {
-			if(parentOrgId.equals(Org.ROOT_ORG_ID)) {
+			if(parentOrgCode.equals(Org.ROOT_ORG_CODE)) {
 				return "01";
 			} else {
-				return parentOrgId.concat("01");
+				return parentOrgCode.concat("01");
 			}
 		}
-		orgs.sort((a, b) -> b.getOrgId().compareTo(a.getOrgId()));
-		String maxLevelNo = orgs.get(0).getOrgId().substring(parentOrgId.length());
+		orgs.sort((a, b) -> b.getOrgCode().compareTo(a.getOrgCode()));
+		String maxLevelNo = orgs.get(0).getOrgCode().substring(parentOrgCode.length());
 		Integer maxOrgId = Integer.parseInt(maxLevelNo);
 		if(maxOrgId >= 99) {
 			throw new RuntimeException("orgId range of values is 0-99");
@@ -92,66 +91,66 @@ public class OrgController {
 		} else {
 			temp = temp.concat(String.valueOf(maxOrgId + 1));
 		}
-		return parentOrgId.equals(Org.ROOT_ORG_ID) ? temp : parentOrgId.concat(temp);
+		return parentOrgCode.equals(Org.ROOT_ORG_CODE) ? temp : parentOrgCode.concat(temp);
 	}
 
-	@PutMapping(value = "/orgs/{orgId}")
+	@PutMapping(value = "/orgs/{orgCode}")
 	@SneakyThrows
-	public Result<Object> update(@PathVariable String orgId, @RequestBody OrgVo orgVo) {
-		Org org = orgRepository.findOneByOrgId(orgId, DataState.NORMAL.code());
+	public Result<Object> update(@PathVariable String orgCode, @RequestBody OrgVo orgVo) {
+		Org org = orgRepository.findOneByOrgCode(orgCode, DataState.NORMAL.code());
 		MBeanUtils.copyPropertiesIgnoreNull(orgVo, org);
 		orgRepository.save(org);
-		return Result.success(org.getOrgId());
+		return Result.success(org.getOrgCode());
 	}
 
-	@DeleteMapping(value = "/orgs/{orgId}")
+	@DeleteMapping(value = "/orgs/{orgCode}")
 	@SneakyThrows
-	public Result<Object> delete(@PathVariable String orgId) {
+	public Result<Object> delete(@PathVariable String orgCode) {
 		List<QueryParam> searchParams = new ArrayList<>();
 		QueryParam param = null;
-		param = QueryParam.build("orgId", QueryType.eq, orgId);
+		param = QueryParam.build("orgCode", QueryType.eq, orgCode);
 		searchParams.add(param);
 		Specification<Org> spec = JpaUtils.buildSpecification(searchParams);
 		Org org = orgRepository.findOne(spec).get();
 		org.setDataState(DataState.DELETED.code());
 		orgRepository.save(org);
-		return Result.success(org.getOrgId());
+		return Result.success(org.getOrgCode());
 	}
 
-	@GetMapping(value = "/orgs/{orgId}/children")
+	@GetMapping(value = "/orgs/{orgCode}/children")
 	@SneakyThrows
-	public Result<List<OrgVo>> findOrgsByParent(@PathVariable String orgId) {
-		List<OrgVo> orgVos = this.getOrgVosByParent(orgId);
+	public Result<List<OrgVo>> findOrgsByParent(@PathVariable String orgCode) {
+		List<OrgVo> orgVos = this.getOrgVosByParent(orgCode);
 		return Result.success(orgVos);
 	}
 
-	@GetMapping(value = "/orgs/{orgId}")
+	@GetMapping(value = "/orgs/{orgCode}")
 	@SneakyThrows
-	public Result<OrgVo> findOrg(@PathVariable String orgId) {
-		Org org = orgRepository.findOneByOrgId(orgId, DataState.NORMAL.code());
+	public Result<OrgVo> findOrg(@PathVariable String orgCode) {
+		Org org = orgRepository.findOneByOrgCode(orgCode, DataState.NORMAL.code());
 
 		OrgVo orgVo = new OrgVo();
 		MBeanUtils.copyPropertiesIgnoreNull(org, orgVo);
-		orgVo.setParentOrgId(org.getParentOrg().getOrgId());
+		orgVo.setParentOrgCode(org.getParentOrg().getOrgCode());
 		orgVo.setParentOrgName(org.getParentOrg().getOrgName());
 		return Result.success(orgVo);
 	}
 
-	@GetMapping(value = "/orgs/{orgId}/tree")
-	public Result<OrgVo> findAllOrgs(@PathVariable String orgId) {
+	@GetMapping(value = "/orgs/{orgCode}/tree")
+	public Result<OrgVo> findAllOrgs(@PathVariable String orgCode) {
 		Org _org = new Org();
-		_org.setOrgId(orgId);
+		_org.setOrgCode(orgCode);
 		Org root = orgRepository.findOne(Example.of(_org)).get();
 		OrgVo rootVo = new OrgVo();
 		MBeanUtils.copyPropertiesIgnoreNull(root, rootVo);
-		rootVo.setParentOrgId(root.getParentOrg().getOrgId());
+		rootVo.setParentOrgCode(root.getParentOrg().getOrgCode());
 		rootVo.setParentOrgName(root.getParentOrg().getOrgName());
 		buildOrgTree(rootVo);
 		return Result.success(rootVo);
 	}
 
 	private void buildOrgTree(OrgVo root) {
-		List<OrgVo> orgVos = this.getOrgVosByParent(root.getOrgId());
+		List<OrgVo> orgVos = this.getOrgVosByParent(root.getOrgCode());
 		orgVos.stream().forEach(orgVo -> {
 			buildOrgTree(orgVo);
 		});
@@ -161,21 +160,21 @@ public class OrgController {
 	/**
 	 * 根据上级机构ID查找构建下属的orgVo
 	 *
-	 * @param parentOrgId 上级机构ID
+	 * @param parentOrgCode 上级机构code
 	 * @return 下属的orgVo列表
 	 */
-	private List<OrgVo> getOrgVosByParent(String parentOrgId) {
+	private List<OrgVo> getOrgVosByParent(String parentOrgCode) {
 		Org parentOrg = new Org();
-		parentOrg.setOrgId(parentOrgId);
+		parentOrg.setOrgCode(parentOrgCode);
 		Org _org = new Org();
 		_org.setParentOrg(parentOrg);
 		_org.setDataState(DataState.NORMAL.code());
-		List<Org> children = orgRepository.findAll(Example.of(_org), Sort.by("orgId"));
+		List<Org> children = orgRepository.findAll(Example.of(_org), Sort.by("orgCode"));
 		List<OrgVo> orgVos = new ArrayList<>();
 		children.stream().forEach(org -> {
 			OrgVo orgVo = new OrgVo();
 			MBeanUtils.copyPropertiesIgnoreNull(org, orgVo);
-			orgVo.setParentOrgId(org.getParentOrg().getOrgId());
+			orgVo.setParentOrgCode(org.getParentOrg().getOrgCode());
 			orgVo.setParentOrgName(org.getParentOrg().getOrgName());
 			orgVos.add(orgVo);
 		});

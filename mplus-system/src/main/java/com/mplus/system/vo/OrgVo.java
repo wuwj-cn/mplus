@@ -29,10 +29,10 @@ import java.util.List;
  */
 @Data
 public class OrgVo extends BaseVo {
-    private String orgId;
+    private String orgCode;
     private String orgName;
     private String fullName;
-    private String parentOrgId;
+    private String parentOrgCode;
     private String parentOrgName;
     private String remark;
     private List<OrgVo> children;
