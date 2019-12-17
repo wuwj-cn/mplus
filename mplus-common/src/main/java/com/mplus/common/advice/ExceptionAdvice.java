@@ -16,6 +16,7 @@
 
 package com.mplus.common.advice;
 
+import com.mplus.common.exception.GenericException;
 import com.mplus.common.response.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -66,6 +67,13 @@ public class ExceptionAdvice {
 	@ExceptionHandler(Exception.class)
 	public Result handleException(Exception e) {
 		log.error("服务运行异常", e);
+		return Result.failure(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+	}
+
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	@ExceptionHandler(GenericException.class)
+	public Result genericException(Exception e) {
+		log.error("运行时异常", e.getMessage());
 		return Result.failure(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
 	}
 }
