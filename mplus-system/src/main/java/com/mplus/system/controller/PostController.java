@@ -28,7 +28,11 @@ import com.mplus.system.vo.PostVo;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Example;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * PostController
@@ -46,10 +50,7 @@ public class PostController {
     @PostMapping(value = "/orgs/{orgCode}/posts")
     @SneakyThrows
     public Result<String> addPost(@PathVariable String orgCode, @RequestBody PostVo postVo) {
-        Org org = new Org();
-        org.setOrgCode(orgCode);
-        org.setDataState(DataState.NORMAL.code());
-        org = orgRepository.findOne(Example.of(org)).get();
+        Org org = this.findOrg(orgCode);
         if(!org.getOrgCode().equals(postVo.getOrgCode())) {
             throw new GenericException(String.format("this object is not belong to [%s]", orgCode));
         }
@@ -59,5 +60,84 @@ public class PostController {
         post.setOrg(org);
         postRepository.save(post);
         return Result.success(post.getId());
+    }
+
+    private Org findOrg(String orgCode) {
+        Org org = new Org();
+        org.setOrgCode(orgCode);
+        org.setDataState(DataState.NORMAL.code());
+        org = orgRepository.findOne(Example.of(org)).get();
+        return org;
+    }
+
+    @PutMapping(value = "/orgs/{orgCode}/posts/{postCode}")
+    @SneakyThrows
+    public Result<String> updatePost(@PathVariable String orgCode, @PathVariable String postCode, @RequestBody PostVo postVo) {
+        if(!StringUtils.isEmpty(postVo.getPostCode()) && !postVo.getPostCode().equals(postCode)) {
+            throw new GenericException(String.format("this update object is not consistent with [ %s ]", postCode));
+        }
+
+        Post post = this.findPostByCode(orgCode, postCode);
+        MBeanUtils.copyPropertiesIgnoreNull(postVo, post);
+
+        if(!orgCode.equals(postVo.getOrgCode())) {
+            Org org = this.findOrg(postVo.getOrgCode());
+            post.setOrg(org);
+        }
+        postRepository.save(post);
+        return Result.success(post.getId());
+    }
+
+    private Post findPostByCode(String orgCode, String postCode) {
+        Org org = new Org();
+        org.setOrgCode(orgCode);
+        org.setDataState(DataState.NORMAL.code());
+        Post post = new Post();
+        post.setPostCode(postCode);
+        post.setOrg(org);
+        post.setDataState(DataState.NORMAL.code());
+        post = postRepository.findOne(Example.of(post)).get();
+        return post;
+    }
+
+    @DeleteMapping(value = "/orgs/{orgCode}/posts/{postCode}")
+    @SneakyThrows
+    public Result<String> deletePost(@PathVariable String orgCode, @PathVariable String postCode) {
+        Post post = this.findPostByCode(orgCode, postCode);
+        post.setDataState(DataState.DELETED.code());
+        postRepository.save(post);
+        return Result.success(post.getId());
+    }
+
+    @GetMapping(value = "/orgs/{orgCode}/posts")
+    @SneakyThrows
+    public Result<List<PostVo>> findPostsByOrg(@PathVariable String orgCode) {
+        Org org = new Org();
+        org.setOrgCode(orgCode);
+        org.setDataState(DataState.NORMAL.code());
+        Post post = new Post();
+        post.setOrg(org);
+        post.setDataState(DataState.NORMAL.code());
+        List<Post> posts = postRepository.findAll(Example.of(post));
+        List<PostVo> retList = new ArrayList<>();
+        posts.stream().forEach(p -> {
+            PostVo vo = new PostVo();
+            MBeanUtils.copyPropertiesIgnoreNull(p, vo);
+            vo.setOrgCode(p.getOrg().getOrgCode());
+            vo.setOrgName(p.getOrg().getOrgName());
+            retList.add(vo);
+        });
+        return Result.success(retList);
+    }
+
+    @GetMapping(value = "/orgs/{orgCode}/posts/{postCode}")
+    @SneakyThrows
+    public Result<PostVo> findPost(@PathVariable String orgCode, @PathVariable String postCode) {
+        Post post = this.findPostByCode(orgCode, postCode);
+        PostVo vo = new PostVo();
+        MBeanUtils.copyPropertiesIgnoreNull(post, vo);
+        vo.setOrgCode(post.getOrg().getOrgCode());
+        vo.setOrgName(post.getOrg().getOrgName());
+        return Result.success(vo);
     }
 }
