@@ -35,5 +35,5 @@ public class BaseVo {
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifyTime; // 修改时间
 
-    private String dataState; // 状态, 0正常 1删除 2停用
+//    private String dataState; // 状态, 0正常 1删除 2停用
 }
