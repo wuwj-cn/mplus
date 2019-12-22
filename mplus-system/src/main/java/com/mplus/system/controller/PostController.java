@@ -28,11 +28,14 @@ import com.mplus.system.vo.PostVo;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * PostController
@@ -50,13 +53,9 @@ public class PostController {
     @PostMapping(value = "/orgs/{orgCode}/posts")
     @SneakyThrows
     public Result<String> addPost(@PathVariable String orgCode, @RequestBody PostVo postVo) {
-        Org org = this.findOrg(orgCode);
-        if(!org.getOrgCode().equals(postVo.getOrgCode())) {
-            throw new GenericException(String.format("this object is not belong to [%s]", orgCode));
-        }
-
         Post post = new Post();
         MBeanUtils.copyPropertiesIgnoreNull(postVo, post);
+        Org org = this.findOrg(orgCode);
         post.setOrg(org);
         postRepository.save(post);
         return Result.success(post.getId());
@@ -66,7 +65,11 @@ public class PostController {
         Org org = new Org();
         org.setOrgCode(orgCode);
         org.setDataState(DataState.NORMAL.code());
-        org = orgRepository.findOne(Example.of(org)).get();
+        Optional<Org> optional = orgRepository.findOne(Example.of(org));
+        if(!optional.isPresent()) {
+            throw new GenericException(String.format("org [%s] is not present", orgCode));
+        }
+        org = optional.get();
         return org;
     }
 
@@ -96,7 +99,11 @@ public class PostController {
         post.setPostCode(postCode);
         post.setOrg(org);
         post.setDataState(DataState.NORMAL.code());
-        post = postRepository.findOne(Example.of(post)).get();
+        Optional<Post> optional = postRepository.findOne(Example.of(post));
+        if(!optional.isPresent()) {
+            throw new GenericException(String.format("object [%s] is not present", postCode));
+        }
+        post = optional.get();
         return post;
     }
 
@@ -111,14 +118,27 @@ public class PostController {
 
     @GetMapping(value = "/orgs/{orgCode}/posts")
     @SneakyThrows
-    public Result<List<PostVo>> findPostsByOrg(@PathVariable String orgCode) {
+    public Result<List<PostVo>> findPostsByOrg(@PathVariable String orgCode,
+                                               @RequestParam(required = false) String postCode,
+                                               @RequestParam(required = false) String postName) {
         Org org = new Org();
         org.setOrgCode(orgCode);
         org.setDataState(DataState.NORMAL.code());
         Post post = new Post();
         post.setOrg(org);
         post.setDataState(DataState.NORMAL.code());
-        List<Post> posts = postRepository.findAll(Example.of(post));
+
+        ExampleMatcher matcher = ExampleMatcher.matching();
+        if(!StringUtils.isEmpty(postCode)) {
+            post.setPostCode(postCode);
+            matcher = matcher.withMatcher("postCode", match -> match.contains());
+        }
+        if(!StringUtils.isEmpty(postName)) {
+            post.setPostName(postName);
+            matcher = matcher.withMatcher("postName", match -> match.contains());
+        }
+
+        List<Post> posts = postRepository.findAll(Example.of(post, matcher), Sort.by("createTime"));
         List<PostVo> retList = new ArrayList<>();
         posts.stream().forEach(p -> {
             PostVo vo = new PostVo();
