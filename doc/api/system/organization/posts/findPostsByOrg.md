@@ -12,7 +12,7 @@ GET /system/v1/orgs/{orgCode}/posts?postCode={postCode}&postName={postName}
 | --- | --- | --- | --- |
 | orgCode | 是 | String | 机构编码 |
 | postCode | 否 | String | 岗位编码， 支持模糊匹配 |
-| postCode | 否 | String | 岗位名称，支持模糊匹配 |
+| postName | 否 | String | 岗位名称，支持模糊匹配 |
 
 ### 请求消息
 #### 参数说明  
