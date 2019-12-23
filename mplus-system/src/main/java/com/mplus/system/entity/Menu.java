@@ -18,27 +18,23 @@ package com.mplus.system.entity;
 import com.mplus.common.entity.BaseEntity;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
 @Table(name = "mp_sys_menu")
 public class Menu extends BaseEntity {
 
-    @Column(length = 32, nullable = false, unique = true)
-    private String menuId;
+    @Column(name = "menu_code", length = 20, nullable = false, unique = true)
+    private String menuCode;
 
-    @Column(length = 50, nullable = false, unique = true)
+    @Column(length = 50, nullable = false)
     private String menuName;
 
-    @Column(length = 100, nullable = false, unique = true)
+    @Column(length = 100)
     private String url;
 
-    @Column(length = 20)
-    private String icon;
-
-    @Column(length = 32)
-    private String parentMenuId;
+    @ManyToOne
+    @JoinColumn(name = "parent_menu_code", referencedColumnName = "menu_code")
+    private Menu parentMenu;
 }
