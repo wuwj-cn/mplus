@@ -20,9 +20,6 @@ import com.mplus.common.enums.DataState;
 import com.mplus.common.exception.GenericException;
 import com.mplus.common.response.Result;
 import com.mplus.common.utils.MBeanUtils;
-import com.mplus.common.utils.jpa.JpaUtils;
-import com.mplus.common.utils.jpa.QueryParam;
-import com.mplus.common.utils.jpa.QueryType;
 import com.mplus.common.vo.PageVo;
 import com.mplus.system.entity.Module;
 import com.mplus.system.repo.ModuleRepository;
@@ -30,8 +27,6 @@ import com.mplus.system.vo.ModuleVo;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.*;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 

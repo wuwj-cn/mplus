@@ -27,7 +27,7 @@ import javax.persistence.Table;
 @Table(name = "mp_sys_module")
 public class Module extends BaseEntity {
 
-    @Column(length = 20, nullable = false, unique = true)
+    @Column(name = "module_code", length = 20, nullable = false, unique = true)
     private String moduleCode;
 
     @Column(length = 50, nullable = false)

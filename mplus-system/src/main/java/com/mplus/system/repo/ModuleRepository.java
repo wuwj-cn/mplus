@@ -23,4 +23,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ModuleRepository extends BaseRepository<Module, String> {
 
+    Module findModuleByModuleCodeAndDataState(String moduleCode, String dataState);
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,32 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mplus.system.entity;
 
-import com.mplus.common.entity.BaseEntity;
+package com.mplus.system.vo;
+
+import com.mplus.common.vo.BaseVo;
 import lombok.Data;
 
-import javax.persistence.*;
-
+/**
+ * MenuVo
+ *
+ * @author wuwj [254513235@qq.com]
+ * @since 1.0
+ */
 @Data
-@Entity
-@Table(name = "mp_sys_menu")
-public class Menu extends BaseEntity {
-
-    @Column(name = "menu_code", length = 20, nullable = false, unique = true)
+public class MenuVo extends BaseVo {
     private String menuCode;
-
-    @Column(length = 50, nullable = false)
     private String menuName;
-
-    @Column(length = 100)
     private String url;
-
-    @ManyToOne
-    @JoinColumn(name = "parent_menu_code", referencedColumnName = "menu_code")
-    private Menu parentMenu;
-
-    @ManyToOne
-    @JoinColumn(name = "module_code", referencedColumnName = "module_code")
-    private Module module;
+    private String parentMenuCode;
+    private String parentMenuName;
+    private String moduleCode;
+    private String moduleName;
 }
