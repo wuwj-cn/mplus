@@ -18,6 +18,7 @@ package com.mplus.system.repo;
 
 import com.mplus.common.repo.BaseRepository;
 import com.mplus.system.entity.Menu;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -26,5 +27,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface MenuRepository extends BaseRepository<Menu, String> {
-	
+
+    Menu findMenuByMenuCodeAndDataState(String menuCode, String dataState);
+
+    Menu findMenuByMenuCodeAndDataStateAndModule_moduleCode(String menuCode, String dataState, String moduleCode);
 }

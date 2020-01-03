@@ -4,3 +4,5 @@
  * @auth wuwj
  */
 INSERT INTO mp_sys_org (id, creator_id, create_time, data_state, operator_id, modify_time, org_code, org_name, parent_org_code, remark) VALUES ('0', null, null, '0', null, null, '0', 'ROOT', null, 'ROOT');
+
+insert into mp_sys_menu(id, data_state, menu_code, menu_name) values ('0', '0', '0', 'ROOT');

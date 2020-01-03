@@ -16,29 +16,29 @@
 
 package com.mplus.system.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import com.mplus.common.enums.DataState;
 import com.mplus.common.exception.GenericException;
 import com.mplus.common.response.Result;
 import com.mplus.common.utils.MBeanUtils;
+import com.mplus.system.entity.Menu;
 import com.mplus.system.entity.Module;
 import com.mplus.system.repo.MenuRepository;
 import com.mplus.system.repo.ModuleRepository;
 import com.mplus.system.vo.MenuVo;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import org.hibernate.annotations.SortNatural;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import com.mplus.system.entity.Menu;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/v1")
@@ -46,98 +46,99 @@ import com.mplus.system.entity.Menu;
 public class MenuController {
 	private MenuRepository menuRepository;
 	private ModuleRepository moduleRepository;
+
+	private static final String ROOT_MENU_CODE = "0";
 	
-	@PostMapping(value = "/modules/{moduleCode}/menus")
+	@PostMapping(value = "/menus")
 	@SneakyThrows
-	public Result<String> addMenu(@PathVariable String moduleCode, @RequestBody MenuVo menuVo) {
+	public Result<String> addMenu( @RequestBody MenuVo menuVo) {
+		Assert.notNull(menuVo.getModuleCode(), "module can not be empty");
 		Menu menu = new Menu();
 		MBeanUtils.copyPropertiesIgnoreNull(menuVo, menu);
-		Assert.notNull(menu.getId(), "object id is not null");
+		Assert.isNull(menu.getId(), "object id must be null");
+		String moduleCode = menuVo.getModuleCode();
 		Module module = moduleRepository.findModuleByModuleCodeAndDataState(moduleCode, DataState.NORMAL.code());
 		menu.setModule(module);
-		if(!StringUtils.isEmpty(menuVo.getParentMenuCode())) {
-		    Menu parent = this.findOne(moduleCode, menuVo.getParentMenuCode());
-		    menu.setParentMenu(parent);
-        }
+
+		String parentMenuCode = menuVo.getParentMenuCode();
+		if(StringUtils.isEmpty(parentMenuCode)) {
+			parentMenuCode = ROOT_MENU_CODE;
+		}
+		Menu parent = menuRepository.findMenuByMenuCodeAndDataState(parentMenuCode, DataState.NORMAL.code());
+		menu.setParentMenu(parent);
 		menuRepository.save(menu);
 		return Result.success(menu.getId());
 	}
 
-	@PutMapping(value = "/modules/{moduleCode}/menus/{menuCode}")
+	@PutMapping(value = "/menus/{menuCode}")
 	@SneakyThrows
-	public Result<String> updateMenu(@PathVariable String moduleCode,
-									 @PathVariable String menuCode,
+	public Result<String> updateMenu(@PathVariable String menuCode,
 									 @RequestBody MenuVo menuVo) {
-		Assert.hasText(moduleCode, "module code can not empty");
-		Assert.hasText(menuCode, "menu code can not empty");
-		if(!menuCode.equals(menuVo.getMenuCode())) {
-			throw new GenericException(String.format("update object is not consistent with [ %s ]", menuCode));
-		}
-		Menu menu = this.findOne(moduleCode, menuCode);
+		Assert.isNull(menuVo.getMenuCode(), "not allowed parameter");
+		Menu menu = menuRepository.findMenuByMenuCodeAndDataState(menuCode, DataState.NORMAL.code());
 		MBeanUtils.copyPropertiesIgnoreNull(menuVo, menu);
-        if(!StringUtils.isEmpty(menuVo.getParentMenuCode())) {
-            Menu parent = this.findOne(moduleCode, menuVo.getParentMenuCode());
-            menu.setParentMenu(parent);
+
+		String parentMenuCode = menuVo.getParentMenuCode();
+        if(StringUtils.isEmpty(parentMenuCode)) {
+        	parentMenuCode = ROOT_MENU_CODE;
         }
+		Menu parent = menuRepository.findMenuByMenuCodeAndDataState(parentMenuCode, DataState.NORMAL.code());
+		menu.setParentMenu(parent);
+
+		String moduleCode = menuVo.getModuleCode();
+		Assert.notNull(moduleCode, "module can not be empty");
+		if(!moduleCode.equals(menu.getModule().getModuleCode())) {
+			Module module = moduleRepository.findModuleByModuleCodeAndDataState(moduleCode, DataState.NORMAL.code());
+			menu.setModule(module);
+		}
+
 		menuRepository.save(menu);
 		return Result.success(menu.getId());
-	}
-
-	private Menu findOne(String moduleCode, String menuCode) {
-		Module module = new Module();
-		module.setModuleCode(moduleCode);
-		module.setDataState(DataState.NORMAL.code());
-		Menu menu = new Menu();
-		menu.setMenuCode(menuCode);
-		menu.setDataState(DataState.NORMAL.code());
-		menu.setModule(module);
-		Optional<Menu> optional = menuRepository.findOne(Example.of(menu));
-		if(!optional.isPresent()) {
-			throw new GenericException(String.format("object [%s] is not present", menuCode));
-		}
-		return optional.get();
 	}
 
 	@DeleteMapping(value = "/modules/{moduleCode}/menus/{menuCode}")
 	@SneakyThrows
 	public Result<String> deleteMenu(@PathVariable String moduleCode, @PathVariable String menuCode) {
-		Assert.hasText(menuCode, "code can not empty");
-		Menu menu = this.findOne(moduleCode, menuCode);
+		Menu menu = menuRepository.findMenuByMenuCodeAndDataStateAndModule_moduleCode(menuCode,
+				DataState.NORMAL.code(), moduleCode);
+		Assert.notNull(menu, "menu is null");
 		menu.setDataState(DataState.DELETED.code());
 		menuRepository.save(menu);
 		return Result.success(menu.getId());
 	}
 
-	@GetMapping(value = "/modules/{moduleCode}/menus")
-    public Result<List<MenuVo>> findMenusByModule(@PathVariable String moduleCode,
+	@GetMapping(value = "/menus")
+    public Result<List<MenuVo>> findMenusByModule(@RequestParam(required = false) String moduleCode,
                                                   @RequestParam(required = false) String menuCode,
                                                   @RequestParam(required = false) String menuName,
                                                   @RequestParam(required = false) String parentMenuCode) {
-	    Module module = new Module();
-	    module.setModuleCode(moduleCode);
-	    module.setDataState(DataState.NORMAL.code());
-	    Menu menu = new Menu();
-	    menu.setModule(module);
-	    menu.setDataState(DataState.NORMAL.code());
 
-        ExampleMatcher matcher = ExampleMatcher.matching();
-        if(!StringUtils.isEmpty(menuCode)) {
-            menu.setMenuCode(menuCode);
-            matcher = matcher.withMatcher("menuCode", match -> match.contains());
-        }
-        if(!StringUtils.isEmpty(menuName)) {
-            menu.setMenuName(menuName);
-            matcher = matcher.withMatcher("menuName", match -> match.contains());
-        }
-        if(!StringUtils.isEmpty(parentMenuCode)) {
-            Menu parent = new Menu();
-            parent.setMenuCode(parentMenuCode);
-            menu.setParentMenu(parent);
-        } else {
-            menu.setParentMenu(null);
-        }
+		Specification<Menu> spec = (Specification<Menu>) (root, query, cb) -> {
+			Predicate predicate = cb.conjunction();//动态SQL表达式
+			List<Expression<Boolean>> exList = predicate.getExpressions();//动态SQL表达式集合
+			exList.add(cb.equal(root.get("dataState"), DataState.NORMAL.code()));
 
-        List<Menu> menus = menuRepository.findAll(Example.of(menu, matcher), Sort.by("createTime"));
+			if (!StringUtils.isEmpty(moduleCode)) {
+				Join<Menu, Module> moduleJoin = root.join("module", JoinType.INNER);
+				exList.add(cb.equal(moduleJoin.get("moduleCode"), moduleCode));
+				exList.add(cb.equal(moduleJoin.get("dataState"), DataState.NORMAL.code()));
+			}
+			if(!StringUtils.isEmpty(menuCode)) {
+				exList.add(cb.like(root.get("menuCode"), "%" + menuCode + "%"));
+			}
+			if(!StringUtils.isEmpty(menuName)) {
+				exList.add(cb.like(root.get("menuName"), "%" + menuName + "%"));
+			}
+			Join<Menu, Menu> menuJoin = root.join("parentMenu", JoinType.INNER);
+			String _parentMenuCode = parentMenuCode;
+			if(StringUtils.isEmpty(_parentMenuCode)) {
+				_parentMenuCode = ROOT_MENU_CODE;
+			}
+			exList.add(cb.equal(menuJoin.get("menuCode"), _parentMenuCode));
+			exList.add(cb.equal(menuJoin.get("dataState"), DataState.NORMAL.code()));
+			return predicate;
+		};
+		List<Menu> menus = menuRepository.findAll(spec, Sort.by("createTime"));
         List<MenuVo> retList = new ArrayList<>();
         menus.stream().forEach(_menu -> {
             MenuVo vo = buildMenuVo(_menu);
@@ -146,10 +147,10 @@ public class MenuController {
         return Result.success(retList);
     }
 
-    @GetMapping(value = "/modules/{moduleCode}/menus/{menuCode}")
+    @GetMapping(value = "/menus/{menuCode}")
 	@SneakyThrows
-    public Result<MenuVo> findMenu(@PathVariable String moduleCode, @PathVariable String menuCode) {
-	    Menu menu = this.findOne(moduleCode, menuCode);
+    public Result<MenuVo> findMenu( @PathVariable String menuCode) {
+	    Menu menu = menuRepository.findMenuByMenuCodeAndDataState(menuCode, DataState.NORMAL.code());
         MenuVo menuVo = buildMenuVo(menu);
         return Result.success(menuVo);
     }
@@ -157,10 +158,14 @@ public class MenuController {
     private MenuVo buildMenuVo(Menu menu) {
         MenuVo menuVo = new MenuVo();
         MBeanUtils.copyPropertiesIgnoreNull(menu, menuVo);
-        menuVo.setModuleCode(menu.getModule().getModuleCode());
-        menuVo.setModuleName(menu.getModule().getModuleName());
-        menuVo.setParentMenuCode(menu.getParentMenu().getMenuCode());
-        menuVo.setParentMenuName(menu.getParentMenu().getMenuName());
+        if (null != menu.getModule()) {
+			menuVo.setModuleCode(menu.getModule().getModuleCode());
+			menuVo.setModuleName(menu.getModule().getModuleName());
+		}
+        if(null != menu.getParentMenu()) {
+			menuVo.setParentMenuCode(menu.getParentMenu().getMenuCode());
+			menuVo.setParentMenuName(menu.getParentMenu().getMenuName());
+		}
         return menuVo;
     }
 }
