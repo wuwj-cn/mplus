@@ -5,17 +5,16 @@
 
 ### URI
 #### URI格式  
-POST /system/v1/modules/{moduleCode}/menus
+POST /system/v1/menus
 
 #### 参数说明  
-| 名称 | 是否必选 | 参数类型 | 说明 |
-| --- | --- | --- | --- |
-| moduleCode | 是 | String | 模块编码 |
+无
 
 ### 请求消息
 #### 参数说明  
 | 名称 | 是否必选 | 参数类型 | 说明 |
 | --- | --- | --- | --- |
+| moduleCode | 是 | String | 模块编码 |
 | menuCode | 是 | String | 菜单编码 |
 | menuName | 是 | String | 菜单名称 |
 | url | 是 | String | 菜单URL |
@@ -23,20 +22,22 @@ POST /system/v1/modules/{moduleCode}/menus
 
 #### 请求样例  
 ```
-POST http://{Endpoint}/system/v1/modules/01/menus
+POST http://{Endpoint}/system/v1/menus
 ```
 ##### 请求body样例
 ```json
 {
-	"postCode": "dev",
-	"postName": "研发"
+	"moduleCode": "01",
+	"menuCode": "0103",
+	"menuName": "0103",
+	"url": "/org"
 }
 ```
 ### 响应消息
 #### 要素说明
 | 名称 | 参数类型 | 说明 |
 | --- | --- | --- |
-| data | String | 新增的岗位ID |
+| data | String | 新增的菜单ID |
 
 详细请参考 [响应结果说明](../../../common/response/result.md#要素说明)  
 
@@ -45,9 +46,9 @@ POST http://{Endpoint}/system/v1/modules/01/menus
 ```json
 {
 	"code": 9000,
-	"data": "402881846f2e4799016f2e48048d0000",
+	"data": "4028b8816f608cb7016f608edb770001",
 	"message": "success",
-	"request_id": "708629f69fab46b49b459bfc393a36d9"
+	"request_id": "bf8cc4007c5043ebb4cdc6af29f54f65"
 }
 ```
 ##### 异常响应

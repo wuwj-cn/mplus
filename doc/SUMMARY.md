@@ -46,7 +46,7 @@
             * [新增菜单](api/system/systemSetting/menu/addMenu.md)
             * [更新菜单](api/system/systemSetting/menu/updateMenu.md)
             * [删除菜单](api/system/systemSetting/menu/deleteMenu.md)
-            * [查询菜单列表](api/system/systemSetting/menu/findMenusByModule.md)
+            * [查询菜单列表](api/system/systemSetting/menu/findMenus.md)
             * [查询指定菜单信息](api/system/systemSetting/menu/findMenu.md)
         * [字典管理](api/system/systemSetting/dictionarys/README.md)
             * [新增字典类型](api/system/systemSetting/dictionarys/addDictType.md)
